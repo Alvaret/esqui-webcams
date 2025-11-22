@@ -21,7 +21,7 @@
   },
   "sierra-nevada": {
     "nombre": "Sierra Nevada",
-    "urlFoto": "/logos/sierra-nevada.svg",
+    "urlFoto": "/logos/sierranevada-logo.jpg",
     "altitudMaxima": "3,398 m",
     "altitudMinima": "2,100 m",
     "remontes": "25+",
@@ -31,13 +31,18 @@
     "webcams": [
       {
         "nombre": "Zona Veleta | 3029 m",
-        "link": "https://sts064.feratel.co.at/streams/stsstore053/1/15112_6921b16d-9733Vid.mp4?dcsdesign=feratel4",
-        "isVideo": true
+        "link": "https://webtvfc.feratel.com/webtv/?design=v5&pg=DA7D2F22-8600-464D-9D4F-CDB04014A6C5&cam=15112&lg=es&autoplay=1&sound=muted&muted=1&mute=1&playsinline=1&c45=1",
+        "isFeratel": true
       },
       {
         "nombre": "Zona Borreguiles | 2690 m",
-        "link": "https://sts110.feratel.co.at/streams/stsstore105/1/15111_6921b103-b27fVid.mp4?dcsdesign=feratel4",
-        "isVideo": true
+        "link": "https://webtvfc.feratel.com/webtv/?design=v5&pg=DA7D2F22-8600-464D-9D4F-CDB04014A6C5&cam=15111&lg=es&autoplay=1&sound=muted&muted=1&mute=1&playsinline=1&c45=1",
+        "isFeratel": true
+      },
+      {
+        "nombre": "Pradollano | 2100 m",
+        "link": "https://recursos.sierranevada.es/_extras/fotos_camaras/pradollano/snap_c1.jpg?timestamp=638994149948960000&IPIGNORE=TRUE",
+        "descripcion": "Vista desde Pradollano"
       }
     ]
   },
@@ -52,9 +57,9 @@
     "descripcion": "Pequeña estación de esquí en el Maestrazgo, Teruel",
     "webcams": [
       {
-        "nombre": "Webcam General",
-        "link": "https://www.valdelinares.es/webcam",
-        "descripcion": "Vista general de la estación"
+        "nombre": "Cota 1.900 | 1900 m",
+        "link": "https://webtvfc.feratel.com/webtv/?design=v5&pg=DA7D2F22-8600-464D-9D4F-CDB04014A6C5&cam=15070&lg=es&autoplay=1&sound=muted&muted=1&mute=1&playsinline=1&c45=1",
+        "isFeratel": true
       }
     ]
   },

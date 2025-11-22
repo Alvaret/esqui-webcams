@@ -1,6 +1,7 @@
 ---
 import opciones from '../data/opciones.json';
 import OpcionCard from '../components/OpcionCard/OpcionCard.astro';
+import FloatingCredit from '../components/FloatingCredit/FloatingCredit.astro';
 ---
 
 <html lang="es">
@@ -9,18 +10,13 @@ import OpcionCard from '../components/OpcionCard/OpcionCard.astro';
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Esquí Webcams - Selecciona tu estación</title>
+		<title>Esquí Webcams - Pl8</title>
 		<style is:global>
 			@import '../styles/index.css';
 		</style>
 	</head>
 	<body>
 		<div class="container">
-			<div class="header">
-				<h1>⛷️ Esquí Webcams</h1>
-				<p>Selecciona una estación</p>
-			</div>
-
 			<div class="opciones-grid">
 				{
 					Object.entries(opciones).map(([clave, opcion]) => (
@@ -33,5 +29,7 @@ import OpcionCard from '../components/OpcionCard/OpcionCard.astro';
 				}
 			</div>
 		</div>
+
+		<FloatingCredit />
 	</body>
 </html>

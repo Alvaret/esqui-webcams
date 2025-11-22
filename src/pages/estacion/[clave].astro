@@ -1,6 +1,7 @@
 ---
 import opciones from '../../data/opciones.json';
 import Webcam from '../../components/Webcam/Webcam.astro';
+import FloatingCredit from '../../components/FloatingCredit/FloatingCredit.astro';
 
 export function getStaticPaths() {
 	return Object.keys(opciones).map((clave) => ({
@@ -47,11 +48,13 @@ if (!estacion) {
 					<h2>Webcams en vivo</h2>
 					<div class="webcams-list">
 						{
-							estacion.webcams.map((webcam) => (
+							estacion.webcams.map((webcam: any) => (
 								<Webcam 
 									nombre={webcam.nombre}
 									link={webcam.link}
+									descripcion={webcam.descripcion}
 									isVideo={webcam.isVideo || false}
+									isFeratel={webcam.isFeratel || false}
 								/>
 							))
 						}
@@ -86,5 +89,7 @@ if (!estacion) {
 				<a href="/" class="btn btn-secondary">Ver otras estaciones</a>
 			</div>
 		</div>
+
+		<FloatingCredit />
 	</body>
 </html>
