@@ -12,7 +12,6 @@
     "astro": "^5.16.0"
   },
   "devDependencies": {
-    "@astrojs/cloudflare": "^12.6.11",
-    "wrangler": "^4.50.0"
+    "@astrojs/cloudflare": "^12.6.11"
   }
 }
