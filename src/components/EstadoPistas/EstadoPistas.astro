@@ -1,0 +1,186 @@
+---
+interface Props {
+	estacion: string;
+}
+
+const { estacion } = Astro.props;
+---
+
+<div class="estado-pistas">
+	<div class="estado-pistas-container" data-estacion={estacion}>
+		<div class="estado-loading">
+			<span>Cargando información de pistas...</span>
+		</div>
+	</div>
+</div>
+
+<script define:vars={{ estacion }}>
+	async function cargarEstadoPistas() {
+		try {
+			const container = document.querySelector(`[data-estacion="${estacion}"]`);
+			if (!container) return;
+
+			const response = await fetch(`/api/pistas?estacion=${estacion}`);
+			const data = await response.json();
+
+			if (!response.ok) {
+				container.innerHTML = `<div class="estado-error">Error al cargar información</div>`;
+				return;
+			}
+
+			const { remontes, kilometros, nieve } = data;
+
+			let html = '<div class="estado-grid">';
+
+			if (remontes) {
+				html += `
+					<div class="estado-item">
+						<div class="estado-icon">🚡</div>
+						<div class="estado-info">
+							<span class="estado-label">Remontes</span>
+							<span class="estado-valor">${remontes.abiertos}/${remontes.total}</span>
+						</div>
+					</div>
+				`;
+			}
+
+			if (kilometros) {
+				html += `
+					<div class="estado-item">
+						<div class="estado-icon">⛷️</div>
+						<div class="estado-info">
+							<span class="estado-label">Pistas abiertas</span>
+							<span class="estado-valor">${kilometros.abiertos}/${kilometros.total}</span>
+						</div>
+					</div>
+				`;
+			}
+
+			if (nieve) {
+				html += `
+					<div class="estado-item">
+						<div class="estado-icon">❄️</div>
+						<div class="estado-info">
+							<span class="estado-label">Nieve</span>
+							<span class="estado-valor">${nieve.altura} ${nieve.unidad}</span>
+						</div>
+					</div>
+				`;
+			}
+
+			html += '</div>';
+			container.innerHTML = html;
+		} catch (error) {
+			console.error('Error cargando estado de pistas:', error);
+			document.querySelector(`[data-estacion="${estacion}"]`).innerHTML = 
+				'<div class="estado-error">No disponible</div>';
+		}
+	}
+
+	// Cargar cuando el DOM esté listo
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', cargarEstadoPistas);
+	} else {
+		cargarEstadoPistas();
+	}
+</script>
+
+<style>
+	.estado-pistas {
+		margin: 2rem 0;
+	}
+
+	.estado-pistas-container {
+		background: rgba(255, 255, 255, 0.95);
+		padding: 1.5rem;
+		border-radius: 12px;
+		box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	}
+
+	.estado-loading {
+		text-align: center;
+		color: #666;
+		font-size: 0.95rem;
+	}
+
+	.estado-error {
+		text-align: center;
+		color: #999;
+		font-size: 0.9rem;
+	}
+
+	.estado-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+		gap: 1rem;
+	}
+
+	.estado-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 1rem;
+		background: #f8f9fa;
+		border-radius: 8px;
+		text-align: center;
+		border-left: 4px solid #667eea;
+	}
+
+	.estado-icon {
+		font-size: 1.8rem;
+	}
+
+	.estado-info {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+
+	.estado-label {
+		font-size: 0.75rem;
+		color: #666;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		font-weight: 500;
+	}
+
+	.estado-valor {
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: #333;
+	}
+
+	/* Responsive */
+	@media (min-width: 640px) {
+		.estado-grid {
+			grid-template-columns: repeat(3, 1fr);
+			gap: 1.5rem;
+		}
+
+		.estado-item {
+			padding: 1.5rem;
+		}
+	}
+
+	/* Tema oscuro */
+	@media (prefers-color-scheme: dark) {
+		.estado-pistas-container {
+			background: rgba(255, 255, 255, 0.1);
+			border: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.estado-loading,
+		.estado-label {
+			color: rgba(255, 255, 255, 0.7);
+		}
+
+		.estado-item {
+			background: rgba(255, 255, 255, 0.05);
+		}
+
+		.estado-valor {
+			color: #f0f0f0;
+		}
+	}
+</style>
