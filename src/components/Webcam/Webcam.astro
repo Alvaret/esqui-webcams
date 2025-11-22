@@ -7,9 +7,10 @@ interface Props {
 	descripcion?: string;
 	isVideo?: boolean;
 	isFeratel?: boolean;
+	isImage?: boolean;
 }
 
-const { nombre, link, descripcion, isVideo = false, isFeratel = false } = Astro.props;
+const { nombre, link, descripcion, isVideo = false, isFeratel = false, isImage = false } = Astro.props;
 ---
 
 <div class="webcam-item">
@@ -41,7 +42,7 @@ const { nombre, link, descripcion, isVideo = false, isFeratel = false } = Astro.
 				<source src={link} type="video/mp4" />
 				Tu navegador no soporta el elemento de video.
 			</video>
-		) : link.endsWith('.jpg') || link.endsWith('.png') || link.endsWith('.webp') ? (
+		) : isImage ? (
 			<img 
 				src={link}
 				alt={nombre}

@@ -42,7 +42,8 @@
       {
         "nombre": "Pradollano | 2100 m",
         "link": "https://recursos.sierranevada.es/_extras/fotos_camaras/pradollano/snap_c1.jpg?timestamp=638994149948960000&IPIGNORE=TRUE",
-        "descripcion": "Vista desde Pradollano"
+        "descripcion": "Vista desde Pradollano",
+        "isImage": true
       }
     ]
   },
