@@ -87,8 +87,8 @@ const API_BASE = 'https://api-esqui-scraping-production.up.railway.app';
 			</div>
 		</div>
 
-		<script define:vars={{ API_BASE }}>
-			async function testEndpoint(path, resultId) {
+		<script is:inline define:vars={{ API_BASE }}>
+			window.testEndpoint = async function(path, resultId) {
 				const resultDiv = document.getElementById(resultId);
 				const url = `${API_BASE}${path}`;
 				
@@ -128,7 +128,7 @@ const API_BASE = 'https://api-esqui-scraping-production.up.railway.app';
 				}
 			}
 
-			async function testAllEndpoints() {
+			window.testAllEndpoints = async function() {
 				const endpoints = [
 					{ path: '/estacion/sierra-nevada', id: 'result-sierra-nevada' },
 					{ path: '/estacion/valdelinares', id: 'result-valdelinares' },
@@ -137,7 +137,7 @@ const API_BASE = 'https://api-esqui-scraping-production.up.railway.app';
 				];
 
 				for (const endpoint of endpoints) {
-					await testEndpoint(endpoint.path, endpoint.id);
+					await window.testEndpoint(endpoint.path, endpoint.id);
 					await new Promise(resolve => setTimeout(resolve, 500));
 				}
 			}

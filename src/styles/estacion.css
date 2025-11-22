@@ -87,6 +87,11 @@
 	opacity: 0.7;
 }
 
+/* Datos en tiempo real */
+.datos-tiempo-real {
+	margin: 2rem 0;
+}
+
 /* Sección de webcams */
 .webcams-section {
 	margin: 2rem 0;

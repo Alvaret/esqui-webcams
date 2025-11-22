@@ -1,0 +1,143 @@
+---
+import type { EstacionData } from '../../lib/api';
+
+interface Props {
+  data: EstacionData;
+}
+
+const { data } = Astro.props;
+---
+
+{data.estado === 'success' ? (
+  <div class="datos">
+    <div class="dato-card">
+      <div class="icono">🚡</div>
+      <div class="contenido">
+        <span class="label">Remontes</span>
+        <span class="valor">{data.remontes || 'No disponible'}</span>
+      </div>
+    </div>
+
+    <div class="dato-card">
+      <div class="icono">⛷️</div>
+      <div class="contenido">
+        <span class="label">Kilómetros</span>
+        <span class="valor">{data.kilometros || 'No disponible'}</span>
+      </div>
+    </div>
+
+    <div class="dato-card">
+      <div class="icono">❄️</div>
+      <div class="contenido">
+        <span class="label">Nieve</span>
+        <span class="valor">{data.nieve || 'No disponible'}</span>
+      </div>
+    </div>
+  </div>
+) : (
+  <div class="error-message">
+    <p>❌ {data.error || 'Error al obtener datos'}</p>
+  </div>
+)}
+
+<style>
+  .datos {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .dato-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+
+  .dato-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+  }
+
+  .icono {
+    font-size: 3rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .contenido {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+  }
+
+  .label {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .valor {
+    font-size: 2rem;
+    color: white;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .error-message {
+    padding: 2rem;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    text-align: center;
+  }
+
+  .error-message p {
+    margin: 0;
+    color: white;
+    font-weight: 600;
+    font-size: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 640px) {
+    .dato-card {
+      padding: 1.5rem;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .icono {
+      font-size: 2.5rem;
+    }
+
+    .valor {
+      font-size: 1.75rem;
+    }
+
+    .error-message {
+      padding: 1.5rem;
+    }
+
+    .error-message p {
+      font-size: 1.25rem;
+    }
+  }
+</style>

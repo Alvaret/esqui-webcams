@@ -2,6 +2,9 @@
 import opciones from '../../data/opciones.json';
 import Webcam from '../../components/Webcam/Webcam.astro';
 import FloatingCredit from '../../components/FloatingCredit/FloatingCredit.astro';
+import InfoEstacion from '../../components/InfoEstacion/InfoEstacion.astro';
+import { getEstacion } from '../../lib/api';
+import type { EstacionData } from '../../lib/api';
 
 export function getStaticPaths() {
 	return Object.keys(opciones).map((clave) => ({
@@ -20,6 +23,14 @@ const estacion = opciones[clave as keyof typeof opciones];
 
 if (!estacion) {
 	return Astro.redirect('/');
+}
+
+// Obtener datos en tiempo real de la API
+let datosAPI: EstacionData | null = null;
+try {
+	datosAPI = await getEstacion(clave);
+} catch (error) {
+	console.error(`Error al obtener datos de ${clave}:`, error);
 }
 ---
 
@@ -42,6 +53,12 @@ if (!estacion) {
 				<h1>{estacion.nombre}</h1>
 				<p>{estacion.descripcion}</p>
 			</div>
+
+			{datosAPI && (
+				<div class="datos-tiempo-real">
+					<InfoEstacion data={datosAPI} />
+				</div>
+			)}
 
 			{estacion.webcams && estacion.webcams.length > 0 && (
 				<div class="webcams-section">
