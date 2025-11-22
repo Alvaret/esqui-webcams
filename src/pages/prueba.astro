@@ -1,4 +1,5 @@
 ---
+const API_BASE = 'https://api-esqui-scraping-production.up.railway.app';
 ---
 
 <html lang="es">
@@ -7,23 +8,73 @@
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Prueba - Webcam</title>
+		<title>Prueba API - Sierra Nevada</title>
 	</head>
 	<body>
 		<main>
 			<div class="prueba-container">
-				<h1>Prueba de Webcam</h1>
+				<h1>🧪 Prueba de API - Estaciones de Esquí</h1>
+				<p class="subtitle">Endpoints disponibles para las estaciones</p>
 				
-				<div class="webcam-container">
-					<iframe 
-						title="Webcam - Sierra Nevada - Zona Veleta" 
-						class="webcam" 
-						allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
-						allowfullscreen
-						referrerpolicy="strict-origin-when-cross-origin" 
-						loading="lazy" 
-						src="https://webtvfc.feratel.com/webtv/?design=v5&pg=DA7D2F22-8600-464D-9D4F-CDB04014A6C5&cam=15112&lg=es&autoplay=1&sound=muted&muted=1&mute=1&playsinline=1&c45=1">
-					</iframe>
+				<div class="endpoints-grid">
+					<!-- Sierra Nevada -->
+					<div class="endpoint-card">
+						<h2>🏔️ Sierra Nevada</h2>
+						<code class="endpoint-url">GET /estacion/sierra-nevada</code>
+						<button onclick="testEndpoint('/estacion/sierra-nevada', 'result-sierra-nevada')">
+							Probar Endpoint
+						</button>
+						<div id="result-sierra-nevada" class="result"></div>
+					</div>
+
+					<!-- Valdelinares -->
+					<div class="endpoint-card">
+						<h2>⛰️ Valdelinares</h2>
+						<code class="endpoint-url">GET /estacion/valdelinares</code>
+						<button onclick="testEndpoint('/estacion/valdelinares', 'result-valdelinares')">
+							Probar Endpoint
+						</button>
+						<div id="result-valdelinares" class="result"></div>
+					</div>
+
+					<!-- Candanchú -->
+					<div class="endpoint-card">
+						<h2>🎿 Candanchú</h2>
+						<code class="endpoint-url">GET /estacion/candanchu</code>
+						<button onclick="testEndpoint('/estacion/candanchu', 'result-candanchu')">
+							Probar Endpoint
+						</button>
+						<div id="result-candanchu" class="result"></div>
+					</div>
+
+					<!-- Boí Taüll -->
+					<div class="endpoint-card">
+						<h2>🏔️ Boí Taüll</h2>
+						<code class="endpoint-url">GET /estacion/boi-taull</code>
+						<button onclick="testEndpoint('/estacion/boi-taull', 'result-boi-taull')">
+							Probar Endpoint
+						</button>
+						<div id="result-boi-taull" class="result"></div>
+					</div>
+				</div>
+
+				<!-- Endpoint General -->
+				<div class="general-section">
+					<h2>📊 Todas las Estaciones</h2>
+					<div class="endpoint-card full-width">
+						<code class="endpoint-url">GET /estaciones</code>
+						<button onclick="testEndpoint('/estaciones', 'result-all')">
+							Probar Endpoint
+						</button>
+						<div id="result-all" class="result"></div>
+					</div>
+				</div>
+
+				<!-- Test All -->
+				<div class="test-all-section">
+					<button class="test-all-btn" onclick="testAllEndpoints()">
+						🚀 Probar Todas las Estaciones
+					</button>
 				</div>
 			</div>
 		</main>
@@ -35,6 +86,62 @@
 				<span style="font-size: 1.1rem;">❤️</span>
 			</div>
 		</div>
+
+		<script define:vars={{ API_BASE }}>
+			async function testEndpoint(path, resultId) {
+				const resultDiv = document.getElementById(resultId);
+				const url = `${API_BASE}${path}`;
+				
+				resultDiv.innerHTML = '<div class="loading">⏳ Cargando...</div>';
+				resultDiv.classList.add('show');
+				
+				try {
+					const startTime = performance.now();
+					const response = await fetch(url);
+					const endTime = performance.now();
+					const data = await response.json();
+					
+					const responseTime = (endTime - startTime).toFixed(2);
+					
+					if (response.ok) {
+						resultDiv.innerHTML = `
+							<div class="success">
+								<div class="status">✅ ${response.status} OK (${responseTime}ms)</div>
+								<pre>${JSON.stringify(data, null, 2)}</pre>
+							</div>
+						`;
+					} else {
+						resultDiv.innerHTML = `
+							<div class="error">
+								<div class="status">❌ Error ${response.status}</div>
+								<pre>${JSON.stringify(data, null, 2)}</pre>
+							</div>
+						`;
+					}
+				} catch (error) {
+					resultDiv.innerHTML = `
+						<div class="error">
+							<div class="status">❌ Error de red</div>
+							<pre>${error.message}</pre>
+						</div>
+					`;
+				}
+			}
+
+			async function testAllEndpoints() {
+				const endpoints = [
+					{ path: '/estacion/sierra-nevada', id: 'result-sierra-nevada' },
+					{ path: '/estacion/valdelinares', id: 'result-valdelinares' },
+					{ path: '/estacion/candanchu', id: 'result-candanchu' },
+					{ path: '/estacion/boi-taull', id: 'result-boi-taull' }
+				];
+
+				for (const endpoint of endpoints) {
+					await testEndpoint(endpoint.path, endpoint.id);
+					await new Promise(resolve => setTimeout(resolve, 500));
+				}
+			}
+		</script>
 	</body>
 </html>
 
@@ -43,11 +150,12 @@
 		margin: 0;
 		padding: 0;
 		font-family: system-ui, -apple-system, sans-serif;
-		background-color: #f5f5f5;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		min-height: 100vh;
 	}
 
 	main {
-		max-width: 1200px;
+		max-width: 1400px;
 		margin: 0 auto;
 		padding: 2rem;
 	}
@@ -59,23 +167,160 @@
 	}
 
 	h1 {
-		color: #333;
+		color: white;
 		text-align: center;
+		margin: 0 0 0.5rem 0;
+		font-size: 2.5rem;
+		text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+	}
+
+	.subtitle {
+		color: rgba(255, 255, 255, 0.9);
+		text-align: center;
+		margin: 0 0 2rem 0;
+		font-size: 1.1rem;
+	}
+
+	.endpoints-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+		gap: 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.endpoint-card {
+		background: white;
+		border-radius: 16px;
+		padding: 1.5rem;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+		transition: transform 0.2s, box-shadow 0.2s;
+	}
+
+	.endpoint-card:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+	}
+
+	.endpoint-card h2 {
+		color: #333;
 		margin: 0 0 1rem 0;
+		font-size: 1.3rem;
 	}
 
-	.webcam-container {
-		width: 100%;
-		aspect-ratio: 16 / 9;
-		border-radius: 12px;
-		overflow: hidden;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	.endpoint-url {
+		display: block;
+		background: #f5f5f5;
+		padding: 0.75rem 1rem;
+		border-radius: 8px;
+		font-family: 'Monaco', 'Courier New', monospace;
+		font-size: 0.85rem;
+		color: #667eea;
+		margin-bottom: 1rem;
+		word-break: break-all;
 	}
 
-	.webcam {
+	button {
 		width: 100%;
-		height: 100%;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: white;
 		border: none;
+		padding: 0.875rem 1.5rem;
+		border-radius: 8px;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s;
+		box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+	}
+
+	button:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+	}
+
+	button:active {
+		transform: translateY(0);
+	}
+
+	.result {
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.3s ease-out;
+		margin-top: 0;
+	}
+
+	.result.show {
+		max-height: 600px;
+		margin-top: 1rem;
+		overflow: auto;
+	}
+
+	.result pre {
+		background: #1e1e1e;
+		color: #d4d4d4;
+		padding: 1rem;
+		border-radius: 8px;
+		overflow-x: auto;
+		font-size: 0.85rem;
+		line-height: 1.5;
+		margin: 0.5rem 0 0 0;
+	}
+
+	.loading {
+		text-align: center;
+		padding: 1rem;
+		color: #667eea;
+		font-weight: 600;
+	}
+
+	.status {
+		font-weight: 600;
+		padding: 0.5rem;
+		border-radius: 6px;
+		margin-bottom: 0.5rem;
+	}
+
+	.success .status {
+		background: #d4edda;
+		color: #155724;
+	}
+
+	.error .status {
+		background: #f8d7da;
+		color: #721c24;
+	}
+
+	.general-section {
+		margin: 2rem 0;
+	}
+
+	.general-section h2 {
+		color: white;
+		text-align: center;
+		margin-bottom: 1rem;
+		font-size: 1.5rem;
+	}
+
+	.full-width {
+		max-width: 100%;
+	}
+
+	.test-all-section {
+		display: flex;
+		justify-content: center;
+		margin-top: 1rem;
+	}
+
+	.test-all-btn {
+		max-width: 400px;
+		font-size: 1.1rem;
+		padding: 1rem 2rem;
+		background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+		box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3);
+	}
+
+	.test-all-btn:hover {
+		box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4);
 	}
 
 	@media (max-width: 640px) {
@@ -84,12 +329,23 @@
 		}
 
 		h1 {
-			font-size: 1.5rem;
+			font-size: 1.75rem;
 		}
 
-		.webcam-container {
-			aspect-ratio: auto;
-			min-height: 300px;
+		.subtitle {
+			font-size: 1rem;
+		}
+
+		.endpoints-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.endpoint-card {
+			padding: 1rem;
+		}
+
+		.endpoint-url {
+			font-size: 0.75rem;
 		}
 	}
 </style>
