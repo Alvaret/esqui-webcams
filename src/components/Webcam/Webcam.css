@@ -36,6 +36,7 @@
 .webcam-player {
 	width: 100%;
 	aspect-ratio: 16 / 9;
+	min-height: 200px;
 	border-radius: 8px;
 	overflow: hidden;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -45,12 +46,14 @@
 	width: 100%;
 	height: 100%;
 	border: none;
+	display: block;
 }
 
 .webcam-video {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	display: block;
 }
 
 /* Estilos responsivos para tablets */
@@ -79,6 +82,20 @@
 	.webcam-player:hover {
 		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 	}
+}
+
+/* Estilos para imágenes estáticas */
+.webcam-player img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.webcam-iframe {
+	width: 100%;
+	height: 100%;
+	border: none;
 }
 
 /* Soporte para tema oscuro */

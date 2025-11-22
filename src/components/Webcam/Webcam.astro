@@ -41,6 +41,13 @@ const { nombre, link, descripcion, isVideo = false, isFeratel = false } = Astro.
 				<source src={link} type="video/mp4" />
 				Tu navegador no soporta el elemento de video.
 			</video>
+		) : link.endsWith('.jpg') || link.endsWith('.png') || link.endsWith('.webp') ? (
+			<img 
+				src={link}
+				alt={nombre}
+				class="webcam-image"
+				loading="lazy"
+			/>
 		) : (
 			<iframe 
 				src={link}
