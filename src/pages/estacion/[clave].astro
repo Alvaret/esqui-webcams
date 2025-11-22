@@ -3,7 +3,7 @@ import opciones from '../../data/opciones.json';
 import Webcam from '../../components/Webcam/Webcam.astro';
 import FloatingCredit from '../../components/FloatingCredit/FloatingCredit.astro';
 import InfoEstacion from '../../components/InfoEstacion/InfoEstacion.astro';
-import { getEstacion } from '../../lib/api';
+import { obtenerEstacionPorSlug } from '../../lib/supabase';
 import type { EstacionData } from '../../lib/api';
 
 export function getStaticPaths() {
@@ -25,10 +25,10 @@ if (!estacion) {
 	return Astro.redirect('/');
 }
 
-// Obtener datos en tiempo real de la API
+// Obtener datos desde Supabase directamente (sin API route)
 let datosAPI: EstacionData | null = null;
 try {
-	datosAPI = await getEstacion(clave);
+	datosAPI = await obtenerEstacionPorSlug(clave);
 } catch (error) {
 	console.error(`Error al obtener datos de ${clave}:`, error);
 }
@@ -54,9 +54,18 @@ try {
 				<p>{estacion.descripcion}</p>
 			</div>
 
-			{datosAPI && (
+			{datosAPI ? (
 				<div class="datos-tiempo-real">
 					<InfoEstacion data={datosAPI} />
+				</div>
+			) : (
+				<div class="datos-tiempo-real">
+					<div class="no-data-message">
+						<div class="icono-alerta">⚠️</div>
+						<h3>No hay datos disponibles</h3>
+						<p>Aún no se han cargado datos para esta estación.</p>
+						<p class="hint">Los administradores pueden cargar datos desde el <a href="/load-data">panel de administración</a>.</p>
+					</div>
 				</div>
 			)}
 

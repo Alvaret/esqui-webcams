@@ -6,39 +6,62 @@ interface Props {
 }
 
 const { data } = Astro.props;
+
+// Formatear los datos para mostrar
+const remontes = data.remontes_abiertos && data.remontes_totales 
+  ? `${data.remontes_abiertos}/${data.remontes_totales}`
+  : 'No disponible';
+
+const kilometros = data.kilometros_abiertos && data.kilometros_totales
+  ? `${data.kilometros_abiertos}/${data.kilometros_totales} km`
+  : 'No disponible';
+
+const nieve = data.nieve || 'No disponible';
+
+// Formatear la fecha de actualización
+const fechaActualizacion = data.timestamp 
+  ? new Date(data.timestamp).toLocaleString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  : null;
 ---
 
-{data.estado === 'success' ? (
-  <div class="datos">
-    <div class="dato-card">
-      <div class="icono">🚡</div>
-      <div class="contenido">
-        <span class="label">Remontes</span>
-        <span class="valor">{data.remontes || 'No disponible'}</span>
-      </div>
+<div class="datos">
+  {fechaActualizacion && (
+    <div class="timestamp-header">
+      <span class="icono-reloj">🕐</span>
+      <span>Última actualización: {fechaActualizacion}</span>
     </div>
+  )}
 
-    <div class="dato-card">
-      <div class="icono">⛷️</div>
-      <div class="contenido">
-        <span class="label">Kilómetros</span>
-        <span class="valor">{data.kilometros || 'No disponible'}</span>
-      </div>
-    </div>
-
-    <div class="dato-card">
-      <div class="icono">❄️</div>
-      <div class="contenido">
-        <span class="label">Nieve</span>
-        <span class="valor">{data.nieve || 'No disponible'}</span>
-      </div>
+  <div class="dato-card">
+    <div class="icono">🚡</div>
+    <div class="contenido">
+      <span class="label">Remontes</span>
+      <span class="valor">{remontes}</span>
     </div>
   </div>
-) : (
-  <div class="error-message">
-    <p>❌ {data.error || 'Error al obtener datos'}</p>
+
+  <div class="dato-card">
+    <div class="icono">⛷️</div>
+    <div class="contenido">
+      <span class="label">Kilómetros</span>
+      <span class="valor">{kilometros}</span>
+    </div>
   </div>
-)}
+
+  <div class="dato-card">
+    <div class="icono">❄️</div>
+    <div class="contenido">
+      <span class="label">Nieve</span>
+      <span class="valor">{nieve}</span>
+    </div>
+  </div>
+</div>
 
 <style>
   .datos {
@@ -46,6 +69,24 @@ const { data } = Astro.props;
     flex-direction: column;
     gap: 1.5rem;
     width: 100%;
+  }
+
+  .timestamp-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .icono-reloj {
+    font-size: 1.2rem;
   }
 
   .dato-card {

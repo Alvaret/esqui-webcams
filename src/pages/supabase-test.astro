@@ -1,0 +1,526 @@
+---
+import { supabase } from '../lib/supabase';
+
+const API_BASE = 'https://api-esqui-scraping-production.up.railway.app';
+
+// Función para guardar en Supabase
+async function guardarEnSupabase(estacion: any) {
+  try {
+    const response = await fetch('/api/estaciones', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(estacion)
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      console.error('Error al guardar en Supabase:', error);
+    }
+  } catch (error) {
+    console.error('Error al enviar a Supabase:', error);
+  }
+}
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Prueba API + Supabase - Estaciones de Esquí</title>
+	</head>
+	<body>
+		<main>
+			<div class="prueba-container">
+				<h1>🧪 Prueba API + Supabase</h1>
+				<p class="subtitle">Scraping desde Railway y guardado en Supabase</p>
+				
+				<div class="endpoints-grid">
+					<!-- Sierra Nevada -->
+					<div class="endpoint-card">
+						<h2>🏔️ Sierra Nevada</h2>
+						<code class="endpoint-url">GET /estacion/sierra-nevada</code>
+						<button onclick="testAndSaveEndpoint('/estacion/sierra-nevada', 'result-sierra-nevada')">
+							🚀 Scrapear y Guardar
+						</button>
+						<button onclick="getFromDB('sierra-nevada', 'result-sierra-nevada-db')" class="secondary-btn">
+							📊 Ver desde DB
+						</button>
+						<div id="result-sierra-nevada" class="result"></div>
+						<div id="result-sierra-nevada-db" class="result"></div>
+					</div>
+
+					<!-- Valdelinares -->
+					<div class="endpoint-card">
+						<h2>⛰️ Valdelinares</h2>
+						<code class="endpoint-url">GET /estacion/valdelinares</code>
+						<button onclick="testAndSaveEndpoint('/estacion/valdelinares', 'result-valdelinares')">
+							🚀 Scrapear y Guardar
+						</button>
+						<button onclick="getFromDB('valdelinares', 'result-valdelinares-db')" class="secondary-btn">
+							📊 Ver desde DB
+						</button>
+						<div id="result-valdelinares" class="result"></div>
+						<div id="result-valdelinares-db" class="result"></div>
+					</div>
+
+					<!-- Candanchú -->
+					<div class="endpoint-card">
+						<h2>🎿 Candanchú</h2>
+						<code class="endpoint-url">GET /estacion/candanchu</code>
+						<button onclick="testAndSaveEndpoint('/estacion/candanchu', 'result-candanchu')">
+							🚀 Scrapear y Guardar
+						</button>
+						<button onclick="getFromDB('candanchu', 'result-candanchu-db')" class="secondary-btn">
+							📊 Ver desde DB
+						</button>
+						<div id="result-candanchu" class="result"></div>
+						<div id="result-candanchu-db" class="result"></div>
+					</div>
+
+					<!-- Boí Taüll -->
+					<div class="endpoint-card">
+						<h2>🏔️ Boí Taüll</h2>
+						<code class="endpoint-url">GET /estacion/boi-taull</code>
+						<button onclick="testAndSaveEndpoint('/estacion/boi-taull', 'result-boi-taull')">
+							🚀 Scrapear y Guardar
+						</button>
+						<button onclick="getFromDB('boi-taull', 'result-boi-taull-db')" class="secondary-btn">
+							📊 Ver desde DB
+						</button>
+						<div id="result-boi-taull" class="result"></div>
+						<div id="result-boi-taull-db" class="result"></div>
+					</div>
+				</div>
+
+				<!-- Opciones masivas -->
+				<div class="general-section">
+					<h2>📊 Operaciones Masivas</h2>
+					<div class="buttons-row">
+						<button class="mass-btn" onclick="testAllAndSave()">
+							🚀 Scrapear y Guardar Todas
+						</button>
+						<button class="mass-btn secondary-btn" onclick="getAllFromDB()">
+							📊 Ver Todas desde DB
+						</button>
+					</div>
+					<div id="result-all-db" class="result full-width"></div>
+				</div>
+			</div>
+		</main>
+
+		<div style="position: fixed; bottom: 24px; right: 24px; z-index: 999;">
+			<div style="display: flex; align-items: center; gap: 8px; padding: 12px 18px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37), inset 0 1px 1px rgba(255, 255, 255, 0.5); font-size: 0.95rem; font-weight: 500; color: #333;">
+				<span style="font-weight: 400; opacity: 0.9;">By</span>
+				<span style="font-weight: 700; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">PL8</span>
+				<span style="font-size: 1.1rem;">❤️</span>
+			</div>
+		</div>
+
+		<script is:inline define:vars={{ API_BASE }}>
+			// Función para scrapear y guardar en Supabase
+			window.testAndSaveEndpoint = async function(path, resultId) {
+				const resultDiv = document.getElementById(resultId);
+				const url = `${API_BASE}${path}`;
+				
+				resultDiv.innerHTML = '<div class="loading">⏳ Scrapeando desde Railway...</div>';
+				resultDiv.classList.add('show');
+				
+				try {
+					// 1. Obtener datos del scraping
+					const startTime = performance.now();
+					const response = await fetch(url);
+					const endTime = performance.now();
+					const data = await response.json();
+					
+					const responseTime = (endTime - startTime).toFixed(2);
+					
+					if (response.ok) {
+						resultDiv.innerHTML = `
+							<div class="success">
+								<div class="status">✅ Scraping OK (${responseTime}ms)</div>
+								<pre>${JSON.stringify(data, null, 2)}</pre>
+								<div class="loading">💾 Guardando en Supabase...</div>
+							</div>
+						`;
+						
+						// 2. Guardar en Supabase
+						try {
+							const saveResponse = await fetch('/api/estaciones', {
+								method: 'POST',
+								headers: {
+									'Content-Type': 'application/json',
+								},
+								body: JSON.stringify(data)
+							});
+							
+							const saveResult = await saveResponse.json();
+							
+							if (saveResponse.ok) {
+								resultDiv.innerHTML = `
+									<div class="success">
+										<div class="status">✅ Scraping OK (${responseTime}ms)</div>
+										<div class="status">💾 Guardado en Supabase ✓</div>
+										<pre>${JSON.stringify(data, null, 2)}</pre>
+									</div>
+								`;
+							} else {
+								resultDiv.innerHTML += `
+									<div class="error">
+										<div class="status">⚠️ Error al guardar en Supabase</div>
+										<pre>${JSON.stringify(saveResult, null, 2)}</pre>
+									</div>
+								`;
+							}
+						} catch (saveError) {
+							resultDiv.innerHTML += `
+								<div class="error">
+									<div class="status">⚠️ Error al guardar: ${saveError.message}</div>
+								</div>
+							`;
+						}
+					} else {
+						resultDiv.innerHTML = `
+							<div class="error">
+								<div class="status">❌ Error ${response.status}</div>
+								<pre>${JSON.stringify(data, null, 2)}</pre>
+							</div>
+						`;
+					}
+				} catch (error) {
+					resultDiv.innerHTML = `
+						<div class="error">
+							<div class="status">❌ Error de red</div>
+							<pre>${error.message}</pre>
+						</div>
+					`;
+				}
+			}
+
+			// Función para obtener datos desde Supabase
+			window.getFromDB = async function(slug, resultId) {
+				const resultDiv = document.getElementById(resultId);
+				
+				resultDiv.innerHTML = '<div class="loading">📊 Cargando desde Supabase...</div>';
+				resultDiv.classList.add('show');
+				
+				try {
+					const response = await fetch(`/api/estacion-db/${slug}`);
+					const result = await response.json();
+					
+					if (response.ok && result.data) {
+						const data = result.data;
+						const createdAt = new Date(data.created_at).toLocaleString('es-ES');
+						
+						resultDiv.innerHTML = `
+							<div class="success db-result">
+								<div class="status">📊 Datos desde Supabase</div>
+								<div class="db-info">Guardado: ${createdAt}</div>
+								<pre>${JSON.stringify(data, null, 2)}</pre>
+							</div>
+						`;
+					} else {
+						resultDiv.innerHTML = `
+							<div class="error">
+								<div class="status">❌ No hay datos en DB para ${slug}</div>
+								<pre>${JSON.stringify(result, null, 2)}</pre>
+							</div>
+						`;
+					}
+				} catch (error) {
+					resultDiv.innerHTML = `
+						<div class="error">
+							<div class="status">❌ Error al obtener de DB</div>
+							<pre>${error.message}</pre>
+						</div>
+					`;
+				}
+			}
+
+			// Scrapear y guardar todas
+			window.testAllAndSave = async function() {
+				const endpoints = [
+					{ path: '/estacion/sierra-nevada', id: 'result-sierra-nevada' },
+					{ path: '/estacion/valdelinares', id: 'result-valdelinares' },
+					{ path: '/estacion/candanchu', id: 'result-candanchu' },
+					{ path: '/estacion/boi-taull', id: 'result-boi-taull' }
+				];
+
+				for (const endpoint of endpoints) {
+					await window.testAndSaveEndpoint(endpoint.path, endpoint.id);
+					await new Promise(resolve => setTimeout(resolve, 1000));
+				}
+			}
+
+			// Ver todas desde DB
+			window.getAllFromDB = async function() {
+				const resultDiv = document.getElementById('result-all-db');
+				
+				resultDiv.innerHTML = '<div class="loading">📊 Cargando todas las estaciones desde Supabase...</div>';
+				resultDiv.classList.add('show');
+				
+				try {
+					const slugs = 'sierra-nevada,valdelinares,candanchu,boi-taull';
+					const response = await fetch(`/api/estaciones-db?slugs=${slugs}`);
+					const result = await response.json();
+					
+					if (response.ok && result.data) {
+						resultDiv.innerHTML = `
+							<div class="success db-result">
+								<div class="status">📊 ${result.total} estaciones desde Supabase</div>
+								<pre>${JSON.stringify(result.data, null, 2)}</pre>
+							</div>
+						`;
+					} else {
+						resultDiv.innerHTML = `
+							<div class="error">
+								<div class="status">❌ Error al obtener estaciones</div>
+								<pre>${JSON.stringify(result, null, 2)}</pre>
+							</div>
+						`;
+					}
+				} catch (error) {
+					resultDiv.innerHTML = `
+						<div class="error">
+							<div class="status">❌ Error de red</div>
+							<pre>${error.message}</pre>
+						</div>
+					`;
+				}
+			}
+		</script>
+	</body>
+</html>
+
+<style is:global>
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: system-ui, -apple-system, sans-serif;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		min-height: 100vh;
+	}
+
+	main {
+		max-width: 1400px;
+		margin: 0 auto;
+		padding: 2rem;
+	}
+
+	.prueba-container {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	h1 {
+		color: white;
+		text-align: center;
+		margin: 0 0 0.5rem 0;
+		font-size: 2.5rem;
+		text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+	}
+
+	.subtitle {
+		color: rgba(255, 255, 255, 0.9);
+		text-align: center;
+		margin: 0 0 2rem 0;
+		font-size: 1.1rem;
+	}
+
+	.endpoints-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+		gap: 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.endpoint-card {
+		background: white;
+		border-radius: 16px;
+		padding: 1.5rem;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+		transition: transform 0.2s, box-shadow 0.2s;
+	}
+
+	.endpoint-card:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+	}
+
+	.endpoint-card h2 {
+		color: #333;
+		margin: 0 0 1rem 0;
+		font-size: 1.3rem;
+	}
+
+	.endpoint-url {
+		display: block;
+		background: #f5f5f5;
+		padding: 0.75rem 1rem;
+		border-radius: 8px;
+		font-family: 'Monaco', 'Courier New', monospace;
+		font-size: 0.85rem;
+		color: #667eea;
+		margin-bottom: 1rem;
+		word-break: break-all;
+	}
+
+	button {
+		width: 100%;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: white;
+		border: none;
+		padding: 0.875rem 1.5rem;
+		border-radius: 8px;
+		font-size: 1rem;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s;
+		box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+		margin-bottom: 0.5rem;
+	}
+
+	button:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+	}
+
+	button:active {
+		transform: translateY(0);
+	}
+
+	.secondary-btn {
+		background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+		box-shadow: 0 4px 12px rgba(17, 153, 142, 0.3);
+	}
+
+	.secondary-btn:hover {
+		box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4);
+	}
+
+	.result {
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.3s ease-out;
+		margin-top: 0;
+	}
+
+	.result.show {
+		max-height: 800px;
+		margin-top: 1rem;
+		overflow: auto;
+	}
+
+	.result pre {
+		background: #1e1e1e;
+		color: #d4d4d4;
+		padding: 1rem;
+		border-radius: 8px;
+		overflow-x: auto;
+		font-size: 0.85rem;
+		line-height: 1.5;
+		margin: 0.5rem 0 0 0;
+	}
+
+	.loading {
+		text-align: center;
+		padding: 1rem;
+		color: #667eea;
+		font-weight: 600;
+	}
+
+	.status {
+		font-weight: 600;
+		padding: 0.5rem;
+		border-radius: 6px;
+		margin-bottom: 0.5rem;
+	}
+
+	.success .status {
+		background: #d4edda;
+		color: #155724;
+	}
+
+	.error .status {
+		background: #f8d7da;
+		color: #721c24;
+	}
+
+	.db-result {
+		border-left: 4px solid #11998e;
+	}
+
+	.db-info {
+		font-size: 0.85rem;
+		color: #666;
+		padding: 0.5rem;
+		background: #f0f0f0;
+		border-radius: 4px;
+		margin-bottom: 0.5rem;
+	}
+
+	.general-section {
+		margin: 2rem 0;
+	}
+
+	.general-section h2 {
+		color: white;
+		text-align: center;
+		margin-bottom: 1rem;
+		font-size: 1.5rem;
+	}
+
+	.buttons-row {
+		display: flex;
+		gap: 1rem;
+		max-width: 800px;
+		margin: 0 auto 1rem;
+	}
+
+	.mass-btn {
+		flex: 1;
+		font-size: 1.1rem;
+		padding: 1rem 2rem;
+	}
+
+	.full-width {
+		max-width: 100%;
+		background: white;
+		border-radius: 16px;
+		padding: 1.5rem;
+	}
+
+	@media (max-width: 640px) {
+		main {
+			padding: 1rem;
+		}
+
+		h1 {
+			font-size: 1.75rem;
+		}
+
+		.subtitle {
+			font-size: 1rem;
+		}
+
+		.endpoints-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.endpoint-card {
+			padding: 1rem;
+		}
+
+		.endpoint-url {
+			font-size: 0.75rem;
+		}
+
+		.buttons-row {
+			flex-direction: column;
+		}
+	}
+</style>
