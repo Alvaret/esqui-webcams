@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <style>
+      .bt-bg { fill: #2d5a3d; }
+      .bt-text { fill: white; font-family: Arial, sans-serif; font-weight: bold; }
+      .bt-mountain { fill: #f0f0f0; }
+      .bt-accent { fill: #ff6b35; }
+    </style>
+  </defs>
+  
+  <!-- Fondo -->
+  <circle cx="100" cy="100" r="100" class="bt-bg"/>
+  
+  <!-- Montañas estilizadas -->
+  <polygon points="30,130 65,50 100,130" class="bt-mountain"/>
+  <polygon points="75,130 110,60 145,130" class="bt-mountain"/>
+  <polygon points="125,130 160,80 195,130" class="bt-accent"/>
+  
+  <!-- Texto -->
+  <text x="100" y="170" text-anchor="middle" font-size="15" class="bt-text">BOÍ TAÜLL</text>
+</svg>

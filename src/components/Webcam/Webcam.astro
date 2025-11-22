@@ -1,0 +1,45 @@
+---
+import './Webcam.css';
+
+interface Props {
+	nombre: string;
+	link: string;
+	descripcion?: string;
+	isVideo?: boolean;
+}
+
+const { nombre, link, descripcion, isVideo = false } = Astro.props;
+---
+
+<div class="webcam-item">
+	<div class="webcam-info">
+		<div class="webcam-nombre">{nombre}</div>
+		{descripcion && <div class="webcam-descripcion">{descripcion}</div>}
+	</div>
+	<div class="webcam-player">
+		{isVideo ? (
+			<video 
+				width="100%" 
+				height="300"
+				autoplay
+				muted
+				loop
+				playsinline
+				class="webcam-video"
+			>
+				<source src={link} type="video/mp4" />
+				Tu navegador no soporta el elemento de video.
+			</video>
+		) : (
+			<iframe 
+				src={link}
+				width="100%" 
+				height="300" 
+				frameborder="0" 
+				allow="autoplay; encrypted-media"
+				loading="lazy"
+			></iframe>
+		)}
+	</div>
+</div>
+

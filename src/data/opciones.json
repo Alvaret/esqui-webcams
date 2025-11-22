@@ -1,0 +1,83 @@
+{
+  "candanchu": {
+    "nombre": "Candanchú",
+    "urlFoto": "/logos/candanchu-logo.jpg",
+    "altitudMaxima": "2,260 m",
+    "altitudMinima": "1,520 m",
+    "remontes": "20+",
+    "pistas": "50+",
+    "sitioWeb": "https://www.candanchu.com",
+    "descripcion": "Estación de esquí ubicada en los Pirineos aragoneses",
+    "webcams": [
+      {
+        "nombre": "Tuca Blanca 1950m",
+        "link": "https://g0.ipcamlive.com/player/player.php?alias=677560e9d897d&skin=white&autoplay=1&mute=1&disableautofullscreen=1&disablezoombutton=1&disabletimelapseplayer=1&disablestorageplayer=1&disableplaybackspeedbutton=1&disablenavigation=1"
+      },
+      {
+        "nombre": "Pista Grande (Aralar) 1500m",
+        "link": "https://g0.ipcamlive.com/player/player.php?alias=67481cb23ff82&skin=white&autoplay=1&mute=1&disableautofullscreen=1&disablezoombutton=1&disabletimelapseplayer=1&disablestorageplayer=1&disableplaybackspeedbutton=1&disablenavigation=1"
+      }
+    ]
+  },
+  "sierra-nevada": {
+    "nombre": "Sierra Nevada",
+    "urlFoto": "/logos/sierra-nevada.svg",
+    "altitudMaxima": "3,398 m",
+    "altitudMinima": "2,100 m",
+    "remontes": "25+",
+    "pistas": "100+",
+    "sitioWeb": "https://www.cetursa.es",
+    "descripcion": "La estación más meridional de Europa ubicada en Granada",
+    "webcams": [
+      {
+        "nombre": "Zona Veleta | 3029 m",
+        "link": "https://sts064.feratel.co.at/streams/stsstore053/1/15112_6921b16d-9733Vid.mp4?dcsdesign=feratel4",
+        "isVideo": true
+      },
+      {
+        "nombre": "Zona Borreguiles | 2690 m",
+        "link": "https://sts110.feratel.co.at/streams/stsstore105/1/15111_6921b103-b27fVid.mp4?dcsdesign=feratel4",
+        "isVideo": true
+      }
+    ]
+  },
+  "valdelinares": {
+    "nombre": "Valdelinares",
+    "urlFoto": "/logos/valdelinares.svg",
+    "altitudMaxima": "2,160 m",
+    "altitudMinima": "1,600 m",
+    "remontes": "6+",
+    "pistas": "15+",
+    "sitioWeb": "https://www.valdelinares.es",
+    "descripcion": "Pequeña estación de esquí en el Maestrazgo, Teruel",
+    "webcams": [
+      {
+        "nombre": "Webcam General",
+        "link": "https://www.valdelinares.es/webcam",
+        "descripcion": "Vista general de la estación"
+      }
+    ]
+  },
+  "boi-taull": {
+    "nombre": "Boí Taüll",
+    "urlFoto": "/logos/boi-taull.svg",
+    "altitudMaxima": "2,751 m",
+    "altitudMinima": "1,770 m",
+    "remontes": "13+",
+    "pistas": "40+",
+    "sitioWeb": "https://www.boitaull.com",
+    "descripcion": "Estación de esquí en el Pirineo catalán, Lleida",
+    "webcams": [
+      {
+        "nombre": "Webcam Estany Gelat",
+        "link": "https://www.boitaull.com/webcam-estany-gelat",
+        "descripcion": "Vista desde Estany Gelat"
+      },
+      {
+        "nombre": "Webcam Artiga",
+        "link": "https://www.boitaull.com/webcam-artiga",
+        "descripcion": "Vista desde la zona de Artiga"
+      }
+    ]
+  }
+}

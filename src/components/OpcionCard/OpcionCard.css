@@ -1,0 +1,116 @@
+.opcion-card {
+	background: white;
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	text-decoration: none;
+	transition: all 0.3s ease;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	cursor: pointer;
+	background-size: cover;
+	background-position: center;
+	position: relative;
+	min-height: 250px;
+}
+
+.opcion-card:active {
+	transform: scale(0.98);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.opcion-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 100%);
+	z-index: 1;
+}
+
+.opcion-info {
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	flex: 1;
+	position: relative;
+	z-index: 2;
+}
+
+.opcion-nombre {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: white;
+	margin-bottom: 0.5rem;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.opcion-enlace {
+	font-size: 0.875rem;
+	color: white;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	width: fit-content;
+	background: rgba(102, 126, 234, 0.9);
+	padding: 0.5rem 1rem;
+	border-radius: 6px;
+	transition: all 0.3s ease;
+}
+
+.opcion-enlace::after {
+	content: '→';
+	transition: transform 0.3s ease;
+}
+
+.opcion-card:active .opcion-enlace::after {
+	transform: translateX(4px);
+}
+
+/* Estilos responsivos para tablets */
+@media (min-width: 640px) {
+	.opcion-card {
+		min-height: 300px;
+	}
+
+	.opcion-nombre {
+		font-size: 1.5rem;
+	}
+}
+
+/* Estilos responsivos para desktop */
+@media (min-width: 1024px) {
+	.opcion-card {
+		border-radius: 16px;
+		min-height: 350px;
+	}
+
+	.opcion-card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+	}
+
+	.opcion-card:hover .opcion-overlay {
+		background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%);
+	}
+
+	.opcion-card:active {
+		transform: scale(0.98);
+	}
+
+	.opcion-enlace:hover {
+		background: rgba(102, 126, 234, 1);
+		transform: translateX(4px);
+	}
+}
+
+/* Soporte para tema oscuro */
+@media (prefers-color-scheme: dark) {
+	.opcion-nombre {
+		color: #fff;
+	}
+}

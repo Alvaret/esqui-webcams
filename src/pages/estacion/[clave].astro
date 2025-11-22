@@ -1,0 +1,90 @@
+---
+import opciones from '../../data/opciones.json';
+import Webcam from '../../components/Webcam/Webcam.astro';
+
+export function getStaticPaths() {
+	return Object.keys(opciones).map((clave) => ({
+		params: { clave }
+	}));
+}
+
+interface Props {
+	params: {
+		clave: string;
+	};
+}
+
+const { clave } = Astro.params;
+const estacion = opciones[clave as keyof typeof opciones];
+
+if (!estacion) {
+	return Astro.redirect('/');
+}
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{estacion.nombre}</title>
+		<style is:global>
+			@import '../../styles/index.css';
+			@import '../../styles/estacion.css';
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header-estacion">
+				<a href="/" class="btn-volver">← Volver</a>
+				<h1>{estacion.nombre}</h1>
+				<p>{estacion.descripcion}</p>
+			</div>
+
+			{estacion.webcams && estacion.webcams.length > 0 && (
+				<div class="webcams-section">
+					<h2>Webcams en vivo</h2>
+					<div class="webcams-list">
+						{
+							estacion.webcams.map((webcam) => (
+								<Webcam 
+									nombre={webcam.nombre}
+									link={webcam.link}
+									isVideo={webcam.isVideo || false}
+								/>
+							))
+						}
+					</div>
+				</div>
+			)}
+
+			<div class="info-estacion">
+				<h2>Información de la estación</h2>
+				<div class="info-grid">
+					<div class="info-item">
+						<span class="info-label">Altitud máxima</span>
+						<span class="info-value">{estacion.altitudMaxima}</span>
+					</div>
+					<div class="info-item">
+						<span class="info-label">Altitud mínima</span>
+						<span class="info-value">{estacion.altitudMinima}</span>
+					</div>
+					<div class="info-item">
+						<span class="info-label">Remontes</span>
+						<span class="info-value">{estacion.remontes}</span>
+					</div>
+					<div class="info-item">
+						<span class="info-label">Pistas</span>
+						<span class="info-value">{estacion.pistas}</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="acciones">
+				<a href={estacion.sitioWeb} target="_blank" class="btn btn-primary">Ir al sitio web</a>
+				<a href="/" class="btn btn-secondary">Ver otras estaciones</a>
+			</div>
+		</div>
+	</body>
+</html>

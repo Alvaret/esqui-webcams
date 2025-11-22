@@ -1,0 +1,18 @@
+---
+import './OpcionCard.css';
+
+interface Props {
+	clave: string;
+	nombre: string;
+	urlFoto: string;
+}
+
+const { clave, nombre, urlFoto } = Astro.props;
+---
+
+<a href={`/estacion/${clave}`} class="opcion-card" style={`background-image: url('${urlFoto}')`}>
+	<div class="opcion-overlay"></div>
+	<div class="opcion-info">
+		<div class="opcion-nombre">{nombre}</div>
+	</div>
+</a>

@@ -1,0 +1,98 @@
+.webcam-item {
+	background: rgba(255, 255, 255, 0.95);
+	padding: 1rem;
+	border-radius: 12px;
+	margin-bottom: 1rem;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	transition: all 0.3s ease;
+}
+
+.webcam-item:active {
+	transform: scale(0.98);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.webcam-info {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 1rem;
+}
+
+.webcam-nombre {
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: #333;
+	margin-bottom: 0.5rem;
+}
+
+.webcam-descripcion {
+	font-size: 0.875rem;
+	color: #666;
+}
+
+.webcam-player {
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.webcam-player iframe {
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+.webcam-video {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Estilos responsivos para tablets */
+@media (min-width: 640px) {
+	.webcam-item {
+		padding: 1.5rem;
+		border-radius: 16px;
+	}
+
+	.webcam-nombre {
+		font-size: 1.25rem;
+	}
+
+	.webcam-player {
+		height: 400px;
+	}
+}
+
+/* Estilos responsivos para desktop */
+@media (min-width: 1024px) {
+	.webcam-item:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+	}
+
+	.webcam-player:hover {
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+	}
+}
+
+/* Soporte para tema oscuro */
+@media (prefers-color-scheme: dark) {
+	.webcam-item {
+		background: rgba(255, 255, 255, 0.1);
+		border: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.webcam-nombre {
+		color: #f0f0f0;
+	}
+
+	.webcam-descripcion {
+		color: rgba(255, 255, 255, 0.7);
+	}
+}
