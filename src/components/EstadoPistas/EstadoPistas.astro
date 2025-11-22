@@ -20,7 +20,7 @@ const { estacion } = Astro.props;
 			const container = document.querySelector(`[data-estacion="${estacion}"]`);
 			if (!container) return;
 
-			const response = await fetch(`/api/pistas?estacion=${estacion}`);
+			const response = await fetch(`/api/pistas.js?estacion=${estacion}`);
 			const data = await response.json();
 
 			if (!response.ok) {
