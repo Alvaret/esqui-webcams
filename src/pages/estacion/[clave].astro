@@ -1,7 +1,6 @@
 ---
 import opciones from '../../data/opciones.json';
 import Webcam from '../../components/Webcam/Webcam.astro';
-import EstadoPistas from '../../components/EstadoPistas/EstadoPistas.astro';
 import FloatingCredit from '../../components/FloatingCredit/FloatingCredit.astro';
 
 export function getStaticPaths() {
@@ -63,8 +62,6 @@ if (!estacion) {
 					</div>
 				</div>
 			)}
-
-			<EstadoPistas estacion={clave} />
 
 			<div class="info-estacion">
 				<h2>Información de la estación</h2>
