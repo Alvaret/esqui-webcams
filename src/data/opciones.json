@@ -48,82 +48,98 @@
         {
     "nombre": "Borreguiles - Jardín Alpino",
     "author": "© feratel.com",
-    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/4.jpeg?design=v5"
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/4.jpeg?design=v5",
+        "isImage": true
   },
   {
     "nombre": "Borreguiles - Vista General",
     "author": "© feratel.com",
-    "link": "https://webtvpicture.feratel.com/picture/35/15111.jpeg?design=v5"
+    "link": "https://webtvpicture.feratel.com/picture/35/15111.jpeg?design=v5",
+        "isImage": true
   },
   {
     "nombre": "Granados - Morillas",
     "author": "© feratel.com",
-    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/2.jpeg?design=v5"
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/2.jpeg?design=v5",
+        "isImage": true
   },
   {
     "nombre": "La Visera - Radiotelescopio",
     "author": "© feratel.com",
-    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/0.jpeg?design=v5"
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/0.jpeg?design=v5",
+        "isImage": true
   },
   {
     "nombre": "Morillas - Rebeco",
     "author": "© feratel.com",
-    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/3.jpeg?design=v5"
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/3.jpeg?design=v5",
+        "isImage": true
   },
   {
     "nombre": "Pico Veleta",
     "author": "© feratel.com",
-    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/5.jpeg?design=v5"
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/5.jpeg?design=v5",
+        "isImage": true
   },
   {
     "nombre": "Pista Zorro - Panorámica Borreguiles",
     "author": "© feratel.com",
-    "link": "https://webtvhotspot.feratel.com/hotspot/35/15112/1.jpeg?design=v5"
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15112/1.jpeg?design=v5",
+        "isImage": true
   },
   {
     "nombre": "Tq A. Zayas - Tubo del Veleta",
     "author": "© feratel.com",
-    "link": "https://webtvhotspot.feratel.com/hotspot/35/15112/2.jpeg?design=v5"
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15112/2.jpeg?design=v5",
+        "isImage": true
   },
   {
     "nombre": "Ts Stadium - Estación Superior",
     "author": "© feratel.com",
-    "link": "https://webtvpicture.feratel.com/picture/35/15112.jpeg?design=v5"
+    "link": "https://webtvpicture.feratel.com/picture/35/15112.jpeg?design=v5",
+        "isImage": true
   },
   {
     "nombre": "El Rio - Las Negras",
     "author": "© sierranevadaeee.es",
-    "link": "https://sierranevadaeee.es/sierranevadaeee.com/camaramelia/snap_c1.jpg?intmp=1764511527"
+    "link": "https://sierranevadaeee.es/sierranevadaeee.com/camaramelia/snap_c1.jpg?intmp=1764511527",
+        "isImage": true
   },
   {
     "nombre": "Pradollano",
     "author": "© sierranevada.es",
-    "link": "https://sierranevada.es/_extras/fotos_camaras/pradollano/snap_c1.jpg?IPIGNORE=TRUE&intmp=1764511527"
+    "link": "https://sierranevada.es/_extras/fotos_camaras/pradollano/snap_c1.jpg?IPIGNORE=TRUE&intmp=1764511527",
+        "isImage": true
   },
   {
     "nombre": "Mirlo Blanco - Cabaña",
     "author": "© feratel.com",
-    "link": "https://webtvhotspot.feratel.com/hotspot/35/15114/3.jpeg?design=v5"
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15114/3.jpeg?design=v5",
+        "isImage": true
   },
   {
     "nombre": "Mirlo Blanco - Trineo Ruso",
     "author": "© feratel.com",
-    "link": "https://webtvhotspot.feratel.com/hotspot/35/15114/1.jpeg?design=v5"
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15114/1.jpeg?design=v5",
+        "isImage": true
   },
   {
     "nombre": "Mirlo Blanco - Zona de actividades",
     "author": "© feratel.com",
-    "link": "https://webtvhotspot.feratel.com/hotspot/35/15114/0.jpeg?design=v5"
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15114/0.jpeg?design=v5",
+        "isImage": true
   },
   {
     "nombre": "Mirlo Blanco - Zona de trineos",
     "author": "© feratel.com",
-    "link": "https://webtvhotspot.feratel.com/hotspot/35/15114/2.jpeg?design=v5"
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15114/2.jpeg?design=v5",
+        "isImage": true
   },
   {
     "nombre": "Mirlo Blanco - Pista de trineos",
     "author": "© sierranevada.es",
-    "link": "https://sierranevada.es/_extras/fotos_camaras/mobotix3/mirloblancogr.jpg?IPIGNORE=TRUE&intmp=1764511527"
+    "link": "https://sierranevada.es/_extras/fotos_camaras/mobotix3/mirloblancogr.jpg?IPIGNORE=TRUE&intmp=1764511527",
+        "isImage": true
   }
     ]
   },
@@ -168,27 +184,32 @@
       {
         "nombre": "Cerbí de Durro",
         "author": "© feratel.com",
-        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/3.jpeg?design=v5"
+        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/3.jpeg?design=v5",
+        "isImage": true
       },
       {
         "nombre": "Debutantes - Cinta Irgo",
         "author": "© feratel.com",
-        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/0.jpeg?design=v5"
+        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/0.jpeg?design=v5",
+        "isImage": true
       },
       {
         "nombre": "Ts Junior - Vaques",
         "author": "© feratel.com",
-        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/2.jpeg?design=v5"
+        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/2.jpeg?design=v5",
+        "isImage": true
       },
       {
         "nombre": "Ts Mulleres",
         "author": "© feratel.com",
-        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/1.jpeg?design=v5"
+        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/1.jpeg?design=v5",
+        "isImage": true
       },
       {
         "nombre": "Ts Resort Express - Estación Superior",
         "author": "© turismefgc.cat",
-        "link": "https://media.turismefgc.cat/fgc/boitaull/boitaull_capexpres.jpg?intmp=1764510841"
+        "link": "https://media.turismefgc.cat/fgc/boitaull/boitaull_capexpres.jpg?intmp=1764510841",
+        "isImage": true
       }
     ]
   },
