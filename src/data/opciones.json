@@ -196,34 +196,9 @@
         "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/1.jpeg?design=v5"
       },
       {
-        "nombre": "Cap de Mulleres",
-        "author": "© projecte4estacions.com",
-        "link": "https://www.infonieve.es/webcams/boitaull-mulleres_2025-11-30-14-30-342.jpg"
-      },
-      {
         "nombre": "Ts Resort Express - Estación Superior",
         "author": "© turismefgc.cat",
         "link": "https://media.turismefgc.cat/fgc/boitaull/boitaull_capexpres.jpg?intmp=1764510841"
-      },
-      {
-        "nombre": "Ts Resort Express - Panorámica",
-        "author": "© projecte4estacions.com",
-        "link": "https://www.infonieve.es/webcams/boitaull-tsexpress_2025-11-30-14-30-179.jpg"
-      },
-      {
-        "nombre": "Pla de Vaques",
-        "author": "© 3cat.cat",
-        "link": "https://www.infonieve.es/webcams/boitaull-tv3_2025-11-30-14-30-161.jpg"
-      },
-      {
-        "nombre": "Boí (1.270m.)",
-        "author": "© projecte4estacions.com",
-        "link": "https://www.infonieve.es/webcams/boitaull-boi_2025-11-30-14-30-240.jpg"
-      },
-      {
-        "nombre": "Taüll (1.550m.)",
-        "author": "© projecte4estacions.com",
-        "link": "https://www.infonieve.es/webcams/boitaull-taull_2025-11-30-14-30-378.jpg"
       }
     ]
   },
@@ -260,10 +235,6 @@
   {
     "nombre": "Prado Blanco",
     "link": "https://g0.ipcamlive.com/player/player.php?alias=679383335f3dd&skin=white&autoplay=1&mute=1&disableautofullscreen=1&disablezoombutton=1&disabletimelapseplayer=1&disablestorageplayer=1&disableplaybackspeedbutton=1&disablenavigation=1"
-  },
-  {
-    "nombre": "Aguila",
-    "link": "https://g0.ipcamlive.com/player/player.php?alias=679e76a798b7c&skin=white&autoplay=1&mute=1&disableautofullscreen=1&disablezoombutton=1&disabletimelapseplayer=1&disablestorageplayer=1&disableplaybackspeedbutton=1&disablenavigation=1"
   },
   {
     "nombre": "Aguila",
