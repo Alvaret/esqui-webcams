@@ -161,12 +161,14 @@
         {
         "nombre": "Bujarones - Ts Valdelinares",
         "author": "© feratel.com",
-        "link": "https://webtvhotspot.feratel.com/hotspot/35/15070/1.jpeg?design=v5"
+        "link": "https://webtvhotspot.feratel.com/hotspot/35/15070/1.jpeg?design=v5",
+        "isImage": true
       },
       {
         "nombre": "Central - Snowpark Villarejo",
         "author": "© feratel.com",
-        "link": "https://webtvhotspot.feratel.com/hotspot/35/15070/0.jpeg?design=v5"
+        "link": "https://webtvhotspot.feratel.com/hotspot/35/15070/0.jpeg?design=v5",
+        "isImage": true
       }
     ]
   },
