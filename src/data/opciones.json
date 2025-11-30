@@ -44,7 +44,97 @@
         "link": "https://recursos.sierranevada.es/_extras/fotos_camaras/pradollano/snap_c1.jpg?timestamp=638994149948960000&IPIGNORE=TRUE",
         "descripcion": "Vista desde Pradollano",
         "isImage": true
-      }
+      },
+        {
+    "nombre": "Borreguiles - Jardín Alpino",
+    "author": "© feratel.com",
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/4.jpeg?design=v5"
+  },
+  {
+    "nombre": "Borreguiles - Vista General",
+    "author": "© feratel.com",
+    "link": "https://webtvpicture.feratel.com/picture/35/15111.jpeg?design=v5"
+  },
+  {
+    "nombre": "Granados - Morillas",
+    "author": "© feratel.com",
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/2.jpeg?design=v5"
+  },
+  {
+    "nombre": "La Visera - Radiotelescopio",
+    "author": "© feratel.com",
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/0.jpeg?design=v5"
+  },
+  {
+    "nombre": "Morillas - Rebeco",
+    "author": "© feratel.com",
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/3.jpeg?design=v5"
+  },
+  {
+    "nombre": "Pico Veleta",
+    "author": "© feratel.com",
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15111/5.jpeg?design=v5"
+  },
+  {
+    "nombre": "Pista Zorro - Panorámica Borreguiles",
+    "author": "© feratel.com",
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15112/1.jpeg?design=v5"
+  },
+  {
+    "nombre": "Tq A. Zayas - Tubo del Veleta",
+    "author": "© feratel.com",
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15112/2.jpeg?design=v5"
+  },
+  {
+    "nombre": "Ts Stadium - Estación Superior",
+    "author": "© feratel.com",
+    "link": "https://webtvpicture.feratel.com/picture/35/15112.jpeg?design=v5"
+  },
+  {
+    "nombre": "Borreguiles - Panorámica",
+    "author": "© feratel.com",
+    "link": "https://www.infonieve.es/webcams/sierranevada-borreguiles-panoramica_2025-11-30-15-01-105.jpg"
+  },
+  {
+    "nombre": "El Rio - Las Negras",
+    "author": "© sierranevadaeee.es",
+    "link": "https://sierranevadaeee.es/sierranevadaeee.com/camaramelia/snap_c1.jpg?intmp=1764511527"
+  },
+  {
+    "nombre": "Pradollano",
+    "author": "© sierranevada.es",
+    "link": "https://sierranevada.es/_extras/fotos_camaras/pradollano/snap_c1.jpg?IPIGNORE=TRUE&intmp=1764511527"
+  },
+  {
+    "nombre": "Ts Veleta - Estación Superior",
+    "author": "© feratel.com",
+    "link": "https://www.infonieve.es/webcams/sierranevada-tsveleta-superior_2025-11-30-15-01-748.jpg"
+  },
+  {
+    "nombre": "Mirlo Blanco - Cabaña",
+    "author": "© feratel.com",
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15114/3.jpeg?design=v5"
+  },
+  {
+    "nombre": "Mirlo Blanco - Trineo Ruso",
+    "author": "© feratel.com",
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15114/1.jpeg?design=v5"
+  },
+  {
+    "nombre": "Mirlo Blanco - Zona de actividades",
+    "author": "© feratel.com",
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15114/0.jpeg?design=v5"
+  },
+  {
+    "nombre": "Mirlo Blanco - Zona de trineos",
+    "author": "© feratel.com",
+    "link": "https://webtvhotspot.feratel.com/hotspot/35/15114/2.jpeg?design=v5"
+  },
+  {
+    "nombre": "Mirlo Blanco - Pista de trineos",
+    "author": "© sierranevada.es",
+    "link": "https://sierranevada.es/_extras/fotos_camaras/mobotix3/mirloblancogr.jpg?IPIGNORE=TRUE&intmp=1764511527"
+  }
     ]
   },
   "valdelinares": {
@@ -61,6 +151,16 @@
         "nombre": "Cota 1.900 | 1900 m",
         "link": "https://webtvfc.feratel.com/webtv/?design=v5&pg=DA7D2F22-8600-464D-9D4F-CDB04014A6C5&cam=15070&lg=es&autoplay=1&sound=muted&muted=1&mute=1&playsinline=1&c45=1",
         "isFeratel": true
+      },
+        {
+        "nombre": "Bujarones - Ts Valdelinares",
+        "author": "© feratel.com",
+        "link": "https://webtvhotspot.feratel.com/hotspot/35/15070/1.jpeg?design=v5"
+      },
+      {
+        "nombre": "Central - Snowpark Villarejo",
+        "author": "© feratel.com",
+        "link": "https://webtvhotspot.feratel.com/hotspot/35/15070/0.jpeg?design=v5"
       }
     ]
   },
@@ -74,16 +174,101 @@
     "sitioWeb": "https://www.boitaull.com",
     "descripcion": "Estación de esquí en el Pirineo catalán, Lleida",
     "webcams": [
+
       {
-        "nombre": "Webcam Estany Gelat",
-        "link": "https://www.boitaull.com/webcam-estany-gelat",
-        "descripcion": "Vista desde Estany Gelat"
+        "nombre": "Cerbí de Durro",
+        "author": "© feratel.com",
+        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/3.jpeg?design=v5"
       },
       {
-        "nombre": "Webcam Artiga",
-        "link": "https://www.boitaull.com/webcam-artiga",
-        "descripcion": "Vista desde la zona de Artiga"
+        "nombre": "Debutantes - Cinta Irgo",
+        "author": "© feratel.com",
+        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/0.jpeg?design=v5"
+      },
+      {
+        "nombre": "Ts Junior - Vaques",
+        "author": "© feratel.com",
+        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/2.jpeg?design=v5"
+      },
+      {
+        "nombre": "Ts Mulleres",
+        "author": "© feratel.com",
+        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/1.jpeg?design=v5"
+      },
+      {
+        "nombre": "Cap de Mulleres",
+        "author": "© projecte4estacions.com",
+        "link": "https://www.infonieve.es/webcams/boitaull-mulleres_2025-11-30-14-30-342.jpg"
+      },
+      {
+        "nombre": "Ts Resort Express - Estación Superior",
+        "author": "© turismefgc.cat",
+        "link": "https://media.turismefgc.cat/fgc/boitaull/boitaull_capexpres.jpg?intmp=1764510841"
+      },
+      {
+        "nombre": "Ts Resort Express - Panorámica",
+        "author": "© projecte4estacions.com",
+        "link": "https://www.infonieve.es/webcams/boitaull-tsexpress_2025-11-30-14-30-179.jpg"
+      },
+      {
+        "nombre": "Pla de Vaques",
+        "author": "© 3cat.cat",
+        "link": "https://www.infonieve.es/webcams/boitaull-tv3_2025-11-30-14-30-161.jpg"
+      },
+      {
+        "nombre": "Boí (1.270m.)",
+        "author": "© projecte4estacions.com",
+        "link": "https://www.infonieve.es/webcams/boitaull-boi_2025-11-30-14-30-240.jpg"
+      },
+      {
+        "nombre": "Taüll (1.550m.)",
+        "author": "© projecte4estacions.com",
+        "link": "https://www.infonieve.es/webcams/boitaull-taull_2025-11-30-14-30-378.jpg"
       }
     ]
+  },
+  "astun": {
+    "nombre": "Astún",
+    "urlFoto": "/logos/astun.svg",
+    "altitudMaxima": "2,300 m",
+    "altitudMinima": "1,650 m",
+    "remontes": "12+",
+    "pistas": "40+",
+    "sitioWeb": "https://www.aramon.com/es/estaciones/astun",
+    "descripcion": "Estación de esquí en los Pirineos aragoneses, parte del grupo Aramón",
+    "webcams": [
+  {
+    "nombre": "Truchas",
+    "link": "https://g0.ipcamlive.com/player/player.php?alias=679382ecb9374&skin=white&autoplay=1&mute=1&disableautofullscreen=1&disablezoombutton=1&disabletimelapseplayer=1&disablestorageplayer=1&disableplaybackspeedbutton=1&disablenavigation=1"
+  },
+  {
+    "nombre": "Ibones",
+    "link": "https://g0.ipcamlive.com/player/player.php?alias=67a0c2da05960&skin=white&autoplay=1&mute=1&disableautofullscreen=1&disablezoombutton=1&disabletimelapseplayer=1&disablestorageplayer=1&disableplaybackspeedbutton=1&disablenavigation=1"
+  },
+  {
+    "nombre": "Base Estacion",
+    "link": "https://g0.ipcamlive.com/player/player.php?alias=6787abea8545e&skin=white&autoplay=1&mute=1&disableautofullscreen=1&disablezoombutton=1&disabletimelapseplayer=1&disablestorageplayer=1&disableplaybackspeedbutton=1&disablenavigation=1"
+  },
+  {
+    "nombre": "Sector Raca",
+    "link": "https://g0.ipcamlive.com/player/player.php?alias=67a34421f219f&skin=white&autoplay=1&mute=1&disableautofullscreen=1&disablezoombutton=1&disableframecapture=1&disabletimelapseplayer=1&disablestorageplayer=1&disabledownloadbutton=1&disableplaybackspeedbutton=1&disablenavigation=1"
+  },
+  {
+    "nombre": "Cafeteria Sarrios",
+    "link": "https://g0.ipcamlive.com/player/player.php?alias=67938462ee074&skin=white&autoplay=1&mute=1&disableautofullscreen=1&disablezoombutton=1&disabletimelapseplayer=1&disablestorageplayer=1&disableplaybackspeedbutton=1&disablenavigation=1"
+  },
+  {
+    "nombre": "Prado Blanco",
+    "link": "https://g0.ipcamlive.com/player/player.php?alias=679383335f3dd&skin=white&autoplay=1&mute=1&disableautofullscreen=1&disablezoombutton=1&disabletimelapseplayer=1&disablestorageplayer=1&disableplaybackspeedbutton=1&disablenavigation=1"
+  },
+  {
+    "nombre": "Aguila",
+    "link": "https://g0.ipcamlive.com/player/player.php?alias=679e76a798b7c&skin=white&autoplay=1&mute=1&disableautofullscreen=1&disablezoombutton=1&disabletimelapseplayer=1&disablestorageplayer=1&disableplaybackspeedbutton=1&disablenavigation=1"
+  },
+  {
+    "nombre": "Aguila",
+    "link": "https://g0.ipcamlive.com/player/player.php?alias=679e76a798b7c&skin=white&autoplay=1&mute=1&disableautofullscreen=1&disablezoombutton=1&disabletimelapseplayer=1&disablestorageplayer=1&disableplaybackspeedbutton=1&disablenavigation=1"
+  }
+]
   }
 }
