@@ -139,7 +139,7 @@
   },
   "valdelinares": {
     "nombre": "Valdelinares",
-    "urlFoto": "/logos/valdelinares.svg",
+    "urlFoto": "/logos/valdelinares.png",
     "altitudMaxima": "2,160 m",
     "altitudMinima": "1,600 m",
     "remontes": "6+",
@@ -166,7 +166,7 @@
   },
   "boi-taull": {
     "nombre": "Boí Taüll",
-    "urlFoto": "/logos/boi-taull.svg",
+    "urlFoto": "/logos/boi-taull.jpg",
     "altitudMaxima": "2,751 m",
     "altitudMinima": "1,770 m",
     "remontes": "13+",
@@ -229,7 +229,7 @@
   },
   "astun": {
     "nombre": "Astún",
-    "urlFoto": "/logos/astun.svg",
+    "urlFoto": "/logos/astun.jpg",
     "altitudMaxima": "2,300 m",
     "altitudMinima": "1,650 m",
     "remontes": "12+",
