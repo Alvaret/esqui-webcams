@@ -15,8 +15,11 @@ const { nombre, link, descripcion, isVideo = false, isFeratel = false, isImage =
 
 <div class="webcam-item">
 	<div class="webcam-info">
-		<div class="webcam-nombre">{nombre}</div>
-		{descripcion && <div class="webcam-descripcion">{descripcion}</div>}
+		<div class="webcam-title-row">
+			<span class="webcam-live-mark" aria-hidden="true"></span>
+			<h3 class="webcam-nombre">{nombre}</h3>
+		</div>
+		{descripcion && <p class="webcam-descripcion">{descripcion}</p>}
 	</div>
 	<div class="webcam-player">
 		{isFeratel ? (
@@ -51,11 +54,11 @@ const { nombre, link, descripcion, isVideo = false, isFeratel = false, isImage =
 			/>
 		) : (
 			<iframe 
+				title={nombre}
 				src={link}
-				width="100%" 
-				height="300" 
-				frameborder="0" 
-				allow="autoplay; encrypted-media"
+				class="webcam-iframe"
+				allow="autoplay; fullscreen; encrypted-media"
+				allowfullscreen
 				loading="lazy"
 			></iframe>
 		)}

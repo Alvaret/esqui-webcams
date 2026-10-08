@@ -5,14 +5,24 @@ interface Props {
 	clave: string;
 	nombre: string;
 	urlFoto: string;
+	indice: number;
+	webcams: number;
+	altitudMinima: string;
+	altitudMaxima: string;
 }
 
-const { clave, nombre, urlFoto } = Astro.props;
+const { clave, nombre, urlFoto, indice, webcams, altitudMinima, altitudMaxima } = Astro.props;
+const nombreNormalizado = nombre.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 ---
 
-<a href={`/estacion/${clave}`} class="opcion-card" style={`background-image: url('${urlFoto}')`}>
-	<div class="opcion-overlay"></div>
-	<div class="opcion-info">
-		<div class="opcion-nombre">{nombre}</div>
-	</div>
+<a href={`/estacion/${clave}`} class="station-card" data-station-card data-name={nombreNormalizado}>
+	<span class="station-brand-plate">
+		<img src={urlFoto} alt="" class="station-logo" loading="lazy" />
+	</span>
+	<span class="station-card-main">
+		<span class="station-card-kicker">ESTACIÓN <span>{String(indice).padStart(2, '0')}</span></span>
+		<strong class="station-card-name">{nombre}</strong>
+		<span class="station-card-meta">{altitudMinima}—{altitudMaxima} <span aria-hidden="true">·</span> {webcams} cámaras</span>
+		<span class="station-card-link">VER CÁMARAS <span aria-hidden="true">↗</span></span>
+	</span>
 </a>

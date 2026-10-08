@@ -1,4 +1,4 @@
-import { a as obtenerUltimasEstaciones, b as obtenerEstaciones } from '../../chunks/supabase_DDG5FYTT.mjs';
+import { a as obtenerUltimasEstaciones, b as obtenerEstaciones } from '../../chunks/supabase_BYvvEQHG.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const prerender = false;

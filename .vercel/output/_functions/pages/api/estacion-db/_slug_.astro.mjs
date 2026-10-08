@@ -1,4 +1,4 @@
-import { o as obtenerEstacionPorSlug } from '../../../chunks/supabase_DDG5FYTT.mjs';
+import { o as obtenerEstacionPorSlug } from '../../../chunks/supabase_BYvvEQHG.mjs';
 export { renderers } from '../../../renderers.mjs';
 
 const prerender = false;

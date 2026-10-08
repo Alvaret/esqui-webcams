@@ -1,4 +1,4 @@
-import { g as guardarEstacion } from '../../chunks/supabase_DDG5FYTT.mjs';
+import { g as guardarEstacion } from '../../chunks/supabase_BYvvEQHG.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const prerender = false;

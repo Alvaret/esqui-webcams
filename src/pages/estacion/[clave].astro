@@ -38,21 +38,43 @@ try {
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{estacion.nombre}</title>
+		<title>{estacion.nombre} | PLWinterCam</title>
+		<meta name="description" content={`Cámaras en directo e información de ${estacion.nombre}.`} />
+		<meta name="theme-color" content="#153d35" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-title" content="PLWinterCam" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<link rel="manifest" href="/manifest.webmanifest" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/icons/plwintercam-180.png" />
 		<style is:global>
 			@import '../../styles/index.css';
 			@import '../../styles/estacion.css';
 		</style>
 	</head>
-	<body>
-		<div class="container">
-			<div class="header-estacion">
-				<a href="/" class="btn-volver">← Volver</a>
-				<h1>{estacion.nombre}</h1>
-				<p>{estacion.descripcion}</p>
+	<body class="page-station">
+		<header class="site-header">
+			<div class="site-header-inner">
+				<a class="brand" href="/" aria-label="PLWinterCam, inicio">
+					<span class="brand-mark" aria-hidden="true">P</span>
+					<span class="brand-name">PLWinterCam</span>
+				</a>
+				<a href="/" class="station-back"><span aria-hidden="true">←</span> ESTACIONES</a>
 			</div>
+		</header>
+
+		<main class="container station-container">
+			<header class="station-heading">
+				<p class="eyebrow"><span class="eyebrow-rule"></span>ESTACIÓN DE MONTAÑA <span class="eyebrow-divider">/</span> PIRINEOS</p>
+				<h1>{estacion.nombre}</h1>
+				<p class="station-description">{estacion.descripcion}</p>
+				<div class="station-heading-meta">
+					<span><span class="signal-dot"></span> {estacion.webcams?.length ?? 0} CÁMARAS</span>
+					<span>{estacion.altitudMinima}—{estacion.altitudMaxima}</span>
+				</div>
+			</header>
 
 			{datosAPI ? (
 				<div class="datos-tiempo-real">
@@ -61,17 +83,24 @@ try {
 			) : (
 				<div class="datos-tiempo-real">
 					<div class="no-data-message">
-						<div class="icono-alerta">⚠️</div>
-						<h3>No hay datos disponibles</h3>
-						<p>Aún no se han cargado datos para esta estación.</p>
-						<p class="hint">Los administradores pueden cargar datos desde el panel de administración.</p>
+						<span class="no-data-mark" aria-hidden="true">i</span>
+						<div>
+							<h3>Parte de nieve no disponible</h3>
+							<p>Consulta las cámaras para ver las condiciones actuales.</p>
+						</div>
 					</div>
 				</div>
 			)}
 
 			{estacion.webcams && estacion.webcams.length > 0 && (
 				<div class="webcams-section">
-					<h2>Webcams en vivo</h2>
+					<div class="section-heading">
+						<div>
+							<p class="section-kicker">IMAGEN ACTUAL</p>
+							<h2>Cámaras</h2>
+						</div>
+						<span class="section-count">{String(estacion.webcams.length).padStart(2, '0')} VISTAS</span>
+					</div>
 					<div class="webcams-list">
 						{
 							estacion.webcams.map((webcam: any) => (
@@ -90,7 +119,12 @@ try {
 			)}
 
 			<div class="info-estacion">
-				<h2>Información de la estación</h2>
+				<div class="section-heading">
+					<div>
+						<p class="section-kicker">DATOS DE MONTAÑA</p>
+						<h2>La estación</h2>
+					</div>
+				</div>
 				<div class="info-grid">
 					<div class="info-item">
 						<span class="info-label">Altitud máxima</span>
@@ -112,11 +146,15 @@ try {
 			</div>
 
 			<div class="acciones">
-				<a href={estacion.sitioWeb} target="_blank" class="btn btn-primary">Ir al sitio web</a>
-				<a href="/" class="btn btn-secondary">Ver otras estaciones</a>
+				<a href={estacion.sitioWeb} target="_blank" rel="noopener noreferrer" class="btn btn-primary">Web oficial <span aria-hidden="true">↗</span></a>
+				<a href="/" class="btn btn-secondary">Todas las estaciones <span aria-hidden="true">→</span></a>
 			</div>
-		</div>
+		</main>
 
 		<FloatingCredit />
+
+		<script>
+			import '../../scripts/register-sw';
+		</script>
 	</body>
 </html>

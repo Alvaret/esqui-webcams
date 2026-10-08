@@ -1,10 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = undefined                                   ;
-const supabaseAnonKey = undefined                                        ;
-{
-  throw new Error("Faltan las credenciales de Supabase en las variables de entorno");
-}
+const supabaseUrl = "https://ilnqnxrrxzdjpuzegron.supabase.co";
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlsbnFueHJyeHpkanB1emVncm9uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM4MjczMjksImV4cCI6MjA3OTQwMzMyOX0.uOEWLKxUA8cgfOIaOFX2m1kZ1R0qLVBJZC5b0K_rF1o";
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 async function guardarEstacion(estacion) {
   const { data, error } = await supabase.from("estaciones").insert([estacion]).select();

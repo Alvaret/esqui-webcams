@@ -65,53 +65,44 @@ const fechaActualizacion = data.timestamp
 
 <style>
   .datos {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 100%;
+    border-top: 1px solid var(--line);
   }
 
   .timestamp-header {
+    grid-column: 1 / -1;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 1.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    color: white;
-    font-size: 0.95rem;
-    font-weight: 500;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    gap: 8px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 600;
   }
 
   .icono-reloj {
-    font-size: 1.2rem;
+    color: var(--coral);
+    font-size: 13px;
   }
 
   .dato-card {
     display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 2rem;
-    width: 100%;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    min-width: 0;
+    flex-direction: column;
+    gap: 4px;
+    padding: 11px 7px 11px 0;
+    border-right: 1px solid var(--line);
   }
 
-  .dato-card:hover {
-    transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+  .dato-card:last-child {
+    border-right: 0;
   }
 
   .icono {
-    font-size: 3rem;
+    font-size: 14px;
     line-height: 1;
     flex-shrink: 0;
   }
@@ -119,66 +110,49 @@ const fechaActualizacion = data.timestamp
   .contenido {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    flex: 1;
+    gap: 4px;
   }
 
   .label {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 700;
   }
 
   .valor {
-    font-size: 2rem;
-    color: white;
-    font-weight: 700;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: var(--ink);
+    font-family: var(--display);
+    font-size: 19px;
+    font-weight: 600;
+    line-height: 1.05;
+    overflow-wrap: anywhere;
   }
 
   .error-message {
-    padding: 2rem;
+    padding: 12px;
     width: 100%;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    text-align: center;
+    border-left: 3px solid var(--coral);
+    background: var(--paper-deep);
   }
 
   .error-message p {
     margin: 0;
-    color: white;
+    color: var(--ink);
     font-weight: 600;
-    font-size: 1.5rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 12px;
   }
 
-  @media (max-width: 640px) {
-    .dato-card {
-      padding: 1.5rem;
-      flex-direction: column;
-      text-align: center;
+  @media (min-width: 680px) {
+    .datos {
+      max-width: 680px;
     }
 
     .icono {
-      font-size: 2.5rem;
+      font-size: 16px;
     }
 
     .valor {
-      font-size: 1.75rem;
-    }
-
-    .error-message {
-      padding: 1.5rem;
-    }
-
-    .error-message p {
-      font-size: 1.25rem;
+      font-size: 23px;
     }
   }
 </style>

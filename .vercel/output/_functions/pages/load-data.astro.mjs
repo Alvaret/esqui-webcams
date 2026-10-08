@@ -1,7 +1,7 @@
-import { e as createComponent, r as renderTemplate, h as addAttribute, k as renderHead } from '../chunks/astro/server_W59XkHRe.mjs';
+import { e as createComponent, r as renderTemplate, h as addAttribute, k as renderHead } from '../chunks/astro/server_C9OXGjLV.mjs';
 import 'piccolore';
 import 'clsx';
-import { o as opciones } from '../chunks/opciones_B5toUabb.mjs';
+import { o as opciones } from '../chunks/opciones_BIu4DXDX.mjs';
 /* empty css                                     */
 export { renderers } from '../renderers.mjs';
 
