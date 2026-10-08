@@ -172,7 +172,8 @@ const estaciones = Object.entries(opciones).map(([slug, data]) => ({
 					
 					if (!saveResponse.ok) {
 						const errorData = await saveResponse.json();
-						throw new Error(errorData.error || 'Error al guardar');
+						const details = errorData.details ? `: ${errorData.details}` : '';
+						throw new Error(`${errorData.error || 'Error al guardar'}${details} (HTTP ${saveResponse.status})`);
 					}
 					
 					const saveResult = await saveResponse.json();

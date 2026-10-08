@@ -17,6 +17,13 @@ const kilometros = data.kilometros_abiertos && data.kilometros_totales
   : 'No disponible';
 
 const nieve = data.nieve || 'No disponible';
+const valorNumerico = (valor?: string) => {
+  if (valor == null || valor.trim() === '') return null;
+  const numero = Number(valor.trim().replace(',', '.'));
+  return Number.isFinite(numero) ? numero : null;
+};
+const estacionCerrada = valorNumerico(data.remontes_abiertos) === 0
+  && valorNumerico(data.kilometros_abiertos) === 0;
 
 // Formatear la fecha de actualización
 const fechaActualizacion = data.timestamp 
@@ -31,6 +38,16 @@ const fechaActualizacion = data.timestamp
 ---
 
 <div class="datos">
+  {estacionCerrada && (
+    <div class="closed-status" role="status">
+      <span class="closed-status-mark" aria-hidden="true">!</span>
+      <div>
+        <strong>Estación cerrada</strong>
+        <p>No hay remontes ni kilómetros de pistas abiertos en este momento.</p>
+      </div>
+    </div>
+  )}
+
   {fechaActualizacion && (
     <div class="timestamp-header">
       <span class="icono-reloj">🕐</span>
@@ -81,6 +98,41 @@ const fechaActualizacion = data.timestamp
     color: var(--muted);
     font-size: 10px;
     font-weight: 600;
+  }
+
+  .closed-status {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    border-left: 3px solid var(--coral);
+    background: #f5e7df;
+  }
+
+  .closed-status-mark {
+    display: grid;
+    width: 23px;
+    height: 23px;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--coral);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .closed-status strong {
+    color: var(--ink);
+    font-size: 12px;
+  }
+
+  .closed-status p {
+    margin: 2px 0 0;
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.4;
   }
 
   .icono-reloj {

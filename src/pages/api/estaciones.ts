@@ -17,23 +17,31 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // Extraer remontes y kilómetros si vienen en formato "X/Y"
-    let remontesAbiertos = null;
-    let remontesTotales = null;
-    let kilometrosAbiertos = null;
-    let kilometrosTotales = null;
+    const extraerValores = (valor: unknown): [string | null, string | null] => {
+      if (typeof valor === 'string') {
+        const separador = valor.indexOf('/');
+        if (separador === -1) return [null, null];
+        return [valor.slice(0, separador).trim(), valor.slice(separador + 1).trim()];
+      }
 
-    if (body.remontes && body.remontes.includes('/')) {
-      const [abiertos, totales] = body.remontes.split('/');
-      remontesAbiertos = abiertos.trim();
-      remontesTotales = totales.trim();
-    }
+      if (valor && typeof valor === 'object') {
+        const datos = valor as { abiertos?: unknown; total?: unknown; totales?: unknown };
+        const abiertos = datos.abiertos;
+        const totales = datos.total ?? datos.totales;
+        return [
+          abiertos == null ? null : String(abiertos),
+          totales == null ? null : String(totales)
+        ];
+      }
 
-    if (body.kilometros && body.kilometros.includes('/')) {
-      const [abiertos, totales] = body.kilometros.split('/');
-      kilometrosAbiertos = abiertos.trim();
-      kilometrosTotales = totales.trim();
-    }
+      return [null, null];
+    };
+
+    const [remontesAbiertos, remontesTotales] = extraerValores(body.remontes);
+    const [kilometrosAbiertos, kilometrosTotales] = extraerValores(body.kilometros);
+    const nieve = body.nieve && typeof body.nieve === 'object'
+      ? [body.nieve.espesor, body.nieve.unidad].filter(Boolean).join(' ') || null
+      : body.nieve ?? null;
 
     const estacionData: EstacionData = {
       slug: body.slug,
@@ -41,7 +49,7 @@ export const POST: APIRoute = async ({ request }) => {
       remontes_totales: remontesTotales,
       kilometros_abiertos: kilometrosAbiertos,
       kilometros_totales: kilometrosTotales,
-      nieve: body.nieve || null,
+      nieve,
       timestamp: body.timestamp || new Date().toISOString()
     };
 
