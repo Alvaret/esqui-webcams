@@ -143,7 +143,7 @@ const estaciones = Object.entries(opciones).map(([slug, data]) => ({
 			}
 
 			window.scrapearEstacion = async function(slug) {
-				const API_BASE = 'https://api-esqui-scraping-production.up.railway.app';
+				const API_BASE = 'https://api-esqui-scraping.onrender.com';
 				
 				actualizarStatus(slug, 'Scrapeando...', 'loading');
 				const resultDiv = document.getElementById(`result-${slug}`);
