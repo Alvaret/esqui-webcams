@@ -1,0 +1,655 @@
+---
+import opciones from '../data/opciones.json';
+
+const estaciones = Object.entries(opciones).map(([slug, data]) => ({
+	slug,
+	nombre: data.nombre
+}));
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Cargar Datos - Admin</title>
+	</head>
+	<body>
+		<div class="admin-container">
+			<header class="admin-header">
+				<h1>🔧 Panel de Administración</h1>
+				<p class="subtitle">Scrapear datos y guardarlos en Supabase</p>
+				<a href="/" class="btn-home">← Volver a inicio</a>
+			</header>
+
+			<div class="stats-section">
+				<div class="stat-card">
+					<div class="stat-value" id="total-scrapeados">0</div>
+					<div class="stat-label">Scrapeados</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-value" id="total-exitosos">0</div>
+					<div class="stat-label">Exitosos</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-value" id="total-errores">0</div>
+					<div class="stat-label">Errores</div>
+				</div>
+			</div>
+
+			<div class="actions-section">
+				<button class="btn-mass-action" onclick="scrapearTodas()">
+					🚀 Scrapear Todas las Estaciones
+				</button>
+				<button class="btn-mass-action secondary" onclick="verDatosDB()">
+					📊 Ver Datos en Supabase
+				</button>
+			</div>
+
+			<div class="estaciones-grid">
+				{estaciones.map((estacion) => (
+					<div class="estacion-card" data-slug={estacion.slug}>
+						<div class="estacion-header">
+							<h3>{estacion.nombre}</h3>
+							<span class="status-badge" id={`status-${estacion.slug}`}>⏸️ Esperando</span>
+						</div>
+						<div class="estacion-actions">
+							<button 
+								class="btn-scrapear"
+								onclick={`scrapearEstacion('${estacion.slug}')`}
+							>
+								🔄 Scrapear
+							</button>
+							<button 
+								class="btn-view"
+								onclick={`verEstacion('${estacion.slug}')`}
+							>
+								👁️ Ver
+							</button>
+						</div>
+						<div class="estacion-result" id={`result-${estacion.slug}`}></div>
+					</div>
+				))}
+			</div>
+
+			<div class="db-viewer" id="db-viewer">
+				<h2>📊 Datos en Supabase</h2>
+				<button class="btn-close" onclick="cerrarVisor()">✕ Cerrar</button>
+				<div class="db-content" id="db-content"></div>
+			</div>
+		</div>
+
+		<script is:inline>
+			let stats = {
+				scrapeados: 0,
+				exitosos: 0,
+				errores: 0
+			};
+
+			function actualizarStats() {
+				document.getElementById('total-scrapeados').textContent = stats.scrapeados.toString();
+				document.getElementById('total-exitosos').textContent = stats.exitosos.toString();
+				document.getElementById('total-errores').textContent = stats.errores.toString();
+			}
+
+			function actualizarStatus(slug, status, type) {
+				const badge = document.getElementById(`status-${slug}`);
+				if (!badge) return;
+
+				const icons = {
+					loading: '⏳',
+					success: '✅',
+					error: '❌'
+				};
+
+				badge.textContent = `${icons[type]} ${status}`;
+				badge.className = `status-badge ${type}`;
+			}
+
+			function mostrarResultado(slug, data, isError = false) {
+				const resultDiv = document.getElementById(`result-${slug}`);
+				if (!resultDiv) return;
+
+				if (isError) {
+					resultDiv.innerHTML = `
+						<div class="result-error">
+							<strong>Error:</strong>
+							<pre>${JSON.stringify(data, null, 2)}</pre>
+						</div>
+					`;
+				} else {
+					resultDiv.innerHTML = `
+						<div class="result-success">
+							<div class="result-item">
+								<span class="label">Remontes:</span>
+								<span class="value">${data.remontes_abiertos || '?'}/${data.remontes_totales || '?'}</span>
+							</div>
+							<div class="result-item">
+								<span class="label">Kilómetros:</span>
+								<span class="value">${data.kilometros_abiertos || '?'}/${data.kilometros_totales || '?'}</span>
+							</div>
+							<div class="result-item">
+								<span class="label">Nieve:</span>
+								<span class="value">${data.nieve || 'N/A'}</span>
+							</div>
+							<div class="result-timestamp">
+								${new Date(data.timestamp).toLocaleString('es-ES')}
+							</div>
+						</div>
+					`;
+				}
+
+				resultDiv.style.display = 'block';
+			}
+
+			window.scrapearEstacion = async function(slug) {
+				const API_BASE = 'https://api-esqui-scraping-production.up.railway.app';
+				
+				actualizarStatus(slug, 'Scrapeando...', 'loading');
+				const resultDiv = document.getElementById(`result-${slug}`);
+				if (resultDiv) resultDiv.style.display = 'none';
+
+				try {
+					// 1. Scrapear desde Railway
+					const scrapeResponse = await fetch(`${API_BASE}/estacion/${slug}`);
+					
+					if (!scrapeResponse.ok) {
+						throw new Error(`Error ${scrapeResponse.status}`);
+					}
+					
+					const scrapeData = await scrapeResponse.json();
+					
+					// 2. Guardar en Supabase
+					actualizarStatus(slug, 'Guardando...', 'loading');
+					
+					const saveResponse = await fetch('/api/estaciones', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(scrapeData)
+					});
+					
+					if (!saveResponse.ok) {
+						const errorData = await saveResponse.json();
+						throw new Error(errorData.error || 'Error al guardar');
+					}
+					
+					const saveResult = await saveResponse.json();
+					
+					// Actualizar interfaz
+					stats.scrapeados++;
+					stats.exitosos++;
+					actualizarStats();
+					actualizarStatus(slug, 'Guardado ✓', 'success');
+					mostrarResultado(slug, saveResult.data[0]);
+					
+				} catch (error) {
+					stats.scrapeados++;
+					stats.errores++;
+					actualizarStats();
+					actualizarStatus(slug, 'Error', 'error');
+					mostrarResultado(slug, { error: error.message }, true);
+				}
+			}
+
+			window.scrapearTodas = async function() {
+				const estaciones = Array.from(document.querySelectorAll('[data-slug]'))
+					.map(el => el.getAttribute('data-slug'))
+					.filter(Boolean);
+
+				// Resetear stats
+				stats = { scrapeados: 0, exitosos: 0, errores: 0 };
+				actualizarStats();
+
+				for (const slug of estaciones) {
+					await window.scrapearEstacion(slug);
+					// Esperar 1 segundo entre requests para no sobrecargar
+					await new Promise(resolve => setTimeout(resolve, 1000));
+				}
+			}
+
+			window.verEstacion = async function(slug) {
+				try {
+					const response = await fetch(`/api/estacion-db/${slug}`);
+					
+					if (!response.ok) {
+						throw new Error('No hay datos en la base de datos');
+					}
+					
+					const result = await response.json();
+					mostrarResultado(slug, result.data);
+					
+				} catch (error) {
+					mostrarResultado(slug, { error: error.message }, true);
+				}
+			}
+
+			window.verDatosDB = async function() {
+				const viewer = document.getElementById('db-viewer');
+				const content = document.getElementById('db-content');
+				
+				if (!viewer || !content) return;
+				
+				viewer.classList.add('show');
+				content.innerHTML = '<div class="loading">⏳ Cargando datos...</div>';
+
+				try {
+					const estaciones = Array.from(document.querySelectorAll('[data-slug]'))
+						.map(el => el.getAttribute('data-slug'))
+						.filter(Boolean);
+					
+					const slugsParam = estaciones.join(',');
+					const response = await fetch(`/api/estaciones-db?slugs=${slugsParam}`);
+					
+					if (!response.ok) {
+						throw new Error('Error al obtener datos');
+					}
+					
+					const result = await response.json();
+					const data = result.data || [];
+
+					if (data.length === 0) {
+						content.innerHTML = '<div class="no-data">No hay datos en la base de datos</div>';
+						return;
+					}
+
+					let html = '<div class="db-grid">';
+					data.forEach((estacion) => {
+						html += `
+							<div class="db-card">
+								<h3>${estacion.slug}</h3>
+								<div class="db-data">
+									<div><strong>Remontes:</strong> ${estacion.remontes_abiertos || '?'}/${estacion.remontes_totales || '?'}</div>
+									<div><strong>Kilómetros:</strong> ${estacion.kilometros_abiertos || '?'}/${estacion.kilometros_totales || '?'}</div>
+									<div><strong>Nieve:</strong> ${estacion.nieve || 'N/A'}</div>
+									<div class="timestamp">${new Date(estacion.timestamp).toLocaleString('es-ES')}</div>
+								</div>
+							</div>
+						`;
+					});
+					html += '</div>';
+
+					content.innerHTML = html;
+					
+				} catch (error) {
+					content.innerHTML = `<div class="error-message">❌ ${error.message}</div>`;
+				}
+			}
+
+			window.cerrarVisor = function() {
+				const viewer = document.getElementById('db-viewer');
+				if (viewer) viewer.classList.remove('show');
+			}
+		</script>
+	</body>
+</html>
+
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	body {
+		font-family: system-ui, -apple-system, sans-serif;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		min-height: 100vh;
+		padding: 2rem;
+	}
+
+	.admin-container {
+		max-width: 1400px;
+		margin: 0 auto;
+	}
+
+	.admin-header {
+		text-align: center;
+		color: white;
+		margin-bottom: 2rem;
+		position: relative;
+	}
+
+	.admin-header h1 {
+		font-size: 2.5rem;
+		margin-bottom: 0.5rem;
+		text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+	}
+
+	.subtitle {
+		font-size: 1.1rem;
+		opacity: 0.9;
+		margin-bottom: 1rem;
+	}
+
+	.btn-home {
+		display: inline-block;
+		padding: 0.5rem 1rem;
+		background: rgba(255, 255, 255, 0.2);
+		color: white;
+		text-decoration: none;
+		border-radius: 8px;
+		transition: all 0.2s;
+		backdrop-filter: blur(10px);
+	}
+
+	.btn-home:hover {
+		background: rgba(255, 255, 255, 0.3);
+		transform: translateY(-1px);
+	}
+
+	.stats-section {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		gap: 1rem;
+		margin-bottom: 2rem;
+	}
+
+	.stat-card {
+		background: white;
+		padding: 1.5rem;
+		border-radius: 12px;
+		text-align: center;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	}
+
+	.stat-value {
+		font-size: 2.5rem;
+		font-weight: bold;
+		color: #667eea;
+		margin-bottom: 0.5rem;
+	}
+
+	.stat-label {
+		color: #666;
+		font-size: 0.9rem;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+	}
+
+	.actions-section {
+		display: flex;
+		gap: 1rem;
+		margin-bottom: 2rem;
+		justify-content: center;
+	}
+
+	.btn-mass-action {
+		padding: 1rem 2rem;
+		font-size: 1.1rem;
+		font-weight: 600;
+		border: none;
+		border-radius: 12px;
+		cursor: pointer;
+		transition: all 0.2s;
+		background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+		color: white;
+		box-shadow: 0 4px 12px rgba(245, 87, 108, 0.3);
+	}
+
+	.btn-mass-action.secondary {
+		background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+		box-shadow: 0 4px 12px rgba(17, 153, 142, 0.3);
+	}
+
+	.btn-mass-action:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+	}
+
+	.estaciones-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+		gap: 1.5rem;
+		margin-bottom: 2rem;
+	}
+
+	.estacion-card {
+		background: white;
+		border-radius: 12px;
+		padding: 1.5rem;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		transition: transform 0.2s;
+	}
+
+	.estacion-card:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+	}
+
+	.estacion-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 1rem;
+		padding-bottom: 1rem;
+		border-bottom: 2px solid #f0f0f0;
+	}
+
+	.estacion-header h3 {
+		color: #333;
+		font-size: 1.3rem;
+		margin: 0;
+	}
+
+	.status-badge {
+		padding: 0.4rem 0.8rem;
+		border-radius: 20px;
+		font-size: 0.85rem;
+		font-weight: 600;
+		background: #e0e0e0;
+		color: #666;
+	}
+
+	.status-badge.loading {
+		background: #fff3cd;
+		color: #856404;
+	}
+
+	.status-badge.success {
+		background: #d4edda;
+		color: #155724;
+	}
+
+	.status-badge.error {
+		background: #f8d7da;
+		color: #721c24;
+	}
+
+	.estacion-actions {
+		display: flex;
+		gap: 0.5rem;
+		margin-bottom: 1rem;
+	}
+
+	.estacion-actions button {
+		flex: 1;
+		padding: 0.75rem;
+		border: none;
+		border-radius: 8px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: all 0.2s;
+	}
+
+	.btn-scrapear {
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: white;
+	}
+
+	.btn-view {
+		background: #f0f0f0;
+		color: #333;
+	}
+
+	.estacion-actions button:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	}
+
+	.estacion-result {
+		display: none;
+		margin-top: 1rem;
+		padding-top: 1rem;
+		border-top: 2px solid #f0f0f0;
+	}
+
+	.result-success {
+		background: #f0f9ff;
+		padding: 1rem;
+		border-radius: 8px;
+		border-left: 4px solid #667eea;
+	}
+
+	.result-error {
+		background: #fff5f5;
+		padding: 1rem;
+		border-radius: 8px;
+		border-left: 4px solid #f56565;
+	}
+
+	.result-error pre {
+		margin-top: 0.5rem;
+		font-size: 0.85rem;
+		color: #721c24;
+		white-space: pre-wrap;
+	}
+
+	.result-item {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 0.5rem;
+	}
+
+	.result-item .label {
+		font-weight: 600;
+		color: #666;
+	}
+
+	.result-item .value {
+		color: #333;
+		font-weight: 500;
+	}
+
+	.result-timestamp {
+		margin-top: 0.75rem;
+		padding-top: 0.75rem;
+		border-top: 1px solid #e0e0e0;
+		font-size: 0.85rem;
+		color: #999;
+		text-align: right;
+	}
+
+	.db-viewer {
+		display: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.8);
+		z-index: 1000;
+		overflow-y: auto;
+		padding: 2rem;
+	}
+
+	.db-viewer.show {
+		display: block;
+	}
+
+	.db-viewer h2 {
+		color: white;
+		text-align: center;
+		margin-bottom: 1rem;
+	}
+
+	.btn-close {
+		position: fixed;
+		top: 2rem;
+		right: 2rem;
+		padding: 0.75rem 1.5rem;
+		background: white;
+		border: none;
+		border-radius: 8px;
+		font-weight: 600;
+		cursor: pointer;
+		z-index: 1001;
+	}
+
+	.db-content {
+		max-width: 1400px;
+		margin: 0 auto;
+	}
+
+	.db-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: 1rem;
+	}
+
+	.db-card {
+		background: white;
+		padding: 1.5rem;
+		border-radius: 12px;
+	}
+
+	.db-card h3 {
+		margin-bottom: 1rem;
+		color: #667eea;
+		text-transform: capitalize;
+	}
+
+	.db-data {
+		font-size: 0.95rem;
+	}
+
+	.db-data > div {
+		margin-bottom: 0.5rem;
+	}
+
+	.db-data .timestamp {
+		margin-top: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid #e0e0e0;
+		font-size: 0.85rem;
+		color: #999;
+	}
+
+	.loading {
+		text-align: center;
+		padding: 2rem;
+		color: white;
+		font-size: 1.2rem;
+	}
+
+	.no-data, .error-message {
+		text-align: center;
+		padding: 2rem;
+		background: white;
+		border-radius: 12px;
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 768px) {
+		body {
+			padding: 1rem;
+		}
+
+		.admin-header h1 {
+			font-size: 1.75rem;
+		}
+
+		.estaciones-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.actions-section {
+			flex-direction: column;
+		}
+
+		.db-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

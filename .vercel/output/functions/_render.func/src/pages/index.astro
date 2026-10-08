@@ -1,0 +1,35 @@
+---
+import opciones from '../data/opciones.json';
+import OpcionCard from '../components/OpcionCard/OpcionCard.astro';
+import FloatingCredit from '../components/FloatingCredit/FloatingCredit.astro';
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Esquí Webcams - Pl8</title>
+		<style is:global>
+			@import '../styles/index.css';
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="opciones-grid">
+				{
+					Object.entries(opciones).map(([clave, opcion]) => (
+						<OpcionCard 
+							clave={clave}
+							nombre={opcion.nombre}
+							urlFoto={opcion.urlFoto}
+						/>
+					))
+				}
+			</div>
+		</div>
+
+		<FloatingCredit />
+	</body>
+</html>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <style>
+      .vl-bg { fill: #1e3c72; }
+      .vl-text { fill: white; font-family: Arial, sans-serif; font-weight: bold; }
+      .vl-mountain { fill: #e6f3ff; }
+      .vl-accent { fill: #00bfff; }
+    </style>
+  </defs>
+  
+  <!-- Fondo -->
+  <circle cx="100" cy="100" r="100" class="vl-bg"/>
+  
+  <!-- Montañas estilizadas -->
+  <polygon points="35,125 70,55 105,125" class="vl-mountain"/>
+  <polygon points="85,125 120,65 155,125" class="vl-mountain"/>
+  <polygon points="130,125 165,85 195,125" class="vl-accent"/>
+  
+  <!-- Texto -->
+  <text x="100" y="170" text-anchor="middle" font-size="13" class="vl-text">VALDELINARES</text>
+</svg>
