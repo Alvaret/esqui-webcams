@@ -1,0 +1,38 @@
+name: Actualizar datos de estaciones
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 7 * * *'
+    - cron: '5 7 * * *'
+    - cron: '0 8 * * *'
+    - cron: '5 8 * * *'
+
+jobs:
+  auto-load:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Comprobar hora local de Madrid
+        id: hora-local
+        if: github.event_name == 'schedule'
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          desfase="$(TZ=Europe/Madrid date +'%z')"
+          case "${SCHEDULE}:${desfase}" in
+            '0 7 * * *:+0200'|'5 7 * * *:+0200'|'0 8 * * *:+0100'|'5 8 * * *:+0100')
+            echo 'ejecutar=true' >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+            echo 'ejecutar=false' >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+      - name: Ejecutar carga de todas las estaciones
+        if: github.event_name == 'workflow_dispatch' || steps.hora-local.outputs.ejecutar == 'true'
+        run: |
+          response="$(curl --fail-with-body --silent --show-error --max-time 90 \
+            --request POST \
+            https://plwinter.pl8.es/auto-load)"
+          printf '%s\n' "$response"
+          printf '%s' "$response" | jq -e '.success == true' >/dev/null
