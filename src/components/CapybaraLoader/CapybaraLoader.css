@@ -1,0 +1,231 @@
+.capy-loader {
+	--capy-speed: 1s;
+	--capy-color: #cc7d2d;
+	--capy-shadow: #53381c;
+	position: relative;
+	display: inline-flex;
+	width: 224px;
+	height: 176px;
+	flex-direction: column;
+	align-items: center;
+	color: #dce8e9;
+	font-size: 12px;
+}
+
+.capy-loader__animal {
+	position: relative;
+	z-index: 1;
+	width: 224px;
+	height: 120px;
+	transform: scale(0.75);
+	transform-origin: top center;
+}
+
+.capy-loader__body {
+	position: relative;
+	z-index: 1;
+	width: 85%;
+	height: 100%;
+	border-radius: 45%;
+	background: linear-gradient(var(--capy-color), 90%, var(--capy-shadow));
+	animation: capy-loader-body var(--capy-speed) linear infinite;
+}
+
+.capy-loader__head {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	z-index: 3;
+	width: 120px;
+	height: 112px;
+	border-radius: 56px;
+	background: var(--capy-color);
+	box-shadow: -16px 0 var(--capy-shadow);
+	animation: capy-loader-body var(--capy-speed) linear infinite;
+}
+
+.capy-loader__ear {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 3;
+	width: 32px;
+	height: 32px;
+	overflow: hidden;
+	border-radius: 50%;
+	background: linear-gradient(-45deg, var(--capy-color), 90%, var(--capy-shadow));
+}
+
+.capy-loader__ear:nth-child(2) {
+	left: 80px;
+	background: linear-gradient(25deg, var(--capy-color), 90%, var(--capy-shadow));
+}
+
+.capy-loader__inner-ear {
+	position: absolute;
+	bottom: 0;
+	left: 8px;
+	width: 32px;
+	height: 16px;
+	border-radius: 50%;
+	background: var(--capy-shadow);
+	transform: rotate(-45deg);
+}
+
+.capy-loader__mouth {
+	position: absolute;
+	bottom: 0;
+	left: 40px;
+	display: flex;
+	width: 56px;
+	height: 32px;
+	align-items: center;
+	justify-content: space-around;
+	padding: 8px;
+	border-radius: 50%;
+	background: var(--capy-shadow);
+}
+
+.capy-loader__lip {
+	width: 4px;
+	height: 12px;
+	border-radius: 100%;
+	background: var(--capy-color);
+	transform: rotate(-45deg);
+}
+
+.capy-loader__lip:nth-child(2) {
+	transform: rotate(45deg);
+}
+
+.capy-loader__eye {
+	position: absolute;
+	bottom: 56px;
+	left: 24px;
+	width: 32px;
+	height: 8px;
+	border-radius: 5em;
+	background: var(--capy-shadow);
+	transform: rotate(45deg);
+}
+
+.capy-loader__eye:nth-child(4) {
+	left: 88px;
+	width: 28px;
+	transform: rotate(-45deg);
+}
+
+.capy-loader__front-leg {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 2;
+	width: 96px;
+	height: 80px;
+	border-radius: 32px;
+	background: linear-gradient(var(--capy-color), 95%, var(--capy-shadow));
+	animation: capy-loader-body var(--capy-speed) linear infinite;
+}
+
+.capy-loader__leg {
+	position: absolute;
+	bottom: 0;
+	left: 52px;
+	z-index: 2;
+	width: 28px;
+	height: 48px;
+	border-radius: 12px;
+	background: linear-gradient(var(--capy-color), 80%, var(--capy-shadow));
+	box-shadow: inset 0 -8px var(--capy-shadow);
+	animation: capy-loader-leg var(--capy-speed) linear infinite;
+}
+
+.capy-loader__leg:nth-child(3) {
+	left: 8px;
+	width: 20px;
+	height: 32px;
+	animation: capy-loader-leg-alt var(--capy-speed) linear infinite 75ms;
+}
+
+.capy-loader__track {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	height: 40px;
+	overflow: hidden;
+}
+
+.capy-loader__track-line {
+	width: 800px;
+	height: 8px;
+	border-top: 8px dashed var(--capy-shadow);
+	animation: capy-loader-track 10s linear infinite;
+}
+
+.capy-loader__label {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	text-align: center;
+}
+
+@keyframes capy-loader-leg {
+	0%,
+	100% {
+		transform: rotate(-45deg) translateX(-5%);
+	}
+
+	50% {
+		transform: rotate(45deg) translateX(5%);
+	}
+}
+
+@keyframes capy-loader-leg-alt {
+	0%,
+	100% {
+		transform: rotate(45deg);
+	}
+
+	50% {
+		transform: rotate(-45deg);
+	}
+}
+
+@keyframes capy-loader-body {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+
+	50% {
+		transform: translateX(2%);
+	}
+}
+
+@keyframes capy-loader-track {
+	0% {
+		transform: translateX(0);
+		opacity: 0;
+	}
+
+	5%,
+	95% {
+		opacity: 1;
+	}
+
+	100% {
+		transform: translateX(-70%);
+		opacity: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.capy-loader__body,
+	.capy-loader__head,
+	.capy-loader__front-leg,
+	.capy-loader__leg,
+	.capy-loader__track-line {
+		animation: none;
+	}
+}

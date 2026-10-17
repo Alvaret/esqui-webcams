@@ -1,0 +1,239 @@
+.hamster-wheel-loader {
+	--hamster-duration: 1s;
+	position: relative;
+	display: inline-grid;
+	justify-items: center;
+	gap: 8px;
+	color: #dce8e9;
+	font-size: 12px;
+}
+
+.hamster-wheel-loader__scene {
+	position: relative;
+	width: 168px;
+	height: 168px;
+}
+
+.hamster-wheel-loader__wheel,
+.hamster-wheel-loader__hamster,
+.hamster-wheel-loader__scene > div,
+.hamster-wheel-loader__body > div {
+	position: absolute;
+}
+
+.hamster-wheel-loader__wheel,
+.hamster-wheel-loader__spoke {
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+
+.hamster-wheel-loader__wheel {
+	z-index: 2;
+	background: radial-gradient(100% 100% at center, hsla(0, 0%, 60%, 0) 47.8%, hsl(0, 0%, 60%) 48%);
+}
+
+.hamster-wheel-loader__hamster {
+	top: 50%;
+	left: calc(50% - 49px);
+	z-index: 1;
+	width: 98px;
+	height: 52.5px;
+	transform: rotate(4deg) translate(-11.2px, 25.9px);
+	transform-origin: 50% 0;
+	animation: hamster-wheel-run var(--hamster-duration) ease-in-out infinite;
+}
+
+.hamster-wheel-loader__head {
+	top: 0;
+	left: -28px;
+	width: 38.5px;
+	height: 35px;
+	border-radius: 70% 30% 0 100% / 40% 25% 25% 60%;
+	background: hsl(30, 90%, 55%);
+	box-shadow: 0 -3.5px 0 hsl(30, 90%, 80%) inset, 10.5px -21.7px 0 hsl(30, 90%, 90%) inset;
+	transform-origin: 100% 50%;
+	animation: hamster-wheel-head var(--hamster-duration) ease-in-out infinite;
+}
+
+.hamster-wheel-loader__ear {
+	top: -3.5px;
+	right: -3.5px;
+	width: 10.5px;
+	height: 10.5px;
+	border-radius: 50%;
+	background: hsl(0, 90%, 85%);
+	box-shadow: -3.5px 0 hsl(30, 90%, 55%) inset;
+	transform-origin: 50% 75%;
+	animation: hamster-wheel-ear var(--hamster-duration) ease-in-out infinite;
+}
+
+.hamster-wheel-loader__eye {
+	top: 5.25px;
+	left: 17.5px;
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: #000;
+	animation: hamster-wheel-eye var(--hamster-duration) linear infinite;
+}
+
+.hamster-wheel-loader__nose {
+	top: 10.5px;
+	left: 0;
+	width: 2.8px;
+	height: 3.5px;
+	border-radius: 35% 65% 85% 15% / 70% 50% 50% 30%;
+	background: hsl(0, 90%, 75%);
+}
+
+.hamster-wheel-loader__body {
+	top: 3.5px;
+	left: 28px;
+	width: 63px;
+	height: 42px;
+	border-radius: 50% 30% 50% 30% / 15% 60% 40% 40%;
+	background: hsl(30, 90%, 90%);
+	box-shadow: 1.4px 10.5px 0 hsl(30, 90%, 55%) inset, 2.1px -7px 0 hsl(30, 90%, 80%) inset;
+	transform-origin: 17% 50%;
+	transform-style: preserve-3d;
+	animation: hamster-wheel-body var(--hamster-duration) ease-in-out infinite;
+}
+
+.hamster-wheel-loader__limb--front-right,
+.hamster-wheel-loader__limb--front-left {
+	top: 28px;
+	left: 7px;
+	width: 14px;
+	height: 21px;
+	clip-path: polygon(0 0, 100% 0, 70% 80%, 60% 100%, 0 100%, 40% 80%);
+	transform-origin: 50% 0;
+}
+
+.hamster-wheel-loader__limb--front-right {
+	background: linear-gradient(hsl(30, 90%, 80%) 80%, hsl(0, 90%, 75%) 80%);
+	transform: rotate(15deg) translateZ(-1px);
+	animation: hamster-wheel-front-right var(--hamster-duration) linear infinite;
+}
+
+.hamster-wheel-loader__limb--front-left {
+	background: linear-gradient(hsl(30, 90%, 90%) 80%, hsl(0, 90%, 85%) 80%);
+	transform: rotate(15deg);
+	animation: hamster-wheel-front-left var(--hamster-duration) linear infinite;
+}
+
+.hamster-wheel-loader__limb--back-right,
+.hamster-wheel-loader__limb--back-left {
+	top: 14px;
+	left: 39.2px;
+	width: 21px;
+	height: 35px;
+	border-radius: 10.5px 10.5px 0 0;
+	clip-path: polygon(0 0, 100% 0, 100% 30%, 70% 90%, 70% 100%, 30% 100%, 40% 90%, 0 30%);
+	transform-origin: 50% 30%;
+}
+
+.hamster-wheel-loader__limb--back-right {
+	background: linear-gradient(hsl(30, 90%, 80%) 90%, hsl(0, 90%, 75%) 90%);
+	transform: rotate(-25deg) translateZ(-1px);
+	animation: hamster-wheel-back-right var(--hamster-duration) linear infinite;
+}
+
+.hamster-wheel-loader__limb--back-left {
+	background: linear-gradient(hsl(30, 90%, 90%) 90%, hsl(0, 90%, 85%) 90%);
+	transform: rotate(-25deg);
+	animation: hamster-wheel-back-left var(--hamster-duration) linear infinite;
+}
+
+.hamster-wheel-loader__tail {
+	top: 21px;
+	right: -7px;
+	width: 14px;
+	height: 7px;
+	border-radius: 3.5px 50% 50% 3.5px;
+	background: hsl(0, 90%, 85%);
+	box-shadow: 0 -2.8px 0 hsl(0, 90%, 75%) inset;
+	transform: rotate(30deg) translateZ(-1px);
+	transform-origin: 3.5px 3.5px;
+	animation: hamster-wheel-tail var(--hamster-duration) linear infinite;
+}
+
+.hamster-wheel-loader__spoke {
+	z-index: 3;
+	background: radial-gradient(100% 100% at center, hsl(0, 0%, 60%) 4.8%, hsla(0, 0%, 60%, 0) 5%), linear-gradient(hsla(0, 0%, 55%, 0) 46.9%, hsl(0, 0%, 65%) 47% 52.9%, hsla(0, 0%, 65%, 0) 53%) 50% 50% / 99% 99% no-repeat;
+	animation: hamster-wheel-spoke var(--hamster-duration) linear infinite;
+}
+
+.hamster-wheel-loader__label {
+	color: inherit;
+}
+
+@keyframes hamster-wheel-run {
+	from, to { transform: rotate(4deg) translate(-11.2px, 25.9px); }
+	50% { transform: rotate(0) translate(-11.2px, 25.9px); }
+}
+
+@keyframes hamster-wheel-head {
+	from, 25%, 50%, 75%, to { transform: rotate(0); }
+	12.5%, 37.5%, 62.5%, 87.5% { transform: rotate(8deg); }
+}
+
+@keyframes hamster-wheel-eye {
+	from, 90%, to { transform: scaleY(1); }
+	95% { transform: scaleY(0); }
+}
+
+@keyframes hamster-wheel-ear {
+	from, 25%, 50%, 75%, to { transform: rotate(0); }
+	12.5%, 37.5%, 62.5%, 87.5% { transform: rotate(12deg); }
+}
+
+@keyframes hamster-wheel-body {
+	from, 25%, 50%, 75%, to { transform: rotate(0); }
+	12.5%, 37.5%, 62.5%, 87.5% { transform: rotate(-2deg); }
+}
+
+@keyframes hamster-wheel-front-right {
+	from, 25%, 50%, 75%, to { transform: rotate(50deg) translateZ(-1px); }
+	12.5%, 37.5%, 62.5%, 87.5% { transform: rotate(-30deg) translateZ(-1px); }
+}
+
+@keyframes hamster-wheel-front-left {
+	from, 25%, 50%, 75%, to { transform: rotate(-30deg); }
+	12.5%, 37.5%, 62.5%, 87.5% { transform: rotate(50deg); }
+}
+
+@keyframes hamster-wheel-back-right {
+	from, 25%, 50%, 75%, to { transform: rotate(-60deg) translateZ(-1px); }
+	12.5%, 37.5%, 62.5%, 87.5% { transform: rotate(20deg) translateZ(-1px); }
+}
+
+@keyframes hamster-wheel-back-left {
+	from, 25%, 50%, 75%, to { transform: rotate(20deg); }
+	12.5%, 37.5%, 62.5%, 87.5% { transform: rotate(-60deg); }
+}
+
+@keyframes hamster-wheel-tail {
+	from, 25%, 50%, 75%, to { transform: rotate(30deg) translateZ(-1px); }
+	12.5%, 37.5%, 62.5%, 87.5% { transform: rotate(10deg) translateZ(-1px); }
+}
+
+@keyframes hamster-wheel-spoke {
+	from { transform: rotate(0); }
+	to { transform: rotate(-1turn); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hamster-wheel-loader__hamster,
+	.hamster-wheel-loader__head,
+	.hamster-wheel-loader__ear,
+	.hamster-wheel-loader__eye,
+	.hamster-wheel-loader__body,
+	.hamster-wheel-loader__limb,
+	.hamster-wheel-loader__tail,
+	.hamster-wheel-loader__spoke {
+		animation: none;
+	}
+}

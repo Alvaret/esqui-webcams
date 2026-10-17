@@ -1,0 +1,14 @@
+---
+import './RainbowLoader.css';
+
+interface Props {
+	label?: string;
+}
+
+const { label = 'Cargando' } = Astro.props;
+---
+
+<div class="rainbow-loader" role="status" aria-label={label}>
+	<span class="rainbow-loader__spinner" aria-hidden="true"></span>
+	<span class="rainbow-loader__label">{label}</span>
+</div>

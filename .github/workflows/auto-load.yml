@@ -31,8 +31,24 @@ jobs:
       - name: Ejecutar carga de todas las estaciones
         if: github.event_name == 'workflow_dispatch' || steps.hora-local.outputs.ejecutar == 'true'
         run: |
-          response="$(curl --fail-with-body --silent --show-error --max-time 90 \
+          response_file="$(mktemp)"
+          trap 'rm -f "$response_file"' EXIT
+
+          if ! http_status="$(curl --silent --show-error --max-time 90 \
+            --output "$response_file" \
+            --write-out '%{http_code}' \
             --request POST \
-            https://plwinter.pl8.es/auto-load)"
-          printf '%s\n' "$response"
-          printf '%s' "$response" | jq -e '.success == true' >/dev/null
+            https://plwinter.pl8.es/auto-load)"; then
+            cat "$response_file"
+            exit 1
+          fi
+
+          printf 'HTTP status: %s\n' "$http_status"
+          cat "$response_file"
+          printf '\n'
+
+          if [[ ! "$http_status" =~ ^2[0-9][0-9]$ ]]; then
+            exit 1
+          fi
+
+          jq -e '.success == true' "$response_file" >/dev/null

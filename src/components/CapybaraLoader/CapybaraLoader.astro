@@ -1,0 +1,33 @@
+---
+import './CapybaraLoader.css';
+
+interface Props {
+	label?: string;
+	speed?: string;
+}
+
+const { label = 'Cargando', speed = '1s' } = Astro.props;
+---
+
+<div class="capy-loader" role="status" aria-label={label} style={`--capy-speed: ${speed}`}>
+	<div class="capy-loader__animal" aria-hidden="true">
+		<div class="capy-loader__head">
+			<div class="capy-loader__ear"><div class="capy-loader__inner-ear"></div></div>
+			<div class="capy-loader__ear"></div>
+			<div class="capy-loader__mouth">
+				<div class="capy-loader__lip"></div>
+				<div class="capy-loader__lip"></div>
+			</div>
+			<div class="capy-loader__eye"></div>
+			<div class="capy-loader__eye"></div>
+		</div>
+		<div class="capy-loader__front-leg"></div>
+		<div class="capy-loader__leg"></div>
+		<div class="capy-loader__leg"></div>
+		<div class="capy-loader__body"></div>
+	</div>
+	<div class="capy-loader__track" aria-hidden="true">
+		<div class="capy-loader__track-line"></div>
+	</div>
+	<span class="capy-loader__label">{label}</span>
+</div>

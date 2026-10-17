@@ -1,0 +1,306 @@
+.astro-loader {
+	position: relative;
+	width: 100%;
+	min-height: 320px;
+	overflow: hidden;
+	border-radius: 5px;
+	background: #10232b;
+	isolation: isolate;
+}
+
+.astro-loader__label {
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	z-index: 12;
+	color: #dce8e9;
+	font-size: 12px;
+	transform: translateX(-50%);
+}
+
+.astro-loader__stars,
+.astro-loader__star-layer {
+	position: absolute;
+	inset: 0;
+}
+
+.astro-loader__star-layer {
+	height: 100%;
+	animation: astro-loader-snow var(--astro-loader-speed, 5s) linear infinite;
+}
+
+.astro-loader__star-layer--2 {
+	animation-delay: -1.64s;
+}
+
+.astro-loader__star-layer--3 {
+	animation-delay: -2.3s;
+}
+
+.astro-loader__star-layer--4 {
+	animation-delay: -3.3s;
+}
+
+.astro-loader__star {
+	position: absolute;
+	width: 3px;
+	height: 3px;
+	border-radius: 50%;
+	background: #fff;
+	opacity: 0.7;
+}
+
+.astro-loader__star::before,
+.astro-loader__star::after {
+	position: absolute;
+	content: '';
+	border-radius: 50%;
+	background: #fff;
+}
+
+.astro-loader__star::before {
+	top: 80px;
+	left: 70px;
+	width: 6px;
+	height: 6px;
+	opacity: 0.7;
+}
+
+.astro-loader__star::after {
+	top: 8px;
+	left: 170px;
+	width: 8px;
+	height: 8px;
+	opacity: 0.9;
+}
+
+.astro-loader__astronaut {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 11;
+	width: 250px;
+	height: 300px;
+	animation: astro-loader-astronaut var(--astro-loader-speed, 5s) linear infinite;
+}
+
+.astro-loader__schoolbag {
+	position: absolute;
+	top: 75px;
+	left: 75px;
+	z-index: 1;
+	width: 100px;
+	height: 150px;
+	border-radius: 50px 50px 0 0 / 30px 30px 0 0;
+	background: #94b7ca;
+}
+
+.astro-loader__head {
+	position: absolute;
+	top: 34px;
+	left: 76.5px;
+	z-index: 3;
+	width: 97px;
+	height: 80px;
+	border-radius: 50%;
+	background: linear-gradient(to right, #e3e8eb 50%, #fbfdfa 50%);
+}
+
+.astro-loader__head::before {
+	position: absolute;
+	top: 27.5px;
+	left: -4px;
+	width: 12px;
+	height: 25px;
+	border-radius: 5px;
+	background: #618095;
+	box-shadow: 92px 0 #618095;
+	content: '';
+}
+
+.astro-loader__head::after {
+	position: absolute;
+	top: 15px;
+	left: 18.5px;
+	width: 60px;
+	height: 50px;
+	border-radius: 15px;
+	background: linear-gradient(to bottom, #15aece 50%, #0391bf 50%);
+	content: '';
+}
+
+.astro-loader__body {
+	position: absolute;
+	top: 105px;
+	left: 84.5px;
+	z-index: 2;
+	width: 85px;
+	height: 100px;
+	border-radius: 40px / 20px;
+	background: linear-gradient(to right, #e3e8eb 50%, #fbfdfa 50%);
+}
+
+.astro-loader__panel {
+	position: absolute;
+	top: 20px;
+	left: 12.5px;
+	width: 60px;
+	height: 40px;
+	background: #b7cceb;
+}
+
+.astro-loader__panel::before {
+	position: absolute;
+	top: 9px;
+	left: 7px;
+	width: 30px;
+	height: 5px;
+	background: #fbfdfa;
+	box-shadow: 0 9px #fbfdfa, 0 18px #fbfdfa;
+	content: '';
+}
+
+.astro-loader__panel::after {
+	position: absolute;
+	top: 9px;
+	right: 7px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #fbfdfa;
+	box-shadow: 0 14px 0 2px #fbfdfa;
+	content: '';
+}
+
+.astro-loader__arm {
+	position: absolute;
+	top: 121px;
+	z-index: 2;
+	width: 80px;
+	height: 30px;
+}
+
+.astro-loader__arm--left {
+	left: 30px;
+	border-radius: 0 0 0 39px;
+	background: #e3e8eb;
+}
+
+.astro-loader__arm--right {
+	right: 30px;
+	border-radius: 0 0 39px 0;
+	background: #fbfdfa;
+}
+
+.astro-loader__arm::before {
+	position: absolute;
+	top: -40px;
+	width: 30px;
+	height: 70px;
+	content: '';
+}
+
+.astro-loader__arm--left::before {
+	left: 0;
+	border-radius: 50px 50px 0 120px / 50px 50px 0 110px;
+	background: #e3e8eb;
+}
+
+.astro-loader__arm--right::before {
+	right: 0;
+	border-radius: 50px 50px 120px 0 / 50px 50px 110px 0;
+	background: #fbfdfa;
+}
+
+.astro-loader__arm::after {
+	position: absolute;
+	top: -24px;
+	width: 30px;
+	height: 10px;
+	content: '';
+}
+
+.astro-loader__arm--left::after {
+	left: 0;
+	background: #6e91a4;
+}
+
+.astro-loader__arm--right::after {
+	right: 0;
+	background: #b6d2e0;
+}
+
+.astro-loader__leg {
+	position: absolute;
+	bottom: 70px;
+	z-index: 2;
+	width: 30px;
+	height: 40px;
+}
+
+.astro-loader__leg--left {
+	left: 76px;
+	transform: rotate(20deg);
+	background: #e3e8eb;
+}
+
+.astro-loader__leg--right {
+	right: 73px;
+	transform: rotate(-20deg);
+	background: #fbfdfa;
+}
+
+.astro-loader__leg::before {
+	position: absolute;
+	bottom: -26px;
+	width: 50px;
+	height: 25px;
+	content: '';
+}
+
+.astro-loader__leg--left::before {
+	left: -20px;
+	border-bottom: 10px solid #6d96ac;
+	border-radius: 30px 0 0;
+	background: #e3e8eb;
+}
+
+.astro-loader__leg--right::before {
+	right: -20px;
+	border-bottom: 10px solid #b0cfe4;
+	border-radius: 0 30px 0 0;
+	background: #fbfdfa;
+}
+
+@keyframes astro-loader-snow {
+	0% {
+		opacity: 0;
+		transform: translateY(0);
+	}
+
+	20% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(320px);
+	}
+}
+
+@keyframes astro-loader-astronaut {
+	from {
+		transform: translate(-50%, -50%) rotate(0deg);
+	}
+
+	to {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.astro-loader__star-layer,
+	.astro-loader__astronaut {
+		animation: none;
+	}
+}

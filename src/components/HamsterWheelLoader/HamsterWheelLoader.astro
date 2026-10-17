@@ -1,0 +1,32 @@
+---
+import './HamsterWheelLoader.css';
+
+interface Props {
+	label?: string;
+	speed?: string;
+}
+
+const { label = 'Cargando', speed = '1s' } = Astro.props;
+---
+
+<div class="hamster-wheel-loader" role="status" aria-label={label} style={`--hamster-duration: ${speed}`}>
+	<div class="hamster-wheel-loader__scene" aria-hidden="true">
+		<div class="hamster-wheel-loader__wheel"></div>
+		<div class="hamster-wheel-loader__hamster">
+			<div class="hamster-wheel-loader__body">
+				<div class="hamster-wheel-loader__head">
+					<div class="hamster-wheel-loader__ear"></div>
+					<div class="hamster-wheel-loader__eye"></div>
+					<div class="hamster-wheel-loader__nose"></div>
+				</div>
+				<div class="hamster-wheel-loader__limb hamster-wheel-loader__limb--front-right"></div>
+				<div class="hamster-wheel-loader__limb hamster-wheel-loader__limb--front-left"></div>
+				<div class="hamster-wheel-loader__limb hamster-wheel-loader__limb--back-right"></div>
+				<div class="hamster-wheel-loader__limb hamster-wheel-loader__limb--back-left"></div>
+				<div class="hamster-wheel-loader__tail"></div>
+			</div>
+		</div>
+		<div class="hamster-wheel-loader__spoke"></div>
+	</div>
+	<span class="hamster-wheel-loader__label">{label}</span>
+</div>

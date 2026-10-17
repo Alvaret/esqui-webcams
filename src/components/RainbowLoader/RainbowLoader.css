@@ -1,0 +1,42 @@
+.rainbow-loader {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.rainbow-loader__spinner {
+	display: block;
+	width: 56px;
+	height: 56px;
+	flex: 0 0 56px;
+	border-radius: 50%;
+	background-image: conic-gradient(
+		from 0deg,
+		violet,
+		indigo 30%,
+		blue 50%,
+		green 60%,
+		yellow 70%,
+		orange 80%,
+		red 100%
+	);
+	animation: rainbow-loader-spin var(--rainbow-loader-speed, 1s) linear infinite;
+	animation-delay: var(--rainbow-loader-delay, 0.7s);
+}
+
+.rainbow-loader__label {
+	color: inherit;
+	font-size: 12px;
+}
+
+@keyframes rainbow-loader-spin {
+	to {
+		transform: rotate(-360deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.rainbow-loader__spinner {
+		animation: none;
+	}
+}

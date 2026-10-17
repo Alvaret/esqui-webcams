@@ -1,5 +1,10 @@
 ---
 import opciones from '../data/opciones.json';
+import AstroLoader from '../components/AstroLoader/AstroLoader.astro';
+import RainbowLoader from '../components/RainbowLoader/RainbowLoader.astro';
+import WalkingLoader from '../components/WalkingLoader/WalkingLoader.astro';
+import CapybaraLoader from '../components/CapybaraLoader/CapybaraLoader.astro';
+import HamsterWheelLoader from '../components/HamsterWheelLoader/HamsterWheelLoader.astro';
 
 const estaciones = Object.entries(opciones).map(([slug, data]) => ({
 	slug,
@@ -15,6 +20,27 @@ const estaciones = Object.entries(opciones).map(([slug, data]) => ({
 		<title>Cargar Datos - Admin</title>
 	</head>
 	<body>
+		<div class="scrape-loader-overlay scrape-loader-overlay--all" id="scrape-loader" role="status" aria-live="polite" hidden>
+			<RainbowLoader label="" />
+			<AstroLoader label="" />
+			<div class="scrape-loader__message">
+				<strong>Actualizando estaciones</strong>
+				<span class="scrape-loader-progress">Preparando scraping...</span>
+			</div>
+		</div>
+		<div class="scrape-loader-overlay scrape-loader-overlay--individual" id="single-scrape-loader" role="status" aria-live="polite" hidden>
+			<div class="scrape-loader__stage" aria-hidden="true">
+				<div class="scrape-loader__item scrape-loader__item--rainbow"><RainbowLoader label="" /></div>
+				<div class="scrape-loader__item scrape-loader__item--astro"><AstroLoader label="" /></div>
+				<div class="scrape-loader__item scrape-loader__item--walking"><WalkingLoader label="" speed="0.7s" /></div>
+				<div class="scrape-loader__item scrape-loader__item--capy"><CapybaraLoader label="" speed="0.8s" /></div>
+				<div class="scrape-loader__item scrape-loader__item--hamster"><HamsterWheelLoader label="" speed="0.8s" /></div>
+			</div>
+			<div class="scrape-loader__message">
+				<strong>Actualizando estación</strong>
+				<span class="scrape-loader-progress">Preparando scraping...</span>
+			</div>
+		</div>
 		<div class="admin-container">
 			<header class="admin-header">
 				<h1>🔧 Panel de Administración</h1>
@@ -56,7 +82,7 @@ const estaciones = Object.entries(opciones).map(([slug, data]) => ({
 						<div class="estacion-actions">
 							<button 
 								class="btn-scrapear"
-								onclick={`scrapearEstacion('${estacion.slug}')`}
+								onclick={`scrapearEstacionIndividual('${estacion.slug}')`}
 							>
 								🔄 Scrapear
 							</button>
@@ -85,6 +111,7 @@ const estaciones = Object.entries(opciones).map(([slug, data]) => ({
 				exitosos: 0,
 				errores: 0
 			};
+			let scrapingInProgress = false;
 
 			function actualizarStats() {
 				document.getElementById('total-scrapeados').textContent = stats.scrapeados.toString();
@@ -142,6 +169,65 @@ const estaciones = Object.entries(opciones).map(([slug, data]) => ({
 				resultDiv.style.display = 'block';
 			}
 
+			function acelerarLoader(loader, incluirTodos) {
+				if (!loader) return () => {};
+
+				const startedAt = performance.now();
+				const updateSpeed = () => {
+					const progress = Math.min((performance.now() - startedAt) / 5000, 1);
+					const acceleration = progress * progress;
+					const astroSpeed = 0.32 - (0.25 * acceleration);
+					const rainbowSpeed = 0.24 - (0.19 * acceleration);
+
+					loader.style.setProperty('--astro-loader-speed', `${astroSpeed.toFixed(3)}s`);
+					loader.style.setProperty('--rainbow-loader-speed', `${rainbowSpeed.toFixed(3)}s`);
+					if (incluirTodos) {
+						loader.querySelector('.walking-loader')?.style.setProperty('--walking-speed', `${(0.7 - (0.45 * acceleration)).toFixed(3)}s`);
+						loader.querySelector('.capy-loader')?.style.setProperty('--capy-speed', `${(0.8 - (0.55 * acceleration)).toFixed(3)}s`);
+						loader.querySelector('.hamster-wheel-loader')?.style.setProperty('--hamster-duration', `${(0.8 - (0.55 * acceleration)).toFixed(3)}s`);
+					}
+				};
+
+			updateSpeed();
+			const intervalId = window.setInterval(updateSpeed, 100);
+
+			return () => {
+				window.clearInterval(intervalId);
+				loader.style.removeProperty('--astro-loader-speed');
+				loader.style.removeProperty('--rainbow-loader-speed');
+				if (incluirTodos) {
+					loader.querySelector('.walking-loader')?.style.removeProperty('--walking-speed');
+					loader.querySelector('.capy-loader')?.style.removeProperty('--capy-speed');
+					loader.querySelector('.hamster-wheel-loader')?.style.removeProperty('--hamster-duration');
+				}
+			};
+		}
+
+			function iniciarOverlayScraping(mensaje, modo) {
+				if (scrapingInProgress) return null;
+				scrapingInProgress = true;
+
+				const loader = document.getElementById(modo === 'individual' ? 'single-scrape-loader' : 'scrape-loader');
+				const progress = loader?.querySelector('.scrape-loader-progress');
+				const detenerAceleracion = acelerarLoader(loader, modo === 'individual');
+				if (progress) progress.textContent = mensaje;
+				if (loader) loader.hidden = false;
+				document.body.classList.add('scraping-active');
+				document.querySelectorAll('.btn-mass-action, .btn-scrapear').forEach(button => {
+					button.disabled = true;
+				});
+
+				return () => {
+					detenerAceleracion();
+					if (loader) loader.hidden = true;
+					document.body.classList.remove('scraping-active');
+					document.querySelectorAll('.btn-mass-action, .btn-scrapear').forEach(button => {
+						button.disabled = false;
+					});
+					scrapingInProgress = false;
+				};
+			}
+
 			window.scrapearEstacion = async function(slug) {
 				const API_BASE = 'https://api-esqui-scraping.onrender.com';
 				
@@ -194,19 +280,48 @@ const estaciones = Object.entries(opciones).map(([slug, data]) => ({
 				}
 			}
 
+			window.scrapearEstacionIndividual = async function(slug) {
+				const stationName = document.querySelector(`[data-slug="${slug}"] h3`)?.textContent || slug;
+				const finalizar = iniciarOverlayScraping(`Scrapeando ${stationName}...`, 'individual');
+				if (!finalizar) return;
+				const startedAt = performance.now();
+
+				try {
+					await window.scrapearEstacion(slug);
+				} finally {
+					const remainingTime = 5000 - (performance.now() - startedAt);
+					if (remainingTime > 0) {
+						await new Promise(resolve => setTimeout(resolve, remainingTime));
+					}
+					finalizar();
+				}
+			}
+
 			window.scrapearTodas = async function() {
 				const estaciones = Array.from(document.querySelectorAll('[data-slug]'))
 					.map(el => el.getAttribute('data-slug'))
 					.filter(Boolean);
+				if (estaciones.length === 0) return;
+
+				const finalizar = iniciarOverlayScraping('Preparando scraping...', 'all');
+				if (!finalizar) return;
+				const progress = document.querySelector('#scrape-loader .scrape-loader-progress');
 
 				// Resetear stats
 				stats = { scrapeados: 0, exitosos: 0, errores: 0 };
 				actualizarStats();
 
-				for (const slug of estaciones) {
-					await window.scrapearEstacion(slug);
-					// Esperar 1 segundo entre requests para no sobrecargar
-					await new Promise(resolve => setTimeout(resolve, 1000));
+				try {
+					for (const [index, slug] of estaciones.entries()) {
+						const stationName = document.querySelector(`[data-slug="${slug}"] h3`)?.textContent || slug;
+						if (progress) progress.textContent = `${index + 1} de ${estaciones.length} · ${stationName}`;
+						await window.scrapearEstacion(slug);
+						if (index < estaciones.length - 1) {
+							await new Promise(resolve => setTimeout(resolve, 1000));
+						}
+					}
+				} finally {
+					finalizar();
 				}
 			}
 
@@ -286,7 +401,7 @@ const estaciones = Object.entries(opciones).map(([slug, data]) => ({
 	</body>
 </html>
 
-<style>
+<style is:global>
 	* {
 		margin: 0;
 		padding: 0;
@@ -636,7 +751,367 @@ const estaciones = Object.entries(opciones).map(([slug, data]) => ({
 		body {
 			padding: 1rem;
 		}
+	}
 
+
+	:root {
+		--admin-ink: #172b26;
+		--admin-muted: #687970;
+		--admin-paper: #f2f3ec;
+		--admin-line: #d7ddd3;
+		--admin-forest: #153d35;
+		--admin-coral: #e65c42;
+	}
+
+	body {
+		min-height: 100vh;
+		padding: 28px;
+		background: var(--admin-paper);
+		background-image: radial-gradient(rgba(21, 61, 53, 0.08) 0.7px, transparent 0.7px);
+		background-size: 19px 19px;
+		color: var(--admin-ink);
+		font-family: 'DM Sans', sans-serif;
+	}
+
+	.admin-container {
+		max-width: 1240px;
+	}
+
+	.admin-header {
+		padding: 26px 28px;
+		border-radius: 5px;
+		background: var(--admin-forest);
+		text-align: left;
+		color: #fff;
+	}
+
+	.admin-header h1 {
+		font-family: 'Barlow Condensed', Impact, sans-serif;
+		font-size: 34px;
+		text-shadow: none;
+	}
+
+	.subtitle {
+		margin-bottom: 16px;
+		color: rgba(255, 255, 255, 0.75);
+		font-size: 13px;
+	}
+
+	.btn-home {
+		padding: 0;
+		background: none;
+		backdrop-filter: none;
+		color: #d8e56a;
+		font-size: 12px;
+		font-weight: 700;
+	}
+
+	.btn-home:hover {
+		background: none;
+		transform: none;
+		color: #fff;
+	}
+
+	.stats-section {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 10px;
+		margin: 14px 0;
+	}
+
+	.stat-card {
+		padding: 16px 18px;
+		border: 1px solid var(--admin-line);
+		border-radius: 4px;
+		background: rgba(255, 255, 255, 0.75);
+		text-align: left;
+		box-shadow: none;
+	}
+
+	.stat-value {
+		margin-bottom: 2px;
+		color: var(--admin-forest);
+		font-family: 'Barlow Condensed', Impact, sans-serif;
+		font-size: 32px;
+	}
+
+	.stat-label {
+		color: var(--admin-muted);
+		font-size: 10px;
+		letter-spacing: 0;
+	}
+
+	.actions-section {
+		justify-content: flex-start;
+		gap: 8px;
+		margin-bottom: 14px;
+	}
+
+	.btn-mass-action {
+		padding: 11px 16px;
+		border: 1px solid var(--admin-forest);
+		border-radius: 4px;
+		background: var(--admin-forest);
+		color: #fff;
+		font-size: 12px;
+		box-shadow: none;
+	}
+
+	.btn-mass-action.secondary {
+		border-color: var(--admin-line);
+		background: #fff;
+		color: var(--admin-forest);
+		box-shadow: none;
+	}
+
+	.btn-mass-action:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 3px 9px rgba(21, 61, 53, 0.12);
+	}
+
+	.btn-mass-action:disabled {
+		cursor: wait;
+		opacity: 0.65;
+	}
+
+	.estaciones-grid {
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr));
+		gap: 10px;
+	}
+
+	.estacion-card {
+		padding: 14px;
+		border: 1px solid var(--admin-line);
+		border-radius: 4px;
+		background: rgba(255, 255, 255, 0.78);
+		box-shadow: none;
+		transition: border-color 160ms ease, background-color 160ms ease;
+	}
+
+	.estacion-card:hover {
+		transform: none;
+		border-color: #9cad9f;
+		background: #fff;
+		box-shadow: none;
+	}
+
+	.estacion-header {
+		gap: 8px;
+		margin-bottom: 10px;
+		padding-bottom: 10px;
+		border-bottom: 1px solid var(--admin-line);
+	}
+
+	.estacion-header h3 {
+		color: var(--admin-ink);
+		font-family: 'Barlow Condensed', Impact, sans-serif;
+		font-size: 21px;
+	}
+
+	.status-badge {
+		padding: 4px 7px;
+		border-radius: 3px;
+		font-size: 10px;
+		white-space: nowrap;
+	}
+
+	.status-badge.loading {
+		background: #f7edc8;
+		color: #66551c;
+	}
+
+	.status-badge.success {
+		background: #dcebe2;
+		color: #24553e;
+	}
+
+	.status-badge.error {
+		background: #f8e1da;
+		color: #8d3528;
+	}
+
+	.estacion-actions button {
+		padding: 9px;
+		border: 1px solid var(--admin-line);
+		border-radius: 3px;
+		font-size: 11px;
+	}
+
+	.btn-scrapear {
+		border-color: var(--admin-forest) !important;
+		background: var(--admin-forest);
+	}
+
+	.btn-view {
+		background: #f1f3ed;
+		color: var(--admin-ink);
+	}
+
+	.estacion-actions button:hover {
+		transform: none;
+		box-shadow: 0 2px 6px rgba(21, 61, 53, 0.12);
+	}
+
+	.result-success,
+	.result-error {
+		border-radius: 3px;
+	}
+
+	.db-viewer {
+		z-index: 1500;
+		background: rgba(11, 27, 23, 0.94);
+	}
+
+	.db-card {
+		border-radius: 4px;
+	}
+
+	.db-card h3 {
+		color: var(--admin-forest);
+	}
+
+	.scrape-loader-overlay[hidden] {
+		display: none;
+	}
+
+	.scrape-loader-overlay {
+		--astro-loader-speed: 0.32s;
+		--rainbow-loader-speed: 0.24s;
+		--rainbow-loader-delay: 0s;
+		position: fixed;
+		inset: 0;
+		z-index: 3000;
+		overflow: hidden;
+		background: #10232b;
+		isolation: isolate;
+	}
+
+	.scraping-active {
+		overflow: hidden;
+	}
+
+	.scrape-loader-overlay--all > .rainbow-loader {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		z-index: 0;
+		transform: translate(-50%, -50%);
+	}
+
+	.scrape-loader-overlay--all .rainbow-loader__spinner {
+		width: min(74vmin, 560px);
+		height: min(74vmin, 560px);
+		flex-basis: min(74vmin, 560px);
+		opacity: 0.78;
+	}
+
+	.scrape-loader-overlay--all > .astro-loader {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		width: 100%;
+		min-height: 100%;
+		border-radius: 0;
+		background: transparent;
+	}
+
+	.scrape-loader-overlay--all .astro-loader__astronaut {
+		width: 250px;
+		height: 300px;
+	}
+
+	.scrape-loader-overlay--individual {
+		--walking-speed: 0.7s;
+		--capy-speed: 0.8s;
+		--hamster-duration: 0.8s;
+	}
+
+	.scrape-loader__stage {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-template-rows: repeat(2, minmax(0, 1fr));
+		place-items: center;
+		padding: 20px 4vw 100px;
+	}
+
+	.scrape-loader__item {
+		display: grid;
+		min-width: 0;
+		min-height: 0;
+		place-items: center;
+	}
+
+	.scrape-loader__item--rainbow {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	.scrape-loader__item--astro {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	.scrape-loader__item--walking {
+		grid-column: 3;
+		grid-row: 1;
+	}
+
+	.scrape-loader__item--capy {
+		grid-column: 1;
+		grid-row: 2;
+	}
+
+	.scrape-loader__item--hamster {
+		grid-column: 3;
+		grid-row: 2;
+	}
+
+	.scrape-loader-overlay--individual .scrape-loader__item--rainbow .rainbow-loader__spinner {
+		width: clamp(100px, 17vmin, 210px);
+		height: clamp(100px, 17vmin, 210px);
+		flex-basis: clamp(100px, 17vmin, 210px);
+		opacity: 0.82;
+	}
+
+	.scrape-loader-overlay--individual .scrape-loader__item--astro .astro-loader {
+		width: 250px;
+		min-height: 300px;
+		border-radius: 0;
+		background: transparent;
+	}
+
+	.scrape-loader-overlay--individual .astro-loader__label,
+	.scrape-loader-overlay--individual .walking-loader__label,
+	.scrape-loader-overlay--individual .capy-loader__label,
+	.scrape-loader-overlay--individual .hamster-wheel-loader__label {
+		display: none;
+	}
+
+	.scrape-loader__message {
+		position: absolute;
+		bottom: max(34px, env(safe-area-inset-bottom));
+		left: 50%;
+		z-index: 20;
+		display: grid;
+		gap: 6px;
+		width: min(90vw, 340px);
+		text-align: center;
+		transform: translateX(-50%);
+	}
+
+	.scrape-loader__message strong {
+		color: #fff;
+		font-family: 'Barlow Condensed', Impact, sans-serif;
+		font-size: 24px;
+	}
+
+	.scrape-loader__message span {
+		color: rgba(255, 255, 255, 0.78);
+		font-size: 12px;
+	}
+
+	@media (max-width: 768px) {
 		.admin-header h1 {
 			font-size: 1.75rem;
 		}
@@ -651,6 +1126,74 @@ const estaciones = Object.entries(opciones).map(([slug, data]) => ({
 
 		.db-grid {
 			grid-template-columns: 1fr;
+		}
+
+		body {
+			padding: 12px;
+		}
+
+		.admin-header {
+			padding: 20px;
+		}
+
+		.stats-section {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 6px;
+		}
+
+		.stat-card {
+			padding: 12px 8px;
+		}
+
+		.stat-value {
+			font-size: 27px;
+		}
+
+		.scrape-loader-overlay--individual .scrape-loader__stage {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			grid-template-rows: repeat(3, minmax(0, 1fr));
+			padding: 12px 8px 112px;
+		}
+
+		.scrape-loader-overlay--individual .scrape-loader__item--rainbow {
+			grid-column: 1;
+			grid-row: 1;
+		}
+
+		.scrape-loader-overlay--individual .scrape-loader__item--astro {
+			grid-column: 2;
+			grid-row: 1;
+		}
+
+		.scrape-loader-overlay--individual .scrape-loader__item--walking {
+			grid-column: 1;
+			grid-row: 2;
+		}
+
+		.scrape-loader-overlay--individual .scrape-loader__item--capy {
+			grid-column: 2;
+			grid-row: 2;
+		}
+
+		.scrape-loader-overlay--individual .scrape-loader__item--hamster {
+			grid-column: 1 / -1;
+			grid-row: 3;
+		}
+
+		.scrape-loader-overlay--individual .scrape-loader__item--rainbow .rainbow-loader__spinner {
+			width: clamp(82px, 22vw, 130px);
+			height: clamp(82px, 22vw, 130px);
+			flex-basis: clamp(82px, 22vw, 130px);
+		}
+
+		.scrape-loader-overlay--individual .scrape-loader__item--astro {
+			scale: 0.7;
+		}
+
+		.scrape-loader-overlay--individual .scrape-loader__item--walking,
+		.scrape-loader-overlay--individual .scrape-loader__item--capy,
+		.scrape-loader-overlay--individual .scrape-loader__item--hamster {
+			scale: 0.78;
 		}
 	}
 </style>

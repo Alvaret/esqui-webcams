@@ -1,0 +1,45 @@
+---
+import './AstroLoader.css';
+
+interface Props {
+	label?: string;
+}
+
+const { label = 'Cargando' } = Astro.props;
+const starPositions = [
+	{ top: '8%', left: '5%' },
+	{ top: '30%', left: '18%' },
+	{ top: '15%', left: '40%' },
+	{ top: '34%', left: '63%' },
+	{ top: '6%', left: '78%' },
+	{ top: '25%', left: '91%' },
+	{ top: '9%', left: '54%' },
+];
+---
+
+<div class="astro-loader" role="status" aria-label={label}>
+	<span class="astro-loader__label">{label}</span>
+	<div class="astro-loader__stars" aria-hidden="true">
+		{Array.from({ length: 4 }, (_, layer) => (
+			<div class={`astro-loader__star-layer astro-loader__star-layer--${layer + 1}`}>
+				{starPositions.map((position, index) => (
+					<span
+						class="astro-loader__star"
+						style={`top: ${position.top}; left: ${position.left}; --star-index: ${index}`}
+					></span>
+				))}
+			</div>
+		))}
+	</div>
+	<div class="astro-loader__astronaut" aria-hidden="true">
+		<div class="astro-loader__head"></div>
+		<div class="astro-loader__arm astro-loader__arm--left"></div>
+		<div class="astro-loader__arm astro-loader__arm--right"></div>
+		<div class="astro-loader__body">
+			<div class="astro-loader__panel"></div>
+		</div>
+		<div class="astro-loader__leg astro-loader__leg--left"></div>
+		<div class="astro-loader__leg astro-loader__leg--right"></div>
+		<div class="astro-loader__schoolbag"></div>
+	</div>
+</div>
