@@ -39,10 +39,11 @@ const { clave } = Astro.props;
 			// Evita el doble init (HMR en desarrollo / re-ejecución del script)
 			if (canvas.dataset.inicializado === 'true') return;
 
-			// Estilo público de OpenSkiMap: pistas y remontes de OSM + terreno 3D, sin API key
+			// OpenSkiMap bloqueó el uso de sus tiles en producción (verificación de referer).
+			// Winter 3D de maptoolkit.org: pistas/remontes de OSM + terreno 3D, comunidad sin clave.
 			const map = new maplibregl.Map({
 				container: canvas.id,
-				style: 'https://tiles.openskimap.org/styles/terrain_v2.json',
+				style: 'https://styles.maptoolkit.org/winter-3d.json',
 				center: [ubicacion.lon, ubicacion.lat],
 				zoom: Number(contenedor.dataset.zoom ?? 13),
 				pitch: 60,
@@ -52,10 +53,14 @@ const { clave } = Astro.props;
 				fadeDuration: 0
 			});
 
-			map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-left');
+			// Crédito obligatorio de los tiles (comunidad de maptoolkit + OSM)
+			map.addControl(
+				new maplibregl.AttributionControl({ compact: true, customAttribution: '© maptoolkit.org · © OpenStreetMap contributors' }),
+				'bottom-left'
+			);
 			map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
 			// Interruptor del relieve 3D (arranca activo por la propiedad terrain del estilo)
-			map.addControl(new maplibregl.TerrainControl({ source: 'terrain', exaggeration: 1 }), 'top-right');
+			map.addControl(new maplibregl.TerrainControl({ source: 'rgb-tiles', exaggeration: 1 }), 'top-right');
 			map.addControl(new maplibregl.FullscreenControl(), 'top-right');
 			map.on('error', (e) => console.error('Mapa 3D:', e.error));
 			canvas.dataset.inicializado = 'true';
