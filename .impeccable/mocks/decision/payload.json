@@ -1,0 +1,220 @@
+{
+ "title": "Elige el mundo visual del rediseño",
+ "question": "El rediseño completo se construye sobre uno de estos mundos. Mantén el asignado, toma un alternativo o re-tira.",
+ "options": [
+  {
+   "id": "senyal-pistas",
+   "kind": "assigned",
+   "label": "Señalética de pistas",
+   "kicker": "THE ROLL",
+   "lineage": "cartelería de balizamiento de pistas y remontes",
+   "thesis": "Cada estación es un hito balizado: paneles de alto contraste hechos para leerse al sol, con la cota crítica como placa de pista.",
+   "palette": [
+    "#15130f",
+    "#f2f0e9",
+    "#f7b32b",
+    "#d84a26",
+    "#1b7a43"
+   ],
+   "materials": [
+    "tinta sobre chapa esmaltada",
+    "paneles redondeados de balizamiento"
+   ],
+   "viewport": "Cabecera tinta con placa EN DIRECTO ámbar; tarjetas-fito con placa de cota bicolor y contador de cámaras como rombo balizado.",
+   "risk": "Si el alto contraste se relaja por zonas, parece pegatina sin sistema.",
+   "raised": [
+    {
+     "from": "challenger-consola",
+     "raise": "La lista divide estaciones por costuras de un píxel con prioridad de colapso: menor ruido de bordes, densidad de consola de trabajo."
+    },
+    {
+     "from": "challenger-folio-botanico",
+     "raise": "Todas las placas de cota comparten escala y línea base exactas, para poder comparar estaciones de un vistazo."
+    },
+    {
+     "from": "challenger-labanotacion",
+     "raise": "El estado (directo/sin imagen) sube por la página como un ascensor: la señal de vida está siempre arriba, no abajo."
+    }
+   ],
+   "html": ".impeccable/mocks/decision/senyal-pistas.html",
+   "htmlFrame": "390x844"
+  },
+  {
+   "id": "parte-nieve",
+   "kind": "pick",
+   "kicker": "IMPECCABLE’S PICK",
+   "label": "Parte de nieve",
+   "lineage": "boletín tabular diario de estación",
+   "thesis": "El directorio como el parte oficial del día: se lee de arriba abajo, con estado y cotas en columna.",
+   "palette": [
+    "#1a1c17",
+    "#fbfaf6",
+    "#c2371f"
+   ],
+   "materials": [
+    "papel prentado",
+    "filete editorial",
+    "cifras monoespaciadas"
+   ],
+   "viewport": "Mástil de boletín con filete negro, cabecera de tabla, filas de estación con cota y cámaras.",
+   "risk": "A sabiendas: es la dirección donde aterriza la mayoría de las ejecuciones de esta categoría.",
+   "html": ".impeccable/mocks/decision/parte-nieve.html",
+   "htmlFrame": "390x844"
+  },
+  {
+   "id": "challenger-transit",
+   "kind": "challenger",
+   "catalogId": "wayfinding-cartography-signage-midnight-transit-diagram",
+   "label": "Transit de medianoche",
+   "verdict": "competitive",
+   "lineage": "mapa de metro esmaltado",
+   "thesis": "El Pirineo como red nocturna: cada estación un intercambio, el color la línea que sigues.",
+   "palette": [
+    "#0b1f3a",
+    "#f3efe4",
+    "#c8102e",
+    "#0d5ea8",
+    "#d99a1b"
+   ],
+   "materials": [
+    "esmalte azul medianoche",
+    "porcelana",
+    "líneas de color"
+   ],
+   "viewport": "Barra superior de red, tira de líneas de color, estaciones como intercambios con etiqueta de cámaras.",
+   "case": "Identificación de audiencia fuerte (el mapa mental del dominio) pero menuda: en exterior a pleno sol pierde contraste frente al asignado.",
+   "risk": "Leer da color oscuro al aire libre bajo luz solar directa.",
+   "html": ".impeccable/mocks/decision/transit.html",
+   "htmlFrame": "390x844"
+  },
+  {
+   "id": "challenger-folio-botanico",
+   "kind": "challenger",
+   "catalogId": "editorial-sequence-montage-botanical-folio-season",
+   "label": "Folio botánico",
+   "verdict": "declined",
+   "lineage": "láminas de botánica a escala fija",
+   "palette": [
+    "#f4efdf",
+    "#3c5a3a",
+    "#7a1f28"
+   ],
+   "materials": [
+    "grabado sepia",
+    "regla capilar"
+   ],
+   "case": "La comparación a escala fija no lleva el estado en tiempo real que pide la cámara.",
+   "kept": "Comparabilidad a escala fija entre fichas.",
+   "hero": "https://impeccable.style/worlds/cards/editorial-sequence-montage-botanical-folio-season-hero.webp"
+  },
+  {
+   "id": "challenger-labanotacion",
+   "kind": "challenger",
+   "catalogId": "notation-diagram-systems-labanotation",
+   "label": "Labanotación",
+   "verdict": "declined",
+   "lineage": "partitura vertical de danza",
+   "palette": [
+    "#ffffff",
+    "#111111",
+    "#c9c9c9"
+   ],
+   "materials": [
+    "bloques rellenos",
+    "papel de partitura"
+   ],
+   "case": "La partitura temporal no deja hueco para autoridad de la cámara en vivo.",
+   "kept": "La señal de vida que sube por la página como un ascensor.",
+   "hero": "https://impeccable.style/worlds/cards/notation-diagram-systems-labanotation-hero.webp"
+  },
+  {
+   "id": "challenger-consola",
+   "kind": "challenger",
+   "catalogId": "digital-design-canon-dark-first-developer-console",
+   "label": "Consola de trabajo",
+   "verdict": "declined",
+   "lineage": "consola de desarrollador dark-first",
+   "palette": [
+    "#14171c",
+    "#9fb4c0",
+    "#4fd1c5"
+   ],
+   "materials": [
+    "costuras capilares",
+    "grafito"
+   ],
+   "case": "Vestir de consola a una herramienta de consulta de cámaras es disfraz, no sistema del dominio.",
+   "kept": "Disciplina de paneles por costura y colapso por prioridad.",
+   "hero": "https://impeccable.style/worlds/cards/digital-design-canon-dark-first-developer-console-hero.webp"
+  },
+  {
+   "id": "challenger-crouwel",
+   "kind": "challenger",
+   "catalogId": "crouwel-grid-specimen",
+   "label": "Crouwel especimen",
+   "verdict": "declined",
+   "lineage": "espécimen tipográfico de Crouwel",
+   "palette": [
+    "#f5f4f0",
+    "#1a1a1a",
+    "#0033cc"
+   ],
+   "materials": [
+    "rejilla de construcción",
+    "papel de espeficación"
+   ],
+   "case": "La palabra tipográfica no apunta hacia datos en vivo; pide gesto de portada.",
+   "kept": "Coraje de densidad y valentía de la rejilla.",
+   "hero": "https://impeccable.style/worlds/cards/crouwel-grid-specimen-hero.webp"
+  },
+  {
+   "id": "challenger-esp",
+   "kind": "challenger",
+   "catalogId": "variable-font-specimen",
+   "label": "Especimen variable",
+   "verdict": "declined",
+   "lineage": "especimen tipográfico interactivo",
+   "palette": [
+    "#fafafa",
+    "#111111",
+    "#ff4d00"
+   ],
+   "materials": [
+    "planos de papel",
+    "eje de variación"
+   ],
+   "case": "El eje tipográfico no sostiene la lectura de condiciones en vivo.",
+   "kept": "Cifra viva: el dato que se lee bien a primera vista.",
+   "hero": "https://impeccable.style/worlds/cards/variable-font-specimen-hero.webp"
+  }
+ ],
+ "reroll": {
+  "registers": [
+   "safer",
+   "bolder"
+  ]
+ },
+ "buildPath": {
+  "value": "code"
+ },
+ "canon": true,
+ "canonCard": {
+  "kind": "canon",
+  "label": "El estándar de la categoría",
+  "thesis": "Qué envía esta categoría por defecto: rejilla limpia, tarjetas con imagen, ejecutado impecablemente.",
+  "palette": [
+   "#ffffff",
+   "#111827",
+   "#2563eb"
+  ],
+  "materials": [
+   "rejilla limpia",
+   "tarjeta con imagen"
+  ],
+  "viewport": "La disposición que el visitante espera, con el máximo oficio.",
+  "risk": "Indistinguible de la competencia por diseño.",
+  "html": ".impeccable/mocks/decision/canon.html",
+  "htmlFrame": "390x844"
+ },
+ "steer": true
+}

@@ -10,25 +10,24 @@
 	display: flex;
 	align-items: center;
 	gap: 5px;
-	padding: 7px 10px;
-	background: var(--forest);
-	border: 1px solid rgba(255, 255, 255, 0.22);
-	border-radius: 3px;
-	box-shadow: 0 3px 10px rgba(23, 43, 38, 0.18);
-	font-size: 10px;
+	padding: 7px 11px;
+	background: var(--amber);
+	border: 2px solid var(--ink);
+	border-radius: 6px 6px 6px 0;
+	box-shadow: var(--shadow-float);
+	font-size: 11px;
 	font-weight: 500;
-	color: #fff;
+	color: var(--ink);
 	white-space: nowrap;
 }
 
 .credit-text {
 	font-weight: 400;
-	opacity: 0.9;
 }
 
 .credit-name {
-	font-weight: 700;
-	color: var(--lime);
+	font-weight: 800;
+	color: var(--ink);
 }
 
 .credit-heart {
@@ -45,4 +44,3 @@
 		transform: translateY(0);
 	}
 }
-

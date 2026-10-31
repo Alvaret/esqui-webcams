@@ -49,14 +49,13 @@ const fechaActualizacion = data.timestamp
   )}
 
   {fechaActualizacion && (
-    <div class="timestamp-header">
-      <span class="icono-reloj">🕐</span>
+    <div class="timestamp-header"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="var(--amber)" stroke-width="1.8"/><path d="M8 4.5V8l2.4 1.6" stroke="var(--amber)" stroke-width="1.8" stroke-linecap="round"/></svg>
       <span>Última actualización: {fechaActualizacion}</span>
     </div>
   )}
 
   <div class="dato-card">
-    <div class="icono">🚡</div>
+    <div class="icono"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M2.5 2h13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="11.6" y="3.5" width="3.4" height="5.5" rx="0.9" fill="currentColor"/><path d="M13.3 3.5V2" stroke="currentColor" stroke-width="1.2"/><path d="M5 6.5v6" stroke="currentColor" stroke-width="1.5"/><circle cx="6.5" cy="13.5" r="2.4" stroke="currentColor" stroke-width="2"/><rect x="3.4" y="6.5" width="7" height="1.2" rx="0.6" fill="currentColor"/></svg></div>
     <div class="contenido">
       <span class="label">Remontes</span>
       <span class="valor">{remontes}</span>
@@ -64,7 +63,7 @@ const fechaActualizacion = data.timestamp
   </div>
 
   <div class="dato-card">
-    <div class="icono">⛷️</div>
+    <div class="icono"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M2.5 15.5c3 0 3-4.5 6.5-4.5s3.5 4.5 6.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="0.5 3.2" stroke-dashoffset="0.8"/><path d="M11.2 2l4.8 4.8M16 2l-4.8 4.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M13.6 4.4V15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
     <div class="contenido">
       <span class="label">Kilómetros</span>
       <span class="valor">{kilometros}</span>
@@ -72,7 +71,7 @@ const fechaActualizacion = data.timestamp
   </div>
 
   <div class="dato-card">
-    <div class="icono">❄️</div>
+    <div class="icono"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M9 1.5v15M1.5 9h15M3.8 3.8l10.4 10.4M14.2 3.8L3.8 14.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="9" cy="9" r="2" fill="currentColor"/></svg></div>
     <div class="contenido">
       <span class="label">Nieve</span>
       <span class="valor">{nieve}</span>
@@ -85,7 +84,7 @@ const fechaActualizacion = data.timestamp
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     width: 100%;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid var(--seam);
   }
 
   .timestamp-header {
@@ -94,20 +93,22 @@ const fechaActualizacion = data.timestamp
     align-items: center;
     gap: 8px;
     padding: 10px 0;
-    border-bottom: 1px solid var(--line);
-    color: var(--muted);
+    border-bottom: 1px solid var(--seam);
+    color: var(--ink-soft);
     font-size: 10px;
     font-weight: 600;
   }
 
   .closed-status {
-    grid-column: 1 / -1;
     display: flex;
+    grid-column: 1 / -1;
     align-items: center;
     gap: 10px;
     padding: 11px 12px;
-    border-left: 3px solid var(--coral);
-    background: #f5e7df;
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    background: var(--signal-red);
+    box-shadow: var(--shadow-card);
   }
 
   .closed-status-mark {
@@ -117,26 +118,26 @@ const fechaActualizacion = data.timestamp
     flex: 0 0 auto;
     place-items: center;
     border-radius: 50%;
-    background: var(--coral);
-    color: #fff;
+    background: #fff;
+    color: var(--signal-red);
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
   }
 
   .closed-status strong {
-    color: var(--ink);
+    color: #fff;
     font-size: 12px;
   }
 
   .closed-status p {
     margin: 2px 0 0;
-    color: var(--muted);
+    color: rgba(255, 255, 255, 0.92);
     font-size: 10px;
     line-height: 1.4;
   }
 
   .icono-reloj {
-    color: var(--coral);
+    color: var(--amber);
     font-size: 13px;
   }
 
@@ -146,7 +147,7 @@ const fechaActualizacion = data.timestamp
     flex-direction: column;
     gap: 4px;
     padding: 11px 7px 11px 0;
-    border-right: 1px solid var(--line);
+    border-right: 1px solid var(--seam);
   }
 
   .dato-card:last-child {
@@ -154,7 +155,9 @@ const fechaActualizacion = data.timestamp
   }
 
   .icono {
-    font-size: 14px;
+    color: var(--ink);
+    width: 18px;
+    height: 18px;
     line-height: 1;
     flex-shrink: 0;
   }
@@ -166,25 +169,28 @@ const fechaActualizacion = data.timestamp
   }
 
   .label {
-    color: var(--muted);
+    color: var(--ink-soft);
     font-size: 9px;
     font-weight: 700;
+    letter-spacing: 0.08em;
   }
 
   .valor {
     color: var(--ink);
-    font-family: var(--display);
+    font-family: var(--body);
     font-size: 19px;
-    font-weight: 600;
+    font-weight: 800;
     line-height: 1.05;
+    font-variant-numeric: tabular-nums;
     overflow-wrap: anywhere;
   }
 
   .error-message {
     padding: 12px;
     width: 100%;
-    border-left: 3px solid var(--coral);
-    background: var(--paper-deep);
+    border: 1px solid var(--seam);
+    border-radius: 8px;
+    background: #fff;
   }
 
   .error-message p {
@@ -200,7 +206,8 @@ const fechaActualizacion = data.timestamp
     }
 
     .icono {
-      font-size: 16px;
+      width: 16px;
+      height: 16px;
     }
 
     .valor {

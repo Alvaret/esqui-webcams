@@ -9,20 +9,41 @@ interface Props {
 	webcams: number;
 	altitudMinima: string;
 	altitudMaxima: string;
+	/** Nieve acumulada prevista a 14 días, en cm (undefined si no hay datos) */
+	nevadaCm?: number;
+	/** Fecha ISO del primer día de nevada prevista */
+	primerDiaNevada?: string | null;
 }
 
-const { clave, nombre, urlFoto, indice, webcams, altitudMinima, altitudMaxima } = Astro.props;
+const { clave, nombre, urlFoto, indice, webcams, altitudMinima, altitudMaxima, nevadaCm, primerDiaNevada } = Astro.props;
 const nombreNormalizado = nombre.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+// Los datos llegan con coma de millar anglosajona; la señalética española usa punto de millar
+const formatearCota = (v: string) => v.replace(/(\d),(\d{3})/g, '$1.$2');
+const metaCotas = `${formatearCota(altitudMinima)} – ${formatearCota(altitudMaxima)}`;
+const cotaMaxima = formatearCota(altitudMaxima.replace(/\s*m$/, ''));
+const nf = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1 });
+const nevada = (nevadaCm ?? 0) > 0;
+const primerDia = primerDiaNevada
+	? new Date(`${primerDiaNevada}T12:00:00`).toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric' })
+	: null;
 ---
 
 <a href={`/estacion/${clave}`} class="station-card" data-station-card data-name={nombreNormalizado}>
-	<span class="station-brand-plate">
-		<img src={urlFoto} alt="" class="station-logo" loading="lazy" />
+	<span class="station-plate" aria-hidden="true">
+		<span class="station-plate-label">COTA</span>
+		<b class="station-plate-value">{cotaMaxima}</b>
 	</span>
 	<span class="station-card-main">
-		<span class="station-card-kicker">ESTACIÓN <span>{String(indice).padStart(2, '0')}</span></span>
 		<strong class="station-card-name">{nombre}</strong>
-		<span class="station-card-meta">{altitudMinima}—{altitudMaxima} <span aria-hidden="true">·</span> {webcams} cámaras</span>
-		<span class="station-card-link">VER CÁMARAS <span aria-hidden="true">↗</span></span>
+		<span class="station-card-meta">{metaCotas}</span>
+		{nevada && (
+			<span class="station-snow-tag">
+				<span class="station-snow-icon" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 1.5v13M2.2 4.75l11.6 7.5M13.8 4.75l-11.6 7.5M8 4l-1.8-1.3M8 4l1.8-1.3M8 12l-1.8 1.3M8 12l1.8 1.3M3.4 6l-2.2-.3M3.4 10l-2.2.3M12.6 6l2.2-.3M12.6 10l2.2.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></span>
+				{nf.format(nevadaCm)} cm de nieve{primerDia ? ` desde el ${primerDia}` : ''}
+			</span>
+		)}
+	</span>
+	<span class="station-webcam-badge" aria-label={`${webcams} ${webcams === 1 ? 'cámara' : 'cámaras'}`}>
+		<b>{webcams}</b>
 	</span>
 </a>

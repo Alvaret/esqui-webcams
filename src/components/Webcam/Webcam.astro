@@ -11,6 +11,19 @@ interface Props {
 }
 
 const { nombre, link, descripcion, isVideo = false, isFeratel = false, isImage = false } = Astro.props;
+
+// IPCamlive bloquea el embebido en iframes salvo plan de pago (Standard/Professional),
+// pero el endpoint snapshot.php?alias=… sirve la imagen viva de la cámara (refresco ~30 s,
+// mismo recurso que usa la web oficial). La renderizamos como <img> con auto-refresco y
+// fallback al visor del proveedor.
+const esIpcamlive = /(^|\.)ipcamlive\.com$/i.test(new URL(link, 'https://example.com').hostname) || /ipcamlive\.com\/player/i.test(link);
+const aliasIpcamlive = () => {
+	try {
+		return new URL(link).searchParams.get('alias') ?? '';
+	} catch {
+		return '';
+	}
+};
 ---
 
 <div class="webcam-item">
@@ -22,7 +35,23 @@ const { nombre, link, descripcion, isVideo = false, isFeratel = false, isImage =
 		{descripcion && <p class="webcam-descripcion">{descripcion}</p>}
 	</div>
 	<div class="webcam-player">
-		{isFeratel ? (
+		{esIpcamlive && aliasIpcamlive() ? (
+			<a class="webcam-live-snapshot" href={link} target="_blank" rel="noopener noreferrer" title="Ver video en IP Cam Live">
+				<img
+					class="snapshot-image"
+					src={`https://g0.ipcamlive.com/player/snapshot.php?alias=${aliasIpcamlive()}`}
+					alt={`Imagen en directo de la cámara ${nombre}`}
+					loading="lazy"
+					data-ipcamlive-refresh={aliasIpcamlive()}
+				/>
+				<span class="snapshot-fallback" aria-hidden="true">
+					<span class="blocked-copy">
+						<strong>Imagen no disponible ahora</strong>
+						<small>Ver la cámara en el visor de IP Cam Live ↗</small>
+					</span>
+				</span>
+			</a>
+		) : isFeratel ? (
 			<iframe 
 				title={nombre}
 				class="webcam-iframe"
@@ -64,4 +93,29 @@ const { nombre, link, descripcion, isVideo = false, isFeratel = false, isImage =
 		)}
 	</div>
 </div>
+
+<script>
+	// Las cámaras IPCamlive no permiten embebido con iframe, pero el endpoint
+	// snapshot.php sirve la imagen viva (refresco ~30 s). Auto-refrescamos
+	// con cache-busting y degradamos a enlace al visor si falla.
+	const refrescar = () => {
+		document.querySelectorAll('img[data-ipcamlive-refresh]').forEach((img: HTMLImageElement) => {
+			const alias = img.dataset.ipcamliveRefresh;
+			if (alias) img.src = `https://g0.ipcamlive.com/player/snapshot.php?alias=${alias}&t=${Date.now()}`;
+		});
+	};
+	window.setInterval(refrescar, 30000);
+
+	// el evento error no burbujea: escucha en fase de captura
+	document.addEventListener(
+		'error',
+		(event) => {
+			const img = event.target as HTMLImageElement | null;
+			if (img?.classList?.contains('snapshot-image')) {
+				img.closest('.webcam-live-snapshot')?.classList.add('snapshot-failed');
+			}
+		},
+		true
+	);
+</script>
 

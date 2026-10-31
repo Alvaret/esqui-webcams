@@ -51,7 +51,11 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       caches.match(request).then((cached) => {
         const fresh = fetch(request).then((response) => {
-          if (response.ok) caches.open(CACHE_NAME).then((cache) => cache.put(request, response.clone()));
+          if (response.ok) {
+            // Clonar aquí y ahora: en un then posterior el body ya está usado
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          }
           return response;
         });
         return cached || fresh;

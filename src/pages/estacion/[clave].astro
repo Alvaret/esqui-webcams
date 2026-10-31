@@ -3,7 +3,10 @@ import opciones from '../../data/opciones.json';
 import Webcam from '../../components/Webcam/Webcam.astro';
 import FloatingCredit from '../../components/FloatingCredit/FloatingCredit.astro';
 import InfoEstacion from '../../components/InfoEstacion/InfoEstacion.astro';
+import TiempoEstacion from '../../components/TiempoEstacion/TiempoEstacion.astro';
+import MapaPistas from '../../components/MapaPistas/MapaPistas.astro';
 import { obtenerEstacionPorSlug } from '../../lib/supabase';
+import { obtenerTiempoEstaciones, UBICACIONES } from '../../lib/weather';
 import type { EstacionData } from '../../lib/api';
 
 export function getStaticPaths() {
@@ -25,12 +28,23 @@ if (!estacion) {
 	return Astro.redirect('/');
 }
 
+// Coma de millar anglosajona en datos → punto de millar español
+const formatearCota = (v: string) => v.replace(/(\d),(\d{3})/g, '$1.$2');
+
 // Obtener datos desde Supabase directamente (sin API route)
 let datosAPI: EstacionData | null = null;
 try {
 	datosAPI = await obtenerEstacionPorSlug(clave);
 } catch (error) {
 	console.error(`Error al obtener datos de ${clave}:`, error);
+}
+
+// Pronóstico a 14 días (caché de ~15 min compartida con la home)
+let tiempoEstacion: import('../../lib/weather').TiempoEstacion | null = null;
+try {
+	tiempoEstacion = (await obtenerTiempoEstaciones())[clave] ?? null;
+} catch (error) {
+	console.error(`Error al obtener el tiempo de ${clave}:`, error);
 }
 ---
 
@@ -42,7 +56,7 @@ try {
 		<meta name="generator" content={Astro.generator} />
 		<title>{estacion.nombre} | PLWinterCam</title>
 		<meta name="description" content={`Cámaras en directo e información de ${estacion.nombre}.`} />
-		<meta name="theme-color" content="#153d35" />
+		<meta name="theme-color" content="#15130f" />
 		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-title" content="PLWinterCam" />
@@ -67,12 +81,11 @@ try {
 
 		<main class="container station-container">
 			<header class="station-heading">
-				<p class="eyebrow"><span class="eyebrow-rule"></span>ESTACIÓN DE MONTAÑA <span class="eyebrow-divider">/</span> PIRINEOS</p>
 				<h1>{estacion.nombre}</h1>
 				<p class="station-description">{estacion.descripcion}</p>
 				<div class="station-heading-meta">
-					<span><span class="signal-dot"></span> {estacion.webcams?.length ?? 0} CÁMARAS</span>
-					<span>{estacion.altitudMinima}—{estacion.altitudMaxima}</span>
+					<span><span class="signal-dot" aria-hidden="true"></span> {estacion.webcams?.length ?? 0} CÁMARAS</span>
+					<span>{formatearCota(estacion.altitudMinima)} – {formatearCota(estacion.altitudMaxima)}</span>
 				</div>
 			</header>
 
@@ -92,19 +105,24 @@ try {
 				</div>
 			)}
 
+			{tiempoEstacion && (
+				<div class="tiempo-section">
+					<div class="section-heading">
+						<h2>El tiempo</h2>
+					</div>
+					<TiempoEstacion tiempo={tiempoEstacion} />
+				</div>
+			)}
+
 			{estacion.webcams && estacion.webcams.length > 0 && (
 				<div class="webcams-section">
 					<div class="section-heading">
-						<div>
-							<p class="section-kicker">IMAGEN ACTUAL</p>
-							<h2>Cámaras</h2>
-						</div>
-						<span class="section-count">{String(estacion.webcams.length).padStart(2, '0')} VISTAS</span>
+						<h2>Cámaras <span class="section-count">({estacion.webcams.length})</span></h2>
 					</div>
 					<div class="webcams-list">
 						{
 							estacion.webcams.map((webcam: any) => (
-								<Webcam 
+								<Webcam
 									nombre={webcam.nombre}
 									link={webcam.link}
 									descripcion={webcam.descripcion}
@@ -118,21 +136,25 @@ try {
 				</div>
 			)}
 
+			<div class="mapa-section">
+				<div class="section-heading">
+					<h2>El dominio <span class="section-count">3D</span></h2>
+				</div>
+				<MapaPistas clave={clave} lat={UBICACIONES[clave]?.lat ?? 0} lon={UBICACIONES[clave]?.lon ?? 0} />
+			</div>
+
 			<div class="info-estacion">
 				<div class="section-heading">
-					<div>
-						<p class="section-kicker">DATOS DE MONTAÑA</p>
-						<h2>La estación</h2>
-					</div>
+					<h2>La estación</h2>
 				</div>
 				<div class="info-grid">
 					<div class="info-item">
 						<span class="info-label">Altitud máxima</span>
-						<span class="info-value">{estacion.altitudMaxima}</span>
+						<span class="info-value">{formatearCota(estacion.altitudMaxima)}</span>
 					</div>
 					<div class="info-item">
 						<span class="info-label">Altitud mínima</span>
-						<span class="info-value">{estacion.altitudMinima}</span>
+						<span class="info-value">{formatearCota(estacion.altitudMinima)}</span>
 					</div>
 					<div class="info-item">
 						<span class="info-label">Remontes</span>

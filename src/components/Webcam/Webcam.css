@@ -1,9 +1,10 @@
 .webcam-item {
 	min-width: 0;
 	padding: 10px;
-	border: 1px solid var(--line);
-	border-radius: 4px;
-	background: rgba(255, 255, 255, 0.8);
+	border: 2px solid var(--ink);
+	border-radius: 8px;
+	background: var(--panel);
+	box-shadow: var(--shadow-card);
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
@@ -24,28 +25,29 @@
 }
 
 .webcam-live-mark {
-	width: 7px;
-	height: 7px;
+	width: 8px;
+	height: 8px;
 	flex: 0 0 auto;
-	margin-top: 5px;
+	margin-top: 6px;
 	border-radius: 50%;
-	background: var(--coral);
+	background: var(--go-green);
 }
 
 .webcam-nombre {
 	margin: 0;
 	color: var(--ink);
-	font-family: var(--display);
-	font-size: 20px;
-	font-weight: 600;
-	line-height: 1.05;
+	font-family: var(--body);
+	font-size: 18px;
+	font-weight: 800;
+	line-height: 1.1;
 	overflow-wrap: anywhere;
 }
 
 .webcam-descripcion {
-	margin: 4px 0 0 14px;
-	color: var(--muted);
-	font-size: 10px;
+	margin: 4px 0 0 15px;
+	color: var(--ink-soft);
+	font-size: 11px;
+	font-weight: 500;
 	line-height: 1.4;
 }
 
@@ -53,9 +55,9 @@
 	width: 100%;
 	aspect-ratio: 16 / 9;
 	min-height: 150px;
-	border-radius: 2px;
+	border-radius: 4px;
 	overflow: hidden;
-	background: var(--paper-deep);
+	background: #e9e6db;
 }
 
 .webcam-player iframe {
@@ -74,12 +76,8 @@
 }
 
 @media (min-width: 640px) {
-	.webcam-item {
-		padding: 12px;
-	}
-
 	.webcam-nombre {
-		font-size: 22px;
+		font-size: 20px;
 	}
 
 	.webcam-player {
@@ -91,9 +89,78 @@
 	}
 }
 
+/* IPCamlive sin permiso de embebido: imagen viva por endpoint snapshot (~30 s),
+   con fallback al visor del proveedor si la imagen falla */
+.webcam-live-snapshot {
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.snapshot-image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	background: #e9e6db;
+}
+
+.snapshot-fallback {
+	display: none;
+	position: absolute;
+	inset: 0;
+	padding: 14px 16px;
+	border: 2px dashed var(--seam);
+	border-radius: 4px;
+	background: #f5f3ec;
+	color: var(--ink);
+	text-decoration: none;
+}
+
+.snapshot-failed .snapshot-image {
+	display: none;
+}
+
+.snapshot-failed .snapshot-fallback {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.snapshot-fallback::before {
+	content: '↗';
+	display: grid;
+	width: 34px;
+	height: 34px;
+	flex: 0 0 auto;
+	place-items: center;
+	background: var(--amber);
+	border-radius: 50%;
+	color: var(--ink);
+	font-size: 15px;
+	font-weight: 800;
+}
+
+.blocked-copy { display: flex; flex-direction: column; gap: 3px; }
+
+.blocked-copy strong {
+	color: var(--ink);
+	font-size: 13px;
+	font-weight: 800;
+}
+
+.blocked-copy small {
+	color: var(--ink-soft);
+	font-size: 12px;
+	font-weight: 600;
+}
+
 @media (hover: hover) {
 	.webcam-item:hover {
-		border-color: #aebdb1;
+		box-shadow: 0 4px 0 rgba(21, 19, 15, 0.22);
 	}
 }
 
@@ -102,7 +169,7 @@
 	height: 100%;
 	object-fit: cover;
 	display: block;
-	background: var(--paper-deep);
+	background: #e9e6db;
 }
 
 .webcam-iframe {

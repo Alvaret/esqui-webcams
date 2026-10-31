@@ -182,35 +182,28 @@
     "sitioWeb": "https://www.boitaull.com",
     "descripcion": "Estación de esquí en el Pirineo catalán, Lleida",
     "webcams": [
-
-      {
-        "nombre": "Cerbí de Durro",
-        "author": "© feratel.com",
-        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/3.jpeg?design=v5",
-        "isImage": true
-      },
-      {
-        "nombre": "Debutantes - Cinta Irgo",
-        "author": "© feratel.com",
-        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/0.jpeg?design=v5",
-        "isImage": true
-      },
-      {
-        "nombre": "Ts Junior - Vaques",
-        "author": "© feratel.com",
-        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/2.jpeg?design=v5",
-        "isImage": true
-      },
-      {
-        "nombre": "Ts Mulleres",
-        "author": "© feratel.com",
-        "link": "https://webtvhotspot.feratel.com/hotspot/35/15100/1.jpeg?design=v5",
-        "isImage": true
-      },
       {
         "nombre": "Ts Resort Express - Estación Superior",
         "author": "© turismefgc.cat",
         "link": "https://media.turismefgc.cat/fgc/boitaull/boitaull_capexpres.jpg?intmp=1764510841",
+        "isImage": true
+      },
+      {
+        "nombre": "Zona Junior - Base",
+        "author": "© turismefgc.cat",
+        "link": "https://media.turismefgc.cat/fgc/boitaull/Base_Junior.jpg",
+        "isImage": true
+      },
+      {
+        "nombre": "Cap de Vaques",
+        "author": "© roundshot.com",
+        "link": "https://storage4.roundshot.com/6870cdf362cb58.21736089/cap-de-vaques-1920x1080.jpg",
+        "isImage": true
+      },
+      {
+        "nombre": "Ts Mulleres",
+        "author": "© projecte4estacions.com",
+        "link": "https://app.projecte4estacions.com/snapshots/boi-taull-mulleres.jpg",
         "isImage": true
       }
     ]

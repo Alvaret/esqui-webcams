@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-24T00:00:00Z",
+  "title": "Design System: PLWinterCam",
+  "extensions": {
+    "colorMeta": {
+      "amber": { "role": "primary", "displayName": "Ámbar baliza", "canonical": "#f7b32b", "tonalRamp": ["#4a3208", "#7a5210", "#a97419", "#d8961f", "#f7b32b", "#ffd35e", "#ffe79b", "#fff6d8"] },
+      "go-green": { "role": "secondary", "displayName": "Verde pistas abiertas", "canonical": "#1b7a43", "tonalRamp": ["#0b2f19", "#12492a", "#186338", "#1b7a43", "#2c9c58", "#4bb876", "#84d3a0", "#c8ecd4"] },
+      "signal-red": { "role": "tertiary", "displayName": "Rojo señal", "canonical": "#c23a1f", "tonalRamp": ["#3d1007", "#5e1a0d", "#8a2813", "#c23a1f", "#dd6a4e", "#ef9a80", "#f7c3b2", "#fce6de"] },
+      "ground": { "role": "neutral", "displayName": "Crema terreno", "canonical": "#f2f0e9", "tonalRamp": ["#2a281f", "#4d4a3d", "#726e5e", "#9a9585", "#c1bdae", "#dcd9c9", "#f2f0e9", "#fbfaf5"] },
+      "panel": { "role": "neutral", "displayName": "Blanco panel", "canonical": "#ffffff", "tonalRamp": ["#2f2d29", "#57544c", "#8a857a", "#bab5a8", "#e4e1d6", "#f2f0e9", "#ffffff", "#ffffff"] },
+      "ink": { "role": "neutral", "displayName": "Tinta indeleble", "canonical": "#15130f", "tonalRamp": ["#15130f", "#2a2722", "#454138", "#57534a", "#726d61", "#8a857a", "#b3aea0", "#e4e1d6"] },
+      "ink-soft": { "role": "neutral", "displayName": "Tinta suave", "canonical": "#57534a", "tonalRamp": ["#1c1a16", "#33302a", "#4a463d", "#57534a", "#787363", "#9a9585", "#c1bdae", "#e9e6db"] },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "#e4e1d6", "tonalRamp": ["#2a281f", "#4d4a3d", "#726e5e", "#9a9585", "#c1bdae", "#e4e1d6", "#f2f0e9", "#fbfaf5"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "H1 de portada y estación, H2 de sección. Archivo Black, sin kicker encima." },
+      "body": { "displayName": "Body", "purpose": "Texto de apoyo en tinta suave, 11–15px, máx 420–560px de línea." },
+      "label": { "displayName": "Label de señal", "purpose": "Etiquetas en mayúsculas con tracking 0.06–0.14em; 8–11px." },
+      "value": { "displayName": "Valor de placa", "purpose": "Datos: Archivo 800, tabular-nums, cifras en español (punto de millar, guion –, coma decimal)." }
+    },
+    "shadows": [
+      { "name": "shadow-card", "value": "0 2px 0 rgba(21, 19, 15, 0.22)", "purpose": "Apoyo sólido en reposo de tarjetas, buscador, botones y panel cerrado." },
+      { "name": "shadow-raised", "value": "0 4px 0 rgba(21, 19, 15, 0.22)", "purpose": "Hover/focus: la placa se alza (translateY -2px) y su apoyo engorda a 4px." },
+      { "name": "shadow-float", "value": "0 4px 14px rgba(21, 19, 15, 0.3), 0 1px 2px rgba(21, 19, 15, 0.4)", "purpose": "Únicamente FloatingCredit, la chapa flotante." }
+    ],
+    "motion": [
+      { "name": "state-transition", "value": "0.15s ease-out", "purpose": "transform/box-shadow en tarjetas; slideIn del FloatingCredit 0.35s ease-out." },
+      { "name": "reduced-motion", "value": "transition-duration: 0.01ms", "purpose": "prefers-reduced-motion apaga todo movimiento." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "390px (canónico)" },
+      { "name": "md", "value": "680px" },
+      { "name": "lg", "value": "1050px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón primario",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Acción principal (Web oficial): placa ámbar con canto de tinta, 48px alto.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Web oficial <span aria-hidden=\"true\">↗</span></a>",
+      "css": ".ds-btn-primary { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 48px; min-width: 174px; padding: 0 14px; border: 2px solid var(--ink, #15130f); border-radius: 8px; background: var(--amber, #f7b32b); color: var(--ink, #15130f); box-shadow: 0 2px 0 rgba(21,19,15,0.22); font-family: 'Archivo', sans-serif; font-size: 13px; font-weight: 800; text-decoration: none; transition: background 0.15s ease-out; } .ds-btn-primary:hover, .ds-btn-primary:focus-visible { background: #ffd35e; }"
+    },
+    {
+      "name": "Botón secundario",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Acción neutra: placa transparente con canto de tinta.",
+      "html": "<a class=\"ds-btn-secondary\" href=\"#\">Todas las estaciones <span aria-hidden=\"true\">→</span></a>",
+      "css": ".ds-btn-secondary { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 48px; min-width: 174px; padding: 0 14px; border: 2px solid var(--ink, #15130f); border-radius: 8px; background: transparent; color: var(--ink, #15130f); box-shadow: 0 2px 0 rgba(21,19,15,0.22); font-family: 'Archivo', sans-serif; font-size: 13px; font-weight: 800; text-decoration: none; transition: background 0.15s ease-out; } .ds-btn-secondary:hover, .ds-btn-secondary:focus-visible { background: rgba(21,19,15,0.06); }"
+    },
+    {
+      "name": "Tarjeta de estación",
+      "kind": "card",
+      "refersTo": "station-card",
+      "description": "Enlace al directorio: placa de cota bicolor + nombre y cotas + clavija verde de cámaras.",
+      "html": "<a class=\"ds-station-card\" href=\"#\"><span class=\"ds-plate\"><span class=\"ds-plate-label\">COTA</span><b class=\"ds-plate-value\">2.250</b></span><span class=\"ds-main\"><strong class=\"ds-name\">Baqueira Beret</strong><span class=\"ds-meta\">1.400 – 2.750</span></span><span class=\"ds-badge\" aria-label=\"6 cámaras\"><b>6</b></span></a>",
+      "css": ".ds-station-card { display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 10px; border: 2px solid var(--ink, #15130f); border-radius: 8px; background: #fff; box-shadow: 0 2px 0 rgba(21,19,15,0.22); text-decoration: none; color: #15130f; transition: transform 0.15s ease-out, box-shadow 0.15s ease-out; } .ds-station-card:hover, .ds-station-card:focus-visible { transform: translateY(-2px); box-shadow: 0 4px 0 rgba(21,19,15,0.22); } .ds-plate { display: flex; position: relative; width: 58px; height: 72px; flex: 0 0 auto; flex-direction: column; align-items: center; gap: 7px; justify-content: center; padding-bottom: 14px; border: 2px solid var(--ink, #15130f); border-radius: 6px; background: linear-gradient(to bottom, #f7b32b 0 76%, #15130f 76% 100%); overflow: hidden; } .ds-plate-label { color: #15130f; font-family: 'Archivo', sans-serif; font-size: 8px; font-weight: 800; letter-spacing: 0.14em; } .ds-plate-value { color: #15130f; font-family: 'Archivo', sans-serif; font-size: 14px; font-weight: 800; line-height: 1; } .ds-main { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 3px; } .ds-name { font-family: 'Archivo', sans-serif; font-size: 17px; font-weight: 800; line-height: 1.1; } .ds-meta { color: #57534a; font-family: 'Archivo', sans-serif; font-size: 12px; font-weight: 600; } .ds-badge { display: grid; flex: 0 0 auto; place-items: center; min-width: 38px; height: 38px; padding: 0 6px; border: 2px solid var(--ink, #15130f); border-radius: 50%; background: #1b7a43; color: #fff; font-family: 'Archivo', sans-serif; } .ds-badge b { font-size: 15px; font-weight: 800; line-height: 1; }"
+    },
+    {
+      "name": "Buscador",
+      "kind": "input",
+      "refersTo": "search-field",
+      "description": "Campo de búsqueda del directorio: 48px, lupa dibujada, sombra que se apoya al enfocar.",
+      "html": "<label class=\"ds-search\"><span class=\"ds-search-icon\" aria-hidden=\"true\"></span><span class=\"ds-hidden\">Buscar estación</span><input type=\"search\" placeholder=\"Buscar estación\" /> </label>",
+      "css": ".ds-search { display: flex; align-items: center; width: 100%; min-height: 48px; border: 2px solid var(--ink, #15130f); border-radius: 8px; background: #fff; box-shadow: 0 2px 0 rgba(21,19,15,0.22); } .ds-search:focus-within { box-shadow: 0 3px 0 rgba(21,19,15,0.22); } .ds-search-icon { position: relative; width: 15px; height: 15px; flex: 0 0 auto; margin: 0 11px 0 15px; border: 2px solid var(--ink, #15130f); border-radius: 50%; } .ds-search-icon::after { position: absolute; right: -5px; bottom: -4px; width: 6px; height: 2px; background: var(--ink, #15130f); content: ''; transform: rotate(45deg); } .ds-search input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink, #15130f); font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 600; padding-right: 14px; } .ds-search input::placeholder { color: #8a857a; } .ds-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }"
+    },
+    {
+      "name": "Chip EN DIRECTO de cabecera",
+      "kind": "chip",
+      "refersTo": "header-status",
+      "description": "Señal de vida en la cabecera: fondo ámbar sobre tinta, baliza de punto rojo.",
+      "html": "<a class=\"ds-header-status\" href=\"#\"><span class=\"ds-signal-dot\"></span>EN DIRECTO</a>",
+      "css": ".ds-header-status { display: flex; align-items: center; gap: 8px; background: var(--amber, #f7b32b); color: var(--ink, #15130f); font-family: 'Archivo', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-decoration: none; padding: 7px 10px; border-radius: 5px; min-height: 40px; transition: background 0.15s ease-out; } .ds-header-status:hover, .ds-header-status:focus-visible { background: #ffd35e; } .ds-signal-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: #c23a1f; }"
+    },
+    {
+      "name": "Panel de estación cerrada",
+      "kind": "custom",
+      "refersTo": "closed-status",
+      "description": "Baliza de alerta: placa roja con sello circular blanco \"!\" y role=status.",
+      "html": "<div class=\"ds-closed\" role=\"status\"><span class=\"ds-closed-mark\" aria-hidden=\"true\">!</span><div><strong>Estación cerrada</strong><p>No hay remontes ni kilómetros de pistas abiertos en este momento.</p></div></div>",
+      "css": ".ds-closed { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border: 2px solid var(--ink, #15130f); border-radius: 8px; background: #c23a1f; box-shadow: 0 2px 0 rgba(21,19,15,0.22); font-family: 'Archivo', sans-serif; } .ds-closed-mark { display: grid; width: 23px; height: 23px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: #fff; color: #c23a1f; font-size: 13px; font-weight: 800; } .ds-closed strong { color: #fff; font-size: 12px; } .ds-closed p { margin: 2px 0 0; color: rgba(255, 255, 255, 0.92); font-size: 10px; line-height: 1.4; }"
+    },
+    {
+      "name": "Chips de condición",
+      "kind": "chip",
+      "refersTo": "condition-chip",
+      "description": "Leyenda de estado con swatch pill y borde tinta; decorativa, aria-hidden.",
+      "html": "<span class=\"ds-cond-chip\"><span class=\"ds-swatch ds-swatch-live\"></span>EN DIRECTO</span> <span class=\"ds-cond-chip\"><span class=\"ds-swatch ds-swatch-off\"></span>SIN CÁMARA</span>",
+      "css": ".ds-cond-chip { display: inline-flex; align-items: center; gap: 7px; font-family: 'Archivo', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #15130f; } .ds-swatch { width: 22px; height: 13px; border-radius: 999px; border: 1.5px solid #15130f; } .ds-swatch-live { background: #1b7a43; } .ds-swatch-off { background: #f7b32b; }"
+    },
+    {
+      "name": "Panel sin datos",
+      "kind": "custom",
+      "refersTo": "no-data-message",
+      "description": "Parte de nieve no disponible: panel blanco, sello ámbar \"i\".",
+      "html": "<div class=\"ds-no-data\"><span class=\"ds-no-data-mark\" aria-hidden=\"true\">i</span><div><h3>Parte de nieve no disponible</h3><p>Consulta las cámaras para ver las condiciones actuales.</p></div></div>",
+      "css": ".ds-no-data { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border: 1px solid rgba(21,19,15,0.14); border-radius: 8px; background: #fff; font-family: 'Archivo', sans-serif; } .ds-no-data-mark { display: grid; width: 26px; height: 26px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: #f7b32b; color: #15130f; font-family: 'Archivo Black', sans-serif; font-size: 15px; line-height: 1; } .ds-no-data h3 { margin: 0; font-size: 13px; font-weight: 800; } .ds-no-data p { margin: 3px 0 0; color: #57534a; font-size: 12px; font-weight: 500; line-height: 1.45; }"
+    },
+    {
+      "name": "Cámara (webcam-item)",
+      "kind": "card",
+      "refersTo": "webcam-item",
+      "description": "Placa de webcam: punto verde en directo, título 18px/800, reproductor 16/9 radius 4px.",
+      "html": "<article class=\"ds-webcam\"><div class=\"ds-webcam-info\"><div class=\"ds-title-row\"><span class=\"ds-live-mark\"></span><h3>Cota 2.000</h3></div><p>Espigón mirando al valle.</p></div><div class=\"ds-player\"><img src=\"\" alt=\"Cámara en directo: Cota 2.000\" /></div></article>",
+      "css": ".ds-webcam { min-width: 0; padding: 10px; border: 2px solid var(--ink, #15130f); border-radius: 8px; background: #fff; box-shadow: 0 2px 0 rgba(21,19,15,0.22); display: flex; flex-direction: column; overflow: hidden; font-family: 'Archivo', sans-serif; } .ds-webcam:hover { box-shadow: 0 4px 0 rgba(21,19,15,0.22); } .ds-webcam-info { min-height: 51px; display: flex; flex-direction: column; justify-content: center; margin-bottom: 9px; } .ds-title-row { display: flex; align-items: flex-start; gap: 7px; } .ds-live-mark { width: 8px; height: 8px; flex: 0 0 auto; margin-top: 6px; border-radius: 50%; background: #1b7a43; } .ds-title-row h3 { margin: 0; color: #15130f; font-size: 18px; font-weight: 800; line-height: 1.1; } .ds-webcam-info p { margin: 4px 0 0 15px; color: #57534a; font-size: 11px; font-weight: 500; line-height: 1.4; } .ds-player { width: 100%; aspect-ratio: 16 / 9; border-radius: 4px; overflow: hidden; background: #e9e6db; } .ds-player img { width: 100%; height: 100%; object-fit: cover; display: block; }"
+    },
+    {
+      "name": "Fila de dato (parte de nieve)",
+      "kind": "custom",
+      "refersTo": "dato-card",
+      "description": "Celda de dato: icono SVG a mano, etiqueta con tracking, valor tabular-nums 19px/800.",
+      "html": "<div class=\"ds-dato\"><span class=\"ds-dato-icon\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 18 18\" fill=\"none\" aria-hidden=\"true\"><path d=\"M9 1.5v15M1.5 9h15M3.8 3.8l10.4 10.4M14.2 3.8L3.8 14.2\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"/><circle cx=\"9\" cy=\"9\" r=\"2\" fill=\"currentColor\"/></svg></span><span class=\"ds-dato-label\">Nieve</span><span class=\"ds-dato-value\">20 cm</span></div>",
+      "css": ".ds-dato { display: flex; min-width: 0; flex-direction: column; gap: 4px; padding: 11px 7px 11px 0; border-right: 1px solid rgba(21,19,15,0.14); color: #15130f; font-family: 'Archivo', sans-serif; } .ds-dato-icon { color: #15130f; width: 18px; height: 18px; line-height: 1; flex-shrink: 0; } .ds-dato-label { color: #57534a; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; } .ds-dato-value { font-size: 19px; font-weight: 800; line-height: 1.05; font-variant-numeric: tabular-nums; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Señalética de pistas",
+    "overview": "La interfaz se comporta como la cartelería de balizamiento de una estación de esquí: paneles de alto contraste pintados sobre crema, tinta indeleble que enmarca todo, y balizas de estado (verde pistas abiertas, ámbar en directo, rojo estación cerrada). Cada elemento parece fabricado, no dibujado: bordes de 2px de tinta como el canto de una placa metálica, esquinas apenas redondeadas (8px), y sombras con offset que apoyan las placas sobre el terreno. Es un sistema móvil-first, denso y compacto: tipografía tipo señal, pesos altos, etiquetas en versalitas con tracking amplio y valores decididos. El momento firma es la placa de cota bicolor, a escala fija en línea base común, que compara cotas máximas de un vistazo como paneles de remonte.",
+    "keyCharacteristics": [
+      "Paleta de cuatro notas: crema terreno, tinta indeleble, ámbar de acción, y dos balizas (verde/rojo).",
+      "Todo lo interactivo lleva borde 2px tinta + radius 8px + sombra 0 2px 0 tinta al 22%.",
+      "El estado EN DIRECTO vive en la cabecera, no al final de la página.",
+      "Sin iconografía decorativa: solo SVG trazados a mano (stroke 1.6–2) y puntuales.",
+      "Números en español: punto de millar (2.250), guion – entre cotas, coma decimal."
+    ],
+    "rules": [
+      { "name": "La Regla del Canto de Tinta", "body": "Toda superficie interactiva o informativa se fabrica con borde de 2px sólido --ink y radius 8px. Sin borde no hay placa.", "section": "colors" },
+      { "name": "La Regla de la Baliza Única", "body": "Verde y rojo solo reportan estado (cámaras, directo, cerrada); nunca decoran ni se usan como color de interfaz. La acción es siempre ámbar.", "section": "colors" },
+      { "name": "La Regla Sin Kicker", "body": "No hay eyebrows, kickers ni etiquetas introductorias sobre títulos. La señal empieza en el display.", "section": "typography" },
+      { "name": "La Regla del Apoyo Sólido", "body": "El hover de una placa la alza (translateY −2px) y engorda su apoyo de 2px a 4px. La profundidad se suma, nunca se difumina.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do fabricar cada placa con borde 2px --ink, radius 8px y --shadow-card (0 2px 0 rgba(21,19,15,0.22)).",
+      "Do usar ámbar solo para acción y foco; verde/rojo solo como balizas de estado.",
+      "Do mantener los números en español: punto de millar (2.250), guion – entre cotas (\"1.800 – 2.250\"), coma decimal; tabular-nums en valores.",
+      "Do dibujar iconos como SVG inline con stroke=\"currentColor\" a 1.6–2; nada de librerías.",
+      "Do mantener etiquetas pequeñas con carácter (8–11px, 700–800, tracking 0.06–0.14em) y el EN DIRECTO en la cabecera.",
+      "Do mantener aria-live en el contador, role=\"status\" en la estación cerrada y foco ámbar 3px visible."
+    ],
+    "donts": [
+      "Don't usar eyebrows, kickers o pre-títulos sobre cualquier display.",
+      "Don't usar gradient text, glass, blur de fondo ni sombras coloreadas/difusas sin dirección.",
+      "Don't colorear interfaces con verde o rojo: son balizas, no tema.",
+      "Don't inventar datos de estación ni azules/púrpuras genéricos; las cotas y cámaras vienen del pipeline (opciones.json).",
+      "Don't romper la escala fija de la placa de cota: su alineación en línea base común es el momento firma."
+    ]
+  }
+}

@@ -1,0 +1,265 @@
+---
+import { formatearDiaSemana, esHoy, type TiempoEstacion } from '../../lib/weather';
+
+interface Props {
+	tiempo: TiempoEstacion;
+}
+
+const { tiempo } = Astro.props;
+
+const nf = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1 });
+
+// Icono SVG según el código WMO de Open-Meteo
+const ICONOS: Record<string, string> = {
+	sol: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/><path d="M12 3V1.5M12 22.5V21M3 12H1.5M22.5 12H21M4.8 4.8 3.7 3.7M20.3 20.3l-1.1-1.1M4.8 19.2 3.7 20.3M20.3 3.7l-1.1 1.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+	parcial: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="10" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M9 3V1.8M1.8 10h1.2M3.6 4.6l-.9-.9M14.4 4.6l.9-.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M17.5 20a4 4 0 1 0-1-7.9 5 5 0 0 0-9.4 1.4A3.2 3.2 0 0 0 7.5 20h10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+	nube: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 19a4.5 4.5 0 0 0-1.1-8.9 6 6 0 0 0-11.3 1.7A3.8 3.8 0 0 0 6 19h12Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>',
+	niebla: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 8h14M5 12h14M3 16h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+	lluvia: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 15a4.5 4.5 0 0 0-1.1-8.9 6 6 0 0 0-11.3 1.7A3.8 3.8 0 0 0 6 15h12Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8 18l-1 2.5M12 18l-1 2.5M16 18l-1 2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>',
+	nieve: '<svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 1.5v13M2.2 4.75l11.6 7.5M13.8 4.75l-11.6 7.5M8 4l-1.8-1.3M8 4l1.8-1.3M8 12l-1.8 1.3M8 12l1.8 1.3M3.4 6l-2.2-.3M3.4 10l-2.2.3M12.6 6l2.2-.3M12.6 10l2.2.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>'
+};
+
+function iconoWMO(code: number): string {
+	if (code === 3) return 'nube';
+	if (code === 0) return 'sol';
+	if ([1, 2].includes(code)) return 'parcial';
+	if ([45, 48].includes(code)) return 'niebla';
+	if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return 'lluvia';
+	if ([71, 73, 75, 77, 85, 86].includes(code)) return 'nieve';
+	return 'nube';
+}
+
+// Mostramos los 7 primeros días y, a partir de ahí, solo los días con nieve
+const diasMostrar = [...tiempo.dias.slice(0, 7), ...tiempo.dias.slice(7).filter((d) => d.nieveCm > 0)];
+const primeraNevada = tiempo.dias.find((d) => d.nieveCm > 0);
+---
+
+<div class="tiempo-seccion">
+	<div class="weather-summary">
+		<div class="weather-summary-main">
+			<span class="weather-label">Próximos 14 días</span>
+			<span class="weather-total">
+				<span class="weather-snow-icon" aria-hidden="true" set:html={ICONOS.nieve} />
+				<b>{nf.format(tiempo.nevadaTotalCm)}</b> cm
+			</span>
+			<span class="weather-total-label">nieve prevista</span>
+		</div>
+		{primeraNevada && (
+			<div class="weather-first-snow">
+				<span class="weather-first-snow-icon" aria-hidden="true" set:html={ICONOS.nieve} />
+				<span>
+					Primera nevada: <strong>{formatearDiaSemana(primeraNevada.fecha)}</strong>
+					({nf.format(primeraNevada.nieveCm)} cm)
+				</span>
+			</div>
+		)}
+	</div>
+
+	<div class="weather-days" role="list">
+		{
+			diasMostrar.map((d) => (
+				<div
+					class:list={['weather-day', { 'is-today': esHoy(d.fecha), 'has-snow': d.nieveCm > 0 }]}
+					role="listitem"
+				>
+					<span class="weather-day-name">{esHoy(d.fecha) ? 'Hoy' : formatearDiaSemana(d.fecha)}</span>
+					<span class="weather-day-icon" style={`color: ${d.nieveCm > 0 ? 'var(--go-green)' : 'var(--ink-soft)'}`} aria-hidden="true"
+						set:html={ICONOS[iconoWMO(d.weathercode)]} />
+					<span class="weather-day-snow">{d.nieveCm > 0 ? `${nf.format(d.nieveCm)} cm` : ''}</span>
+					<span class="weather-day-temps">{d.tempMin}° / {d.tempMax}°</span>
+				</div>
+			))
+		}
+	</div>
+</div>
+
+<style>
+	.tiempo-seccion {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.weather-summary {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px 20px;
+		padding: 13px 16px;
+		border: 2px solid var(--ink);
+		border-radius: 8px;
+		background: var(--panel);
+		box-shadow: var(--shadow-card);
+	}
+
+	.weather-summary-main {
+		display: flex;
+		align-items: baseline;
+		gap: 10px;
+	}
+
+	.weather-summary-main > :not(.weather-total) {
+		color: var(--ink-soft);
+		font-size: 10px;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+	}
+
+	.weather-total {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 5px;
+		font-family: var(--body);
+		font-size: 22px;
+		font-weight: 800;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.weather-snow-icon {
+		align-self: center;
+		color: var(--go-green);
+		line-height: 1;
+	}
+
+	.weather-first-snow {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		color: var(--ink-soft);
+		font-size: 12px;
+		font-weight: 600;
+	}
+
+	.weather-first-snow strong {
+		color: var(--ink);
+		font-weight: 800;
+	}
+
+	.weather-first-snow-icon {
+		color: var(--go-green);
+		line-height: 1;
+	}
+
+	.weather-days {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		border: 1px solid var(--seam);
+		border-radius: 8px;
+		background: var(--panel);
+		overflow: hidden;
+	}
+
+	.weather-day {
+		display: grid;
+		grid-template-columns: minmax(72px, auto) 22px 1fr auto;
+		align-items: center;
+		gap: 10px;
+		padding: 9px 14px;
+		border-top: 1px solid var(--seam);
+	}
+
+	.weather-day:first-child {
+		border-top: 0;
+	}
+
+	.weather-day.has-snow {
+		background: rgba(27, 122, 67, 0.07);
+	}
+
+	.weather-day.is-today {
+		background: rgba(247, 179, 43, 0.14);
+	}
+
+	.weather-day-name {
+		min-width: 0;
+		color: var(--ink);
+		font-size: 12px;
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.weather-day.is-today .weather-day-name {
+		color: var(--signal-red);
+	}
+
+	.weather-day-icon {
+		width: 20px;
+		height: 20px;
+		line-height: 1;
+	}
+
+	.weather-day-snow {
+		min-width: 0;
+		color: var(--go-green);
+		font-size: 12px;
+		font-weight: 800;
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+
+	.weather-day-temps {
+		color: var(--ink-soft);
+		font-size: 12px;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+
+	@media (min-width: 680px) {
+		.weather-days {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			border: 2px solid var(--ink);
+			box-shadow: var(--shadow-card);
+		}
+
+		.weather-day {
+			grid-template-columns: minmax(72px, auto) minmax(0, 1fr);
+			grid-template-rows: auto auto auto;
+			justify-content: start;
+			gap: 2px 10px;
+			padding: 10px 14px;
+		}
+
+		/* fila 1: día; icono ocupa el resto a la derecha */
+		.weather-day-name {
+			grid-column: 1;
+			grid-row: 1;
+		}
+
+		.weather-day-icon {
+			grid-column: 2;
+			grid-row: 1 / span 3;
+			justify-self: end;
+			align-self: start;
+		}
+
+		.weather-day-snow {
+			grid-column: 1;
+			grid-row: 2;
+			font-size: 11px;
+		}
+
+		.weather-day-temps {
+			grid-column: 1;
+			grid-row: 3;
+			font-size: 12px;
+			color: var(--ink);
+		}
+
+		.weather-day:hover {
+			background: rgba(21, 19, 15, 0.05);
+		}
+
+		.weather-day.is-today:hover {
+			background: rgba(247, 179, 43, 0.14);
+		}
+	}
+
+	@media (min-width: 1050px) {
+		.weather-days {
+			grid-template-columns: repeat(7, minmax(0, 1fr));
+		}
+	}
+</style>

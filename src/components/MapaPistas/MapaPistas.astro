@@ -1,0 +1,67 @@
+---
+// Mapa 3D con las pistas de la estación (OpenSkiMap sobre terreno 3D, MapLibre GL JS)
+// Se monta en cliente solo en /estacion/[clave]; sin clave de API.
+interface Props {
+	clave: string;
+	lat: number;
+	lon: number;
+}
+
+const { clave } = Astro.props;
+---
+
+<div class="mapa-pistas" data-mapa-pistas data-clave={clave}>
+	<div class="mapa-pistas-canvas" id={`mapa-${clave}`}></div>
+</div>
+
+<script>
+	import * as maplibregl from 'maplibre-gl';
+	import 'maplibre-gl/dist/maplibre-gl.css';
+	import { UBICACIONES } from '../../lib/weather';
+
+	// En desarrollo Vite no puede cargar el worker inlineificado de MapLibre;
+	// servimos el chunk propio del worker. Si falla, seguimos con el que traiga el bundle.
+	try {
+		// @ts-expect-error: la declaración de Vite para ?worker&url no cubre rutas de node_modules
+		const { default: maplibreWorkerUrl } = await import('maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url');
+		maplibregl.setWorkerUrl(new URL(maplibreWorkerUrl, import.meta.url).href);
+	} catch (error) {
+		console.error('No se pudo configurar el worker de MapLibre (usando el del bundle):', error);
+	}
+
+	document.querySelectorAll<HTMLElement>('[data-mapa-pistas]').forEach((contenedor) => {
+		const clave = contenedor.dataset.clave;
+		const canvas = contenedor.querySelector<HTMLElement>('.mapa-pistas-canvas');
+		const ubicacion = clave ? UBICACIONES[clave] : undefined;
+		if (!clave || !canvas || !ubicacion) return;
+
+		try {
+			// Evita el doble init (HMR en desarrollo / re-ejecución del script)
+			if (canvas.dataset.inicializado === 'true') return;
+
+			// Estilo público de OpenSkiMap: pistas y remontes de OSM + terreno 3D, sin API key
+			const map = new maplibregl.Map({
+				container: canvas.id,
+				style: 'https://tiles.openskimap.org/styles/terrain_v2.json',
+				center: [ubicacion.lon, ubicacion.lat],
+				zoom: Number(contenedor.dataset.zoom ?? 13),
+				pitch: 60,
+				bearing: 0,
+				maxPitch: 85,
+				attributionControl: false,
+				fadeDuration: 0
+			});
+
+			map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-left');
+			map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
+			// Interruptor del relieve 3D (arranca activo por la propiedad terrain del estilo)
+			map.addControl(new maplibregl.TerrainControl({ source: 'terrain', exaggeration: 1 }), 'top-right');
+			map.addControl(new maplibregl.FullscreenControl(), 'top-right');
+			map.on('error', (e) => console.error('Mapa 3D:', e.error));
+			canvas.dataset.inicializado = 'true';
+		} catch (error) {
+			// Si el mapa no carga, no mostramos nada (solo va al log)
+			console.error('No se pudo inicializar el mapa 3D:', error);
+		}
+	});
+</script>
